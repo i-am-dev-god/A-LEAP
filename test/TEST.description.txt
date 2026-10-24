@@ -1,9 +1,0 @@
-1% does not cost 1%
-
-A pure arithmetic demonstration: what a 1% annual fee does to 7% a year over 30 years. 1.06^30 / 1.07^30 = 0.7545. Not financial advice.
-
-Sources:
-- arithmetic: 1.06^30 = 5.7435, 1.07^30 = 7.6123
-- no external claim is made in this video; figures are computed, not cited
-
-@leap
