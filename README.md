@@ -18,7 +18,9 @@ your own palette, your own type, your own words.
 
 ![LEAP output](docs/preview.png)
 
-*Motion preview (silent, 37 s, 580 KB): [docs/preview.mp4](docs/preview.mp4)*
+▶ **[Watch the finished file: `test/TEST.mp4`](test/TEST.mp4)** — 34 s, 1080×1920, 3.9 MB,
+committed to this repo, rendered by this code. Silent by design (`--tts none`);
+see [test/README.md](test/README.md) for what that mode does and how to voice it.
 
 ---
 
@@ -216,7 +218,8 @@ leap/
   cli.py           the `leap` command
 assets/fonts/      9 families, SIL OFL
 examples/demo.json a complete, fact-checked 34 s script
-docs/             preview.png, writing.md, monetization.md
+test/             TEST.mp4 (real output) + its script + description
+docs/             preview.png, preview.mp4, writing.md, monetization.md
 ```
 
 ---
