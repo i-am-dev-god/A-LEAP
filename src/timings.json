@@ -1,0 +1,64 @@
+{
+  "fps": 30,
+  "generatedFrom": "public/audio",
+  "totalFrames": 1793,
+  "totalSeconds": 59.77,
+  "scenes": [
+    {
+      "id": "scene-01",
+      "file": "audio/scene-01.mp3",
+      "seconds": 6.024,
+      "frames": 185,
+      "from": 0
+    },
+    {
+      "id": "scene-02",
+      "file": "audio/scene-02.mp3",
+      "seconds": 7.056,
+      "frames": 216,
+      "from": 185
+    },
+    {
+      "id": "scene-03",
+      "file": "audio/scene-03.mp3",
+      "seconds": 5.928,
+      "frames": 182,
+      "from": 401
+    },
+    {
+      "id": "scene-04",
+      "file": "audio/scene-04.mp3",
+      "seconds": 7.776,
+      "frames": 237,
+      "from": 583
+    },
+    {
+      "id": "scene-05",
+      "file": "audio/scene-05.mp3",
+      "seconds": 7.584,
+      "frames": 232,
+      "from": 820
+    },
+    {
+      "id": "scene-06",
+      "file": "audio/scene-06.mp3",
+      "seconds": 8.808,
+      "frames": 268,
+      "from": 1052
+    },
+    {
+      "id": "scene-07",
+      "file": "audio/scene-07.mp3",
+      "seconds": 9.456,
+      "frames": 288,
+      "from": 1320
+    },
+    {
+      "id": "scene-08",
+      "file": "audio/scene-08.mp3",
+      "seconds": 5.472,
+      "frames": 185,
+      "from": 1608
+    }
+  ]
+}

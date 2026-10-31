@@ -1,0 +1,29 @@
+{
+  "name": "a-leap",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A 60-second Remotion short: how GPS actually finds you.",
+  "scripts": {
+    "browser": "node scripts/browser.mjs",
+    "audio": "node scripts/prepare-audio.mjs",
+    "timings": "node scripts/timings.mjs",
+    "studio": "remotion studio",
+    "compositions": "remotion compositions",
+    "still": "npm run browser && remotion still GpsShort out/frame.png",
+    "render": "npm run browser && npm run timings && remotion render GpsShort out/gps-short.mp4"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@remotion/cli": "4.0.539",
+    "@sparticuz/chromium": "^153.0.0",
+    "music-metadata": "^11.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

@@ -1,116 +1,119 @@
-# reddit-short
+# How GPS actually finds you
 
-**One command turns a Reddit post into a 1080×1920 narrated short.**
-
-```
-post  ->  narration  ->  word timings  ->  captions  ->  frames  ->  mp4
-```
-
-```bash
-python main.py examples/post.json -o out/short.mp4
-```
+A 60-second YouTube Short about satellite navigation, built with
+[Remotion](https://github.com/remotion-dev/remotion). 1080×1920, 30 fps,
+narrated, captioned, and cut so the Shorts player's own UI never sits on top of
+anything that matters.
 
 ```
-  r/AmItheAsshole · 11 sentences
-  narrated · 48.7s · 157 words
-  rendered 1462 frames
-  wrote out/short.mp4 · 6.9 MB
+public/audio/*.mp3  ->  src/timings.json  ->  Remotion  ->  out/gps-short.mp4
 ```
 
-`demo/short.mp4` is the output of exactly that command.
-`demo/laundry-short.mp4` is the same pipeline with an AI voice, a generated
-background and a room-tone bed — see [AI voice](#ai-voice).
+The finished film is `demo/gps-short.mp4` (59.8 s, 11.7 MB).
 
-## Install
+## The story
 
-```bash
-pip install -r requirements.txt     # imageio-ffmpeg, pillow
-apt install flite                   # any TTS works; flite is the offline default
-```
-
-No API keys. No browser. No ffmpeg install (the binary ships inside `imageio-ffmpeg`).
-
-## Use
-
-```bash
-python main.py examples/post.json                       # from a saved post
-python main.py --subreddit AmItheAsshole                # top post of the day
-python main.py --url https://reddit.com/r/AmItheAsshole/comments/xxxxx
-python main.py examples/post.json --background gameplay.mp4 --music bed.mp3
-```
-
-| flag | default | what it does |
+| # | beat | on screen |
 |---|---|---|
-| `-o, --out` | `out/short.mp4` | where the video lands |
-| `--background` | `auto` | background clip **or still image**; `auto` generates a gradient stand-in |
-| `--music` | — | music bed, looped, mixed at 16% |
-| `--voice` | `slt` | flite voice: `slt` (female), `awb`, `rms` (male), `kal` |
-| `--tts` | `flite` | speech backend: `flite`, `cmd`, or `clips` |
-| `--tts-cmd` | — | any TTS CLI, e.g. `'espeak-ng -w {out} {text}'` |
-| `--clips-dir` | — | pre-recorded voice: `0000.wav`, `0001.wav`, … (see below) |
-| `--font` | DejaVu Sans Bold | caption + title typeface |
-| `--fps` | 30 | frame rate |
+| 01 | 31 satellites are overhead | count-up numeral over the Earth limb |
+| 02 | 20,200 km up, atomic clocks | altitude dimension drawn between horizon and orbit |
+| 03 | what a satellite broadcasts | nav-message card: ID / position / timestamp |
+| 04 | time of flight | 0.067 s × c = 20,200 km, pulse, distance ruler |
+| 05 | trilateration | three distance circles, two candidates, one answer |
+| 06 | the phone's clock is cheap | 1 µs = 300 m, four unknowns x y z t |
+| 07 | relativity | −7 µs + 45 µs = +38 µs/day → 10 km of drift |
+| 08 | your blue dot | "Thank Einstein." |
 
-Output is H.264 / AAC, 1080×1920, `+faststart`, ready to upload.
+## Shorts safe area
 
-## AI voice
+The Shorts player paints a title / channel / description stack over the bottom
+of the frame and like-comment-share buttons over the bottom-right. Everything
+readable sits inside the box defined in `src/theme.ts` (`SAFE`):
 
-Any voice you can save as one file per sentence drops straight in — ElevenLabs,
-OpenAI, PlayHT, a human read. Name the files `0000.wav`, `0001.wav`, … in
-sentence order, then:
+| edge | reserved |
+|---|---|
+| top | 210 px |
+| bottom | 470 px |
+| left / right | 72 px |
+| caption band | x 84 → 848, bottom at 1448 |
+
+To check a frame against those zones:
 
 ```bash
-python main.py examples/laundry.json \
-  --tts clips --clips-dir assets/voice \
-  --background assets/background.png \
-  --music assets/room-tone.wav \
-  -o out/short.mp4
+npx remotion still GpsShort out/check.png --frame=950 --props='{"safeZones":true}'
 ```
 
-Clips are resampled to 16 kHz mono and their head/tail silence is trimmed, so
-caption timing stays tight against the voice. `assets/voice/` in this repo holds
-the nine clips behind `demo/laundry-short.mp4`.
+`src/components/SafeZones.tsx` paints the excluded regions red and the content
+box green, so a layout regression is obvious in one glance. `demo/safe-areas.png`
+is that overlay on scene 04.
 
-A still image is enough for a background: `--background shot.png` builds a
-seamlessly looping breathing zoom from it (`rsm/render.py:image_background`).
+## Run it
 
-## How it works
+```bash
+npm install
+npm run browser   # one-time: provisions Chromium (see below)
+npm run render    # -> out/gps-short.mp4
+npm run studio    # live preview in the browser
+```
 
-| file | job |
-|---|---|
-| `rsm/post.py` | loads the post, strips markdown, splits it into sentences |
-| `rsm/tts.py` | narrates sentence by sentence so each sentence's length is exact (flite, any CLI, or pre-recorded clips), then allocates word timings by weight with punctuation pauses taken out |
-| `rsm/captions.py` | wraps words four to a line and paints the active word knocked out of a solid highlight |
-| `rsm/layout.py` | renders the whole frame chrome once — subreddit header, avatar, title card, scrims |
-| `rsm/render.py` | streams the background as raw RGB, pastes the chrome, draws the caption, pipes frames straight into the encoder |
-| `rsm/fetch.py` | pulls a post from Reddit's public JSON endpoint |
-| `rsm/cli.py` | the one command |
+`npm run render` re-measures the narration, rewrites `src/timings.json`, and
+renders. It takes about 3½ minutes for 1,793 frames on two cores.
 
-Renders at about 25 fps of finished video per wall-clock second on two cores.
+## Audio
 
-## Customising
+Narration is an AI voice, one clip per scene, kept in `voice-src/` exactly as it
+was recorded. `scripts/prepare-audio.mjs` produces the clips the film actually
+plays:
 
-- **Background** — drop any clip in with `--background clip.mp4`. It is scaled to cover, centre-cropped, and looped to whatever length the narration runs.
-- **Voice** — `--tts-cmd` takes any TTS that writes a 16 kHz mono wav: `"piper -m voice.onnx -f {out}"`, `"say -o {out} --data-format=LEI16@16000 {text}"` on macOS.
-- **Look** — colours, padding and the caption highlight live at the top of `layout.py` and `captions.py`.
-- **Music** — `--music` loops a bed under the narration.
+- trims the silence at the head and tail of every sentence,
+- normalises each line to −16 LUFS,
+- applies one global tempo nudge (1.22×) so the whole cut lands just under a
+  minute without the voice changing character mid-film.
 
-## Why not just use RedditVideoMakerBot?
+Timing is measured, not guessed: `scripts/timings.mjs` reads the real duration
+of each clip and writes one scene length per line. Captions are then distributed
+across each scene's audio by syllable-ish weight (`src/lib/captions.ts`, karaoke
+highlight). Re-record any line, drop it back in `voice-src/`, and run
+`npm run audio && npm run render`.
 
-[RedditVideoMakerBot](https://github.com/elebumm/RedditVideoMakerBot) is the
-project that made this genre — a full bot: scrape, narrate, edit, upload, all
-driven by `config.toml`. It is heavy: Reddit API credentials, Playwright for
-comment screenshots, moviepy, ~40 transitive dependencies, and a render that
-takes a while per minute of video.
+To change the voice, replace the files in `voice-src/` — anything that decodes
+as mp3 works, and the film re-cuts itself to the new timing.
 
-This repo is the 80% that actually ships a short: ~900 lines, two dependencies
-(`pillow`, `imageio-ffmpeg`), no credentials, no browser, frames streamed
-straight into libx264. Reach for RedditVideoMakerBot when you want an automated
-channel pulling posts on a schedule; reach for this when you want one clean
-1080×1920 file in a couple of minutes.
+## Chromium without a CDN
+
+Remotion normally downloads Chrome Headless Shell. On hosts where that CDN is
+blocked, `scripts/browser.mjs` provisions an equivalent build from
+`@sparticuz/chromium` (npm) together with the three NSS libraries Debian stock
+images lack, then writes a launcher in `.cache/chromium/` that sets
+`LD_LIBRARY_PATH` before exec'ing it. `remotion.config.ts` points Remotion at
+that launcher. Everything lands in `.cache/` and is git-ignored.
+
+## Layout
+
+```
+src/
+  content.ts             running order: scene ids -> components
+  timings.json           generated: frames per scene, total length
+  theme.ts               colours, type scale, SAFE insets
+  Video.tsx              <Series> of scenes + optional safe-zone overlay
+  Root.tsx               composition registration
+  components/            Scene shell, Backdrop, Earth, Satellite, Caption, Ui
+  lib/                   anim helpers, caption timing, seeded PRNG
+  scenes/                the eight beats
+public/audio/            processed narration the video plays
+voice-src/               narration as recorded
+scripts/                 browser, prepare-audio, timings
+```
+
+Every frame is deterministic: randomness comes from `src/lib/anim.ts#seeded`,
+so two renders are byte-identical in content.
 
 ## Notes
 
-- The bot renders; it does not upload. You publish.
-- `--background auto` is a placeholder gradient so the pipeline runs with zero assets. For a real video you supply the clip.
-- Reddit's public JSON endpoint is rate-limited and blocks many hosts; if it 403s, save the post to JSON and pass the file.
+- Type is Inter + JetBrains Mono, self-hosted via `@fontsource` — no network at
+  render time.
+- The numbers on screen are the real ones: 20,200 km altitude, ~67 ms flight
+  time, 300 m per microsecond, +38 µs/day net relativistic gain, ~10 km/day of
+  drift if it were ignored.
+- No background music is mixed in; add a track with another `<Audio>` inside
+  `src/components/Scene.tsx` if you want one.
