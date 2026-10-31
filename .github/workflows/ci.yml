@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "arena/**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: The risky clone must never clear
+        run: |
+          if node src/cli.ts check examples/risky-clone.json --quiet; then
+            echo "::error::risky-clone.json cleared — the rule set regressed"
+            exit 1
+          fi
+      - name: The clean episode must clear
+        run: node src/cli.ts check examples/clean-episode.json --quiet

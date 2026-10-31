@@ -1,0 +1,58 @@
+{
+  "id": "goat-debate-clone-01",
+  "title": "GOAT DEBATE — Ronaldo in D, Messi in S (clone)",
+  "format": "short",
+  "durationSec": 21,
+  "topic": "sports",
+  "commercialUse": true,
+  "reference": {
+    "title": "GOAT DEBATE — the original tier list",
+    "url": "https://www.tiktok.com/@somecref/video/0000000000",
+    "creator": "@somecref",
+    "used": "assets"
+  },
+  "series": {
+    "templateId": "tierlist-v1",
+    "priorEpisodes": 24,
+    "structuralSimilarity": 0.93
+  },
+  "presenter": { "kind": "synthetic" },
+  "assets": [
+    {
+      "id": "a-roll-1",
+      "kind": "video",
+      "slot": "a-roll",
+      "source": "trimmed from reference.mp4 @ 00:03-00:09",
+      "license": "reference-video",
+      "origin": "reference-derived",
+      "derivedFrom": { "referenceId": "goat-debate-original", "method": "resampled" },
+      "sha256": "9f2c1e8ab7d43c5e60f1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f70"
+    },
+    {
+      "id": "music-bed",
+      "kind": "music",
+      "slot": "score",
+      "source": "trending sound, saved from the app",
+      "license": "trending-sound",
+      "origin": "third-party",
+      "contentIdRegistered": true
+    },
+    {
+      "id": "a-roll-ronaldo",
+      "kind": "image",
+      "slot": "b-roll",
+      "source": "press photo, Google Images",
+      "license": "all-rights-reserved",
+      "origin": "third-party",
+      "persons": ["Cristiano Ronaldo"],
+      "releasesOnFile": false
+    },
+    {
+      "id": "caption-layer",
+      "kind": "font",
+      "slot": "captions",
+      "license": "original",
+      "origin": "original"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "aleap",
+  "version": "0.1.0",
+  "description": "A-LEAP — Asset License Enforcement And Provenance. A clearance-first compiler for video: nothing renders unless every byte is licensed.",
+  "type": "module",
+  "bin": {
+    "aleap": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "test": "node --test test/*.test.ts",
+    "check:risky": "node src/cli.ts check examples/risky-clone.json",
+    "check:clean": "node src/cli.ts check examples/clean-episode.json"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "keywords": [
+    "video",
+    "copyright",
+    "clearance",
+    "licensing",
+    "content-id",
+    "youtube",
+    "provenance"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.2"
+  }
+}
