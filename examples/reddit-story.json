@@ -1,0 +1,51 @@
+{
+  "id": "reddit-story-01",
+  "title": "AITA for refusing to pay for my sister's wedding? (Reddit story)",
+  "format": "short",
+  "durationSec": 62,
+  "topic": "other",
+  "commercialUse": true,
+  "series": {
+    "templateId": "reddit-story-v1",
+    "priorEpisodes": 140,
+    "structuralSimilarity": 0.91
+  },
+  "presenter": { "kind": "synthetic" },
+  "assets": [
+    {
+      "id": "post-text",
+      "kind": "data",
+      "slot": "script",
+      "source": "reddit.com/r/AmItheAsshole/comments/xxxxx",
+      "license": "all-rights-reserved",
+      "origin": "third-party",
+      "author": "u/throwaway_8842"
+    },
+    {
+      "id": "background-minecraft-parkour",
+      "kind": "video",
+      "slot": "b-roll",
+      "source": "https://www.youtube.com/watch?v=n_Dv4JMiwK8 (bbswitzer, pulled with yt-dlp)",
+      "license": "all-rights-reserved",
+      "origin": "third-party",
+      "contentIdRegistered": true
+    },
+    {
+      "id": "voice-tiktok-tts",
+      "kind": "voice",
+      "slot": "vo",
+      "source": "TTS/TikTok.py — unofficial TikTok voice endpoint",
+      "license": "platform-tts-unofficial",
+      "origin": "third-party",
+      "synthetic": true
+    },
+    {
+      "id": "music-bed",
+      "kind": "music",
+      "slot": "score",
+      "source": "utils/background_audios.json — downloaded from YouTube",
+      "license": "all-rights-reserved",
+      "origin": "third-party"
+    }
+  ]
+}

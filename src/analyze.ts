@@ -28,7 +28,7 @@ const PENALTY: Record<Severity, number> = {
  * audio, an unreleased likeness), drop the generic complaint so the report says
  * one thing per asset instead of four.
  */
-const GENERIC_RULES = new Set(["L003", "L004"]);
+const GENERIC_RULES = new Set(["L003", "L004", "L006", "H001"]);
 const SPECIFIC_RULES = new Set(["R001", "A001", "P001", "P002"]);
 
 function pruneGeneric(findings: Finding[]): Finding[] {
@@ -40,6 +40,33 @@ function pruneGeneric(findings: Finding[]): Finding[] {
   return findings.filter(
     (f) => !(f.assetId && covered.has(f.assetId) && GENERIC_RULES.has(f.ruleId)),
   );
+}
+
+/**
+ * Two generic findings about the same asset ("non-commercial", "no derivatives",
+ * "needs attribution") are one problem described three ways. Keep the most
+ * severe one so each asset produces a single, actionable line.
+ */
+function collapseGeneric(findings: Finding[]): Finding[] {
+  const kept = new Map<string, Finding>();
+  const out: Finding[] = [];
+  for (const finding of findings) {
+    if (!finding.assetId || !GENERIC_RULES.has(finding.ruleId)) {
+      out.push(finding);
+      continue;
+    }
+    const current = kept.get(finding.assetId);
+    if (!current) {
+      kept.set(finding.assetId, finding);
+      out.push(finding);
+      continue;
+    }
+    if (SEVERITY_ORDER[finding.severity] < SEVERITY_ORDER[current.severity]) {
+      out[out.indexOf(current)] = finding;
+      kept.set(finding.assetId, finding);
+    }
+  }
+  return out;
 }
 
 export function analyze(spec: VideoSpec): RiskReport {
@@ -57,12 +84,15 @@ export function analyze(spec: VideoSpec): RiskReport {
         },
       ];
     }
-  })).sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]);
+  }));
+  const pruned = collapseGeneric(findings).sort(
+    (a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity],
+  );
 
   const counts: Record<Severity, number> = { block: 0, error: 0, warn: 0, info: 0 };
-  for (const finding of findings) counts[finding.severity] += 1;
+  for (const finding of pruned) counts[finding.severity] += 1;
 
-  const penalty = findings.reduce((sum, finding) => sum + PENALTY[finding.severity], 0);
+  const penalty = pruned.reduce((sum, finding) => sum + PENALTY[finding.severity], 0);
   const score = counts.block > 0 ? 0 : Math.max(5, 100 - penalty);
 
   let verdict: Verdict = "cleared";
@@ -76,7 +106,7 @@ export function analyze(spec: VideoSpec): RiskReport {
     spec,
     verdict,
     score,
-    findings,
+    findings: pruned,
     counts,
     credits,
     manifest: buildManifest(spec, credits),

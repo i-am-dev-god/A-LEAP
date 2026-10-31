@@ -67,6 +67,7 @@ npm install
 npm test                                  # 17 tests
 node src/cli.ts check examples/clean-episode.json
 node src/cli.ts check examples/risky-clone.json --manifest out/manifest.json
+node src/cli.ts check examples/reddit-story.json   # the automated-channel pipeline
 ```
 
 Node 22.18+ runs the TypeScript directly. `npm run build` emits `dist/` if you prefer the compiled CLI.
@@ -120,6 +121,7 @@ Fields that do the heavy lifting: `license`, `origin`, `sha256`, `derivedFrom`, 
 | L003 | Non-commercial license used commercially | block | strike |
 | L004 | No-derivatives license on an edited asset | block | strike |
 | L005 | ShareAlike obligation inherited | error | strike |
+| L007 | License does not cover this asset kind | block | strike |
 | L006 | Required attribution missing | error | strike |
 | R001 | Pixels or samples lifted from the reference | block | strike, claim, reused |
 | R002 | Reference-derived asset with no reference block | error | strike |
@@ -134,6 +136,12 @@ Fields that do the heavy lifting: `license`, `origin`, `sha256`, `derivedFrom`, 
 | H002 | Trademark visible in frame | warn | trademark |
 
 `aleap rules` prints the list. Adding a rule is one function in `src/rules.ts` plus a test — the analyzer, report, and manifest pick it up automatically.
+
+## Why not a Reddit-story bot?
+
+`examples/reddit-story.json` models what an automated Reddit channel actually renders: a post author's text, gameplay footage pulled off YouTube with `yt-dlp`, an unofficial TikTok TTS voice, and a downloaded music bed. Three independent blocks, one error, and it is the canonical shape of a channel that gets rejected from the Partner Program.
+
+The format itself is fine. `examples/fixed-clone.json` shows the same story-short structure cleared, because the structure was never the problem — the four inputs were.
 
 ## The manifest
 

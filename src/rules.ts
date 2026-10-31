@@ -116,6 +116,26 @@ const noDerivatives: Rule = {
     }),
 };
 
+const kindMismatch: Rule = {
+  id: "L007",
+  title: "license does not cover this kind of asset",
+  run: (spec) =>
+    assetsOf(spec).flatMap((a) => {
+      const lic = getLicense(a.license);
+      if (!lic?.kinds || lic.kinds.includes(a.kind)) return [];
+      return [
+        f(
+          "L007",
+          "block",
+          "License does not cover this asset kind",
+          `"${a.id}" is a ${a.kind} asset under ${lic.name}, which only covers ${lic.kinds.join(", ")}.`,
+          ["copyright-strike"],
+          { assetId: a.id, fix: "Use a license scoped to this asset kind." },
+        ),
+      ];
+    }),
+};
+
 const shareAlike: Rule = {
   id: "L005",
   title: "share-alike license infects the finished video",
@@ -436,6 +456,7 @@ export const RULES: Rule[] = [
   licenseUnknown,
   nonCommercial,
   noDerivatives,
+  kindMismatch,
   shareAlike,
   attributionMissing,
   referenceAssetsUsed,

@@ -213,6 +213,18 @@ export const LICENSES: Record<string, License> = {
     notes:
       "Fair use is a defence, not a license. It does not stop a claim, a strike, or a takedown; it only helps you if you litigate.",
   }),
+  "platform-tts-unofficial": L({
+    id: "platform-tts-unofficial",
+    name: "Unofficial platform TTS (TikTok voice, Google Translate voice)",
+    commercialUse: false,
+    derivatives: false,
+    attributionRequired: false,
+    shareAlike: false,
+    contentIdRegistered: false,
+    kinds: ["voice"],
+    notes:
+      "The endpoints behind these voices are not licensed for third-party commercial use, whatever the wrapper repo says.",
+  }),
   "editorial-use": L({
     id: "editorial-use",
     name: "Editorial use only",

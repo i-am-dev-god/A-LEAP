@@ -152,6 +152,13 @@ test("a regenerated asset may still reference a source video", () => {
   assert.equal(report.verdict, "cleared");
 });
 
+test("a license scoped to one asset kind rejects another kind", () => {
+  const report = analyze(
+    base({ assets: [{ id: "a", kind: "image", license: "platform-tts-unofficial" }] }),
+  );
+  assert.ok(report.findings.some((f) => f.ruleId === "L007"));
+});
+
 test("unverified audio is treated as claimed", () => {
   assert.equal(effectiveContentId({ kind: "music" }), "unknown");
   assert.equal(effectiveContentId({ kind: "music", license: "original" }), false);

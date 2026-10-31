@@ -22,5 +22,11 @@ jobs:
             echo "::error::risky-clone.json cleared — the rule set regressed"
             exit 1
           fi
+      - name: The Reddit-story pipeline must never clear
+        run: |
+          if node src/cli.ts check examples/reddit-story.json --quiet; then
+            echo "::error::reddit-story.json cleared — the rule set regressed"
+            exit 1
+          fi
       - name: The clean episode must clear
         run: node src/cli.ts check examples/clean-episode.json --quiet
