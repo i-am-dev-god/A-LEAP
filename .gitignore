@@ -1,5 +1,5 @@
-__pycache__/
-*.pyc
-.venv/
+node_modules/
+.cache/
 out/
-work/
+*.log
+.DS_Store
