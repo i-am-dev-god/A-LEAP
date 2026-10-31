@@ -1,170 +1,78 @@
-# A-LEAP
+# reddit-short
 
-**A**sset **L**icense **E**nforcement **A**nd **P**rovenance.
-
-A clearance-first compiler for video. Nothing renders unless every byte is licensed, every person is released, and every obligation is recorded.
+**One command turns a Reddit post into a 1080×1920 narrated short.**
 
 ```
-$ aleap check examples/risky-clone.json
-
-  A-LEAP · Asset License Enforcement And Provenance
-  GOAT DEBATE — Ronaldo in D, Messi in S (clone)  (short · 21s · sports)
-
-  VERDICT  BLOCKED     SCORE 0/100
-  4 assets · 6 blocking · 4 errors · 2 warnings
-
-  exposure: copyright strike, Content ID claim, reused content, likeness rights, inauthentic content
-
-  BLOCK R001  Reference video used as an asset source
-        Cloning structure is fine. Reusing the reference's frames or audio is a
-        derivative work and a fingerprint match.
-        → Re-source every slot: keep the edit pattern, replace all bytes.
-  ...
-  NEXT  Render refused. Re-source the blocking assets.
+post  ->  narration  ->  word timings  ->  captions  ->  frames  ->  mp4
 ```
-
----
-
-## Why this exists
-
-"Don't get a copyright strike" is not one problem. It is four, and they have different fixes:
-
-| Failure mode | What triggers it | What actually protects you |
-|---|---|---|
-| **Copyright strike** | Someone else's footage or music in your timeline | A license record and a content hash per asset; render refuses unclean input |
-| **Content ID claim** | Even a few seconds of a *legally licensed* track that is fingerprinted | Audio that exists in no catalog: commissioned, generated, or audio-library cleared |
-| **Reused content** | Compilations, reactions, permissionless re-uploads | Real transformation — and permission from the original creator **does not** cure this |
-| **Inauthentic content** (since 2025-07-15) | Templated, mass-produced, near-identical uploads | A consistent *format* with materially different *substance* every episode |
-
-Plus two that are not copyright at all but end channels faster:
-
-- **Likeness** — a real face or voice, with or without a face swap, is a publicity-rights problem. Takedowns here do not require a DMCA notice.
-- **Disclosure** — photorealistic synthetic content must be labelled, and synthetic personas on health / legal / finance topics are excluded from monetization.
-
-A-LEAP models all six. It treats *unknown* as *risk*, because the downside is asymmetric: an unnoticed claim silently redirects a video's revenue, and three strikes ends the channel.
-
-## The core idea: clone structure, never substance
-
-Cloning a viral video is safe in exactly one dimension — **structure**. Edit rhythm, caption style, shot count, hook shape, tier-list geometry: none of that is copyrightable. The bytes are.
-
-So the spec asks one question about your reference:
-
-```json
-"reference": { "used": "structure-only" }
-```
-
-- `structure-only` → cleared.
-- `assets` → **blocked**, every time, with no override.
-- an asset that traces to the reference → blocked if `verbatim` or `resampled`, warned if `restyled`, cleared only when `regenerated`.
-
-`examples/risky-clone.json` and `examples/fixed-clone.json` are the same video, one blocked and one cleared, differing only in where the bytes came from.
-
-## Quickstart
 
 ```bash
-git clone <this repo> && cd A-LEAP
-npm install
-npm test                                  # 17 tests
-node src/cli.ts check examples/clean-episode.json
-node src/cli.ts check examples/risky-clone.json --manifest out/manifest.json
-node src/cli.ts check examples/reddit-story.json   # the automated-channel pipeline
+python main.py examples/post.json -o out/short.mp4
 ```
 
-Node 22.18+ runs the TypeScript directly. `npm run build` emits `dist/` if you prefer the compiled CLI.
+```
+  r/AmItheAsshole · 11 sentences
+  narrated · 48.7s · 157 words
+  rendered 1462 frames
+  wrote out/short.mp4 · 6.9 MB
+```
 
-Exit codes are CI-friendly:
+`demo/short.mp4` is the output of exactly that command.
 
-| Code | Verdict | Meaning |
+## Install
+
+```bash
+pip install -r requirements.txt     # imageio-ffmpeg, pillow
+apt install flite                   # any TTS works; flite is the offline default
+```
+
+No API keys. No browser. No ffmpeg install (the binary ships inside `imageio-ffmpeg`).
+
+## Use
+
+```bash
+python main.py examples/post.json                       # from a saved post
+python main.py --subreddit AmItheAsshole                # top post of the day
+python main.py --url https://reddit.com/r/AmItheAsshole/comments/xxxxx
+python main.py examples/post.json --background gameplay.mp4 --music bed.mp3
+```
+
+| flag | default | what it does |
 |---|---|---|
-| 0 | `cleared` / `review` | Safe to render; review is advisory |
-| 1 | `needs-work` | Will publish but will lose monetization |
-| 2 | `blocked` | At least one asset cannot legally be used |
+| `-o, --out` | `out/short.mp4` | where the video lands |
+| `--background` | `auto` | background clip; `auto` generates a gradient stand-in |
+| `--music` | — | music bed, looped, mixed at 16% |
+| `--voice` | `slt` | flite voice: `slt` (female), `awb`, `rms` (male), `kal` |
+| `--tts` | `flite` | speech backend: `flite` or `cmd` |
+| `--tts-cmd` | — | any TTS CLI, e.g. `'espeak-ng -w {out} {text}'` |
+| `--font` | DejaVu Sans Bold | caption + title typeface |
+| `--fps` | 30 | frame rate |
 
-## Spec format
+Output is H.264 / AAC, 1080×1920, `+faststart`, ready to upload.
 
-A spec is JSON. Every asset declares its own license, origin, and provenance hash:
+## How it works
 
-```json
-{
-  "id": "ep01-iss-water",
-  "title": "The ISS has been drinking the same water since 2009",
-  "format": "documentary",
-  "durationSec": 552,
-  "topic": "engineering",
-  "commercialUse": true,
-  "reference": { "used": "structure-only" },
-  "series": { "templateId": "systems-explained-v1", "structuralSimilarity": 0.34 },
-  "presenter": { "kind": "synthetic" },
-  "disclosure": { "syntheticRealistic": false },
-  "assets": [
-    {
-      "id": "iss-archive-01",
-      "kind": "video",
-      "slot": "b-roll",
-      "source": "https://images.nasa.gov/details/iss040e006000",
-      "license": "us-gov-work",
-      "origin": "public-domain",
-      "sha256": "1b7d4f9c…"
-    }
-  ]
-}
-```
+| file | job |
+|---|---|
+| `rsm/post.py` | loads the post, strips markdown, splits it into sentences |
+| `rsm/tts.py` | narrates sentence by sentence so each sentence's length is exact, then allocates word timings by weight with punctuation pauses taken out |
+| `rsm/captions.py` | wraps words four to a line and paints the active word knocked out of a solid highlight |
+| `rsm/layout.py` | renders the whole frame chrome once — subreddit header, avatar, title card, scrims |
+| `rsm/render.py` | streams the background as raw RGB, pastes the chrome, draws the caption, pipes frames straight into the encoder |
+| `rsm/fetch.py` | pulls a post from Reddit's public JSON endpoint |
+| `rsm/cli.py` | the one command |
 
-Fields that do the heavy lifting: `license`, `origin`, `sha256`, `derivedFrom`, `contentIdRegistered`, `persons` + `releasesOnFile`, `synthetic` + `realistic`, and `reference.used`.
+Renders at about 25 fps of finished video per wall-clock second on two cores.
 
-## Rules
+## Customising
 
-| ID | Rule | Severity | Surface |
-|---|---|---|---|
-| L001 | Asset has no license record | block | strike |
-| L002 | Unrecognised license id | block | strike |
-| L003 | Non-commercial license used commercially | block | strike |
-| L004 | No-derivatives license on an edited asset | block | strike |
-| L005 | ShareAlike obligation inherited | error | strike |
-| L007 | License does not cover this asset kind | block | strike |
-| L006 | Required attribution missing | error | strike |
-| R001 | Pixels or samples lifted from the reference | block | strike, claim, reused |
-| R002 | Reference-derived asset with no reference block | error | strike |
-| R003 | Reference use unclassified | warn | strike |
-| A001 | Audio likely fingerprinted | error | claim |
-| P001 | Real person without a release | error | likeness |
-| P002 | Synthetic voice of a real person | block | likeness, disclosure |
-| D001 | Realistic synthetic content not disclosed | error | disclosure |
-| D002 | Synthetic presenter on a restricted topic | error | inauthentic |
-| D003 | Episode structurally identical to the series | error | inauthentic |
-| H001 | Third-party asset has no content hash | warn | strike |
-| H002 | Trademark visible in frame | warn | trademark |
+- **Background** — drop any clip in with `--background clip.mp4`. It is scaled to cover, centre-cropped, and looped to whatever length the narration runs.
+- **Voice** — `--tts-cmd` takes any TTS that writes a 16 kHz mono wav: `"piper -m voice.onnx -f {out}"`, `"say -o {out} --data-format=LEI16@16000 {text}"` on macOS.
+- **Look** — colours, padding and the caption highlight live at the top of `layout.py` and `captions.py`.
+- **Music** — `--music` loops a bed under the narration.
 
-`aleap rules` prints the list. Adding a rule is one function in `src/rules.ts` plus a test — the analyzer, report, and manifest pick it up automatically.
+## Notes
 
-## Why not a Reddit-story bot?
-
-`examples/reddit-story.json` models what an automated Reddit channel actually renders: a post author's text, gameplay footage pulled off YouTube with `yt-dlp`, an unofficial TikTok TTS voice, and a downloaded music bed. Three independent blocks, one error, and it is the canonical shape of a channel that gets rejected from the Partner Program.
-
-The format itself is fine. `examples/fixed-clone.json` shows the same story-short structure cleared, because the structure was never the problem — the four inputs were.
-
-## The manifest
-
-`--manifest` writes the artifact you hand to a client, a network, or a brand's legal team: every asset, its license, its hash, the auto-generated credit block, the disclosure flags, and what the reference was used for. It is generated from the spec and never edited by hand.
-
-## What to make with it
-
-The format matters as much as the clearance. The recommendation, in order:
-
-1. **Synthetic documentary** — 8–12 minute engineering and science essays plus three shorts per episode. Every input is clearable: NASA / USGS / Library of Congress public domain, Wikimedia CC BY, code-rendered diagrams, licensed synthetic narration, a commissioned or procedural score. Highest watch time and CPM in a category where originality is the whole product.
-2. **Data explainers** — 30–60 second code-rendered chart shorts. Zero strike surface, weaker moat, and the format drifts toward templated output if you are not disciplined.
-3. **Client ad factory** — brand deliverables. Clearance is a contract term, not a policy risk.
-
-Avoid: true crime and news remixes (footage and likeness), sports and gaming (fingerprinting), trending sounds (claims without exception), and synthetic personas in health, legal, or finance (not monetizable).
-
-## Roadmap
-
-- [ ] Renderer gate: a `render` command that refuses to encode while the verdict is `blocked`
-- [ ] Asset ingestion: fetch from a source URL, hash the bytes, verify the license against the page's terms
-- [ ] Audio fingerprint pre-check against a local index before upload
-- [ ] Publish metadata: description with credits, disclosure flags, chapter and tag generation
-- [ ] Series lint: compare episode specs and flag the mass-produced shape before it ships
-
-## License
-
-MIT
+- The bot renders; it does not upload. You publish.
+- `--background auto` is a placeholder gradient so the pipeline runs with zero assets. For a real video you supply the clip.
+- Reddit's public JSON endpoint is rate-limited and blocks many hosts; if it 403s, save the post to JSON and pass the file.
