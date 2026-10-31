@@ -42,12 +42,24 @@ class Narration:
 
 
 class Voice:
-    """A speech backend. `flite` is the offline default; anything else via template."""
+    """A speech backend. `flite` is the offline default; anything else via template.
 
-    def __init__(self, backend: str = "flite", name: str = "slt", cmd: str | None = None):
+    `clips` reads one pre-recorded file per sentence from a directory
+    (`0000.wav`, `0001.wav`, …) — that is how an AI voice drops straight into
+    the pipeline without a local TTS install.
+    """
+
+    def __init__(
+        self,
+        backend: str = "flite",
+        name: str = "slt",
+        cmd: str | None = None,
+        clips: str | Path | None = None,
+    ):
         self.backend = backend
         self.name = name
         self.cmd = cmd
+        self.clips = Path(clips) if clips else None
         if backend == "flite":
             self.binary = _find(
                 os.environ.get("FLITE_BIN"),
@@ -62,8 +74,16 @@ class Voice:
         elif backend == "cmd":
             if not cmd:
                 raise SystemExit("--tts-cmd is required when --tts is cmd")
+        elif backend == "clips":
+            if not self.clips or not self.clips.is_dir():
+                raise SystemExit("--clips-dir is required when --tts is clips")
+        else:
+            raise SystemExit(f"unknown tts backend: {backend}")
 
-    def say(self, text: str, out: Path) -> None:
+    def say(self, text: str, out: Path, index: int = 0) -> None:
+        if self.backend == "clips":
+            self._copy_clip(index, out)
+            return
         if self.backend == "flite":
             subprocess.run(
                 [self.binary, "-voice", self.name, "-t", text, "-o", str(out)],
@@ -75,6 +95,46 @@ class Voice:
             subprocess.run(argv, check=True, capture_output=True)
         if not out.exists() or out.stat().st_size < 64:
             raise SystemExit(f"TTS produced no audio for: {text[:60]}…")
+
+    def _copy_clip(self, index: int, out: Path) -> None:
+        """Normalise one pre-recorded clip: 16 kHz mono, silence trimmed."""
+        sources = sorted(
+            p for p in self.clips.iterdir() if p.suffix.lower() in _AUDIO and p.is_file()
+        )
+        if index >= len(sources):
+            raise SystemExit(
+                f"--clips-dir has {len(sources)} clips but the post needs more; "
+                f"missing clip {index:04d}"
+            )
+        subprocess.run(
+            [
+                _ffmpeg(), "-y", "-v", "error",
+                "-i", str(sources[index]),
+                "-af",
+                "silenceremove=start_periods=1:start_duration=0:start_threshold=-45dB,"
+                "areverse,"
+                "silenceremove=start_periods=1:start_duration=0:start_threshold=-45dB,"
+                "areverse",
+                "-ar", str(SAMPLE_RATE), "-ac", "1",
+                str(out),
+            ],
+            check=True,
+        )
+
+
+_AUDIO = {".wav", ".mp3", ".m4a", ".aac", ".flac", ".ogg", ".opus"}
+
+
+def _ffmpeg() -> str:
+    try:
+        import imageio_ffmpeg
+
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:  # noqa: BLE001
+        found = shutil.which("ffmpeg")
+        if not found:
+            raise SystemExit("ffmpeg not found: pip install imageio-ffmpeg, or install ffmpeg")
+        return found
 
 
 def _find(*candidates: str | None) -> str | None:
@@ -92,7 +152,7 @@ def narrate(sentences: list[str], voice: Voice, out: Path) -> Narration:
     with tempfile.TemporaryDirectory() as tmp:
         for index, sentence in enumerate(sentences):
             clip = Path(tmp) / f"{index:04d}.wav"
-            voice.say(sentence, clip)
+            voice.say(sentence, clip, index=index)
             with wave.open(str(clip), "rb") as src:
                 rate = src.getframerate()
                 if rate != SAMPLE_RATE:

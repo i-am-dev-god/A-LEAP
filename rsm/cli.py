@@ -13,7 +13,9 @@ from .captions import Captions
 from .fetch import from_subreddit, from_url
 from .layout import chrome
 from .post import Post
-from .render import auto_background, mix_music, render
+from .render import auto_background, image_background, mix_music, render
+
+_STILL = {".png", ".jpg", ".jpeg", ".webp", ".bmp"}
 from .tts import Voice, narrate
 
 
@@ -41,9 +43,18 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--music", help="optional music bed (looped, mixed at 16%%)")
     p.add_argument("--font", help="path to a bold .ttf for captions and titles")
     p.add_argument("--font-dir", help="directory holding DejaVuSans.ttf / DejaVuSans-Bold.ttf")
-    p.add_argument("--tts", default="flite", choices=["flite", "cmd"], help="speech backend")
+    p.add_argument(
+        "--tts",
+        default="flite",
+        choices=["flite", "cmd", "clips"],
+        help="speech backend: flite, cmd, or clips (pre-recorded, one file per sentence)",
+    )
     p.add_argument("--voice", default="slt", help="flite voice (slt, awb, rms, kal)")
     p.add_argument("--tts-cmd", help="template for --tts cmd, e.g. 'espeak-ng -w {out} {text}'")
+    p.add_argument(
+        "--clips-dir",
+        help="directory of 0000.wav, 0001.wav, … for --tts clips (an AI voice)",
+    )
     p.add_argument("--fps", type=int, default=30)
     p.add_argument("--max-seconds", type=float, default=90.0, help="trim narration at this length")
     return p
@@ -70,7 +81,9 @@ def main(argv: list[str] | None = None) -> int:
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
 
-        voice = Voice(backend=args.tts, name=args.voice, cmd=args.tts_cmd)
+        voice = Voice(
+            backend=args.tts, name=args.voice, cmd=args.tts_cmd, clips=args.clips_dir
+        )
         narration = narrate(sentences, voice, work / "narration.wav")
         print(f"  narrated · {narration.duration:.1f}s · {len(narration.words)} words")
 
@@ -78,11 +91,14 @@ def main(argv: list[str] | None = None) -> int:
         if args.music:
             audio = mix_music(audio, Path(args.music), narration.duration, work)
 
-        background = (
-            auto_background(work) if args.background == "auto" else Path(args.background)
-        )
-        if not background.exists():
-            raise SystemExit(f"background not found: {background}")
+        if args.background == "auto":
+            background = auto_background(work)
+        else:
+            background = Path(args.background)
+            if not background.exists():
+                raise SystemExit(f"background not found: {background}")
+            if background.suffix.lower() in _STILL:
+                background = image_background(background, work, narration.duration, args.fps)
 
         frames = chrome(
             subreddit=post.subreddit,
