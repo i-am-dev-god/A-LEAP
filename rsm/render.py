@@ -48,6 +48,30 @@ def auto_background(workdir: Path) -> Path:
     return target
 
 
+def image_background(image: Path, workdir: Path, duration: float, fps: int = FPS) -> Path:
+    """A still becomes a looping clip: slow breathing zoom, no visible seam."""
+    target = workdir / "background.mp4"
+    loop = max(8.0, min(24.0, duration))
+    frames = int(loop * fps)
+    # The zoom oscillates over exactly `frames`, so the clip loops cleanly.
+    subprocess.run(
+        [
+            ffmpeg(), "-y", "-v", "error",
+            "-loop", "1", "-i", str(image), "-t", f"{loop:.3f}",
+            "-vf",
+            f"scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,"
+            f"crop={W * 2}:{H * 2},"
+            f"zoompan=z='1.10+0.05*sin(2*PI*on/{frames})'"
+            f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+            f":d=1:s={W}x{H}:fps={fps},format=yuv420p",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-pix_fmt", "yuv420p", str(target),
+        ],
+        check=True,
+    )
+    return target
+
+
 def mix_music(narration: Path, music: Path, duration: float, workdir: Path) -> Path:
     out = workdir / "mixed.wav"
     subprocess.run(
@@ -96,7 +120,9 @@ def render(
             "-i", str(audio),
             "-map", "0:v", "-map", "1:a",
             "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
-            "-c:a", "aac", "-b:a", "160k", "-shortest", "-movflags", "+faststart",
+            "-af", "loudnorm=I=-14:TP=-1.5:LRA=11",
+            "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
+            "-shortest", "-movflags", "+faststart",
             str(out),
         ],
         stdin=subprocess.PIPE,
