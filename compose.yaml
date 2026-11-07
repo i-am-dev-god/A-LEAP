@@ -1,0 +1,13 @@
+services:
+  shorts:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - shorts-data:/data
+    environment:
+      SHORTS_TOKEN: ${SHORTS_TOKEN:-}
+      SHORTS_DEMO: "0"
+    restart: unless-stopped
+volumes:
+  shorts-data:

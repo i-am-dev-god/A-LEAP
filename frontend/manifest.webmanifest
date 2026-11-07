@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Predictive Offline Shorts Manager",
+  "short_name": "Offline Shorts",
+  "description": "A personal, feedback-powered Shorts feed that goes offline with you.",
+  "start_url": "/#feed",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0e11",
+  "theme_color": "#0b0e11",
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

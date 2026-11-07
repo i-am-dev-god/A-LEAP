@@ -1,0 +1,22 @@
+[Unit]
+Description=Predictive Offline Shorts Manager
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=shorts
+WorkingDirectory=/opt/A-LEAP
+Environment=HOST=127.0.0.1
+Environment=PORT=8000
+Environment=SHORTS_DATA_DIR=/var/lib/offline-shorts
+ExecStart=/opt/A-LEAP/.venv/bin/python main.py
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/offline-shorts
+
+[Install]
+WantedBy=multi-user.target

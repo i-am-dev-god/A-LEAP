@@ -1,116 +1,159 @@
-# reddit-short
+# Predictive Offline Shorts Manager
 
-**One command turns a Reddit post into a 1080×1920 narrated short.**
+A personal, offline-first Shorts feed. A Python engine watches public YouTube playlists, channels, and topics; downloads new vertical Shorts as high-quality MP4; learns from your in-app feedback; and serves a dark, mobile-responsive player. The Android APK caches completed videos on the phone so they still play with zero internet.
 
-```
-post  ->  narration  ->  word timings  ->  captions  ->  frames  ->  mp4
-```
+> **Important architecture:** the APK is a companion client, not a Python runtime. Run the backend on a computer, home server, VPS, or Docker host that stays online. The phone needs a connection to that backend to discover/download new videos; already-cached videos play offline. This app does **not** read YouTube's private recommendation algorithm.
 
-```bash
-python main.py examples/post.json -o out/short.mp4
-```
+## What's included
 
-```
-  r/AmItheAsshole · 11 sentences
-  narrated · 48.7s · 157 words
-  rendered 1462 frames
-  wrote out/short.mp4 · 6.9 MB
-```
+- **FastAPI + yt-dlp backend** with an asynchronous 30-minute monitoring loop and a persistent, one-at-a-time download queue.
+- **SQLite** metadata, settings, queue state, watch history, learned preferences, and deletion tombstones.
+- **Public playlist monitoring**, channel Shorts tabs, and topic search seeds.
+- **Explainable feedback ranking:** watches/replays raise creator/topic affinity; skips and deletes lower it. Each candidate shows score reasons.
+- **Highest-resolution MP4 video + M4A audio** selection, merged/remuxed to MP4 with FFmpeg.
+- Metadata: title, creator name/channel ID/URL, channel avatar when available, view count, upload date, duration, source, and score.
+- **Vertical snap-scroll player** with creator/title overlay, sound, skip, seek, watched, and prominent delete controls.
+- **Mark as watched:** immediately removes the server MP4, keeps metadata/history, and blocks re-download.
+- **Delete:** animates out immediately, removes the device copy, calls immediate `os.remove` on the server, deletes the video cache row, and keeps a small tombstone so the same ID is not fetched again.
+- **Offline playback:** service-worker media cache in the web app; app-private MP4/metadata cache in Android. Byte-range serving supports seeking.
+- **Offline action queue:** watched/delete/feedback actions sync when the backend is reachable again.
+- Storage limits, download activity, manual scan, learning reset, and device-cache clearing.
+- Signed Android APK, Docker/compose/systemd deployment files, backend tests, and CI.
 
-`demo/short.mp4` is the output of exactly that command.
-`demo/laundry-short.mp4` is the same pipeline with an AI voice, a generated
-background and a room-tone bed — see [AI voice](#ai-voice).
+## Quick start: backend
 
-## Install
-
-```bash
-pip install -r requirements.txt     # imageio-ffmpeg, pillow
-apt install flite                   # any TTS works; flite is the offline default
-```
-
-No API keys. No browser. No ffmpeg install (the binary ships inside `imageio-ffmpeg`).
-
-## Use
+Requires Python 3.10+ (3.11 recommended).
 
 ```bash
-python main.py examples/post.json                       # from a saved post
-python main.py --subreddit AmItheAsshole                # top post of the day
-python main.py --url https://reddit.com/r/AmItheAsshole/comments/xxxxx
-python main.py examples/post.json --background gameplay.mp4 --music bed.mp3
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
 ```
 
-| flag | default | what it does |
+Open **http://127.0.0.1:8000**. Go to **Settings**, add at least one public playlist URL, `@channel`, or topic, and save. The engine scans immediately and then every 30 minutes while the server process is running.
+
+For a phone on the same LAN:
+
+```bash
+HOST=0.0.0.0 PORT=8000 python main.py
+```
+
+Use `http://<computer-LAN-IP>:8000` in the Android app—not `localhost`, which would mean the phone itself. Prefer HTTPS for remote access.
+
+### Docker
+
+```bash
+SHORTS_TOKEN='choose-a-long-random-secret' docker compose up --build -d
+```
+
+The SQLite database and MP4s persist in the `shorts-data` volume. Put the service behind an HTTPS reverse proxy for remote use. `SHORTS_TOKEN` is optional but strongly recommended whenever the backend is exposed beyond a trusted machine/LAN.
+
+### Always-on Linux service
+
+See [`docs/offline-shorts.service`](docs/offline-shorts.service). Install the project under `/opt/A-LEAP`, create a `shorts` user, create `/var/lib/offline-shorts`, install the unit, then:
+
+```bash
+sudo systemctl enable --now offline-shorts
+```
+
+The in-process scheduler is intentionally simple: run **one** server worker. Multiple workers would each start a scheduler. Use systemd/Docker restart policy for crash recovery. Queued/downloading state is recovered on startup.
+
+## Install the Android APK
+
+Prebuilt file:
+
+[`releases/Predictive-Offline-Shorts-Manager-1.0.0.apk`](releases/Predictive-Offline-Shorts-Manager-1.0.0.apk)
+
+- Android **8.0+** (API 26), target SDK 35.
+- Sideload the APK and allow installation from the browser/file manager you used. Android may show its standard unknown-app warning.
+- Open **Settings → Connect your engine**, enter the backend URL and optional access token, then **Test & save connection**.
+- Add sources and save preferences. Completed server downloads are cached to app-private storage automatically, within the device cache limit.
+- The APK is self-signed for personal sideloading, not a Play Store listing. Signature and alignment were verified at build time. It has not been tested on a physical device in this environment.
+
+Build it yourself with JDK 17 and Android SDK platform/build-tools 35:
+
+```bash
+bash scripts/build_apk.sh
+```
+
+The script creates `build/offline-shorts.keystore` if needed. **Back up that keystore privately and do not commit it.** Future updates must use the same signing key. Override `KEYSTORE`, `KEY_ALIAS`, and `STORE_PASSWORD` for your own key.
+
+## How selection works
+
+Starting sources are explicit:
+
+1. A public playlist URL (`?list=…`; not Watch Later/private library playlists).
+2. Up to 10 channel handles/URLs, using their Shorts tabs.
+3. Up to 10 topics, using public YouTube search restricted to vertical, short-duration results.
+
+Every 30 minutes the engine lists sources, skips known/blocklisted IDs, extracts metadata for new candidates, scores them, and queues them highest-score-first. The score combines:
+
+- base score and playlist priority;
+- creator affinity learned from watches/replays/skips/deletes;
+- title-topic affinity and your starting interests;
+- modest public-view-count and recency bonuses.
+
+Reasons are stored and shown in the player. This is a transparent local heuristic, not a claim to reproduce YouTube's private feed. YouTube extraction can fail because of region limits, age gates, anti-bot checks, or extractor changes; errors appear in Download activity. Keep `yt-dlp` updated. No YouTube login/cookies are requested.
+
+## Offline and deletion semantics
+
+- **Server cache** and **device cache** are separate. A video must finish downloading on the server and then finish caching on the device before it is available with zero internet.
+- **Watched** frees the server file and removes the device copy; metadata/history remain.
+- **Delete** removes the device copy immediately. If online, the server file and video row are removed immediately. If offline, the server action is queued and synced on reconnect. A tombstone and negative preference remain to prevent repetition.
+- Browser storage can be evicted by the OS/browser under pressure. The app requests persistent storage where supported; Android uses app-private files. Uninstalling the APK or clearing app storage removes its cache.
+- No automatic eviction of unwatched server videos is performed. When the server limit is reached, free space by watching/deleting items.
+
+Use only content you have permission to save, and follow YouTube's terms and creator rights. This project is for personal offline access, not redistribution.
+
+## Configuration
+
+| Environment variable | Default | Purpose |
 |---|---|---|
-| `-o, --out` | `out/short.mp4` | where the video lands |
-| `--background` | `auto` | background clip **or still image**; `auto` generates a gradient stand-in |
-| `--music` | — | music bed, looped, mixed at 16% |
-| `--voice` | `slt` | flite voice: `slt` (female), `awb`, `rms` (male), `kal` |
-| `--tts` | `flite` | speech backend: `flite`, `cmd`, or `clips` |
-| `--tts-cmd` | — | any TTS CLI, e.g. `'espeak-ng -w {out} {text}'` |
-| `--clips-dir` | — | pre-recorded voice: `0000.wav`, `0001.wav`, … (see below) |
-| `--font` | DejaVu Sans Bold | caption + title typeface |
-| `--fps` | 30 | frame rate |
+| `HOST` | `127.0.0.1` | Bind address (`0.0.0.0` for LAN/container) |
+| `PORT` | `8000` | HTTP port |
+| `SHORTS_DATA_DIR` | `./data` | SQLite, media, avatars, staging |
+| `SHORTS_TOKEN` | empty | Optional shared secret sent as `X-Shorts-Token` |
+| `SHORTS_DEMO` | `0` | Set `1` to expose original synthetic demo clips via `/api/demo` |
+| `SHORTS_FRONTEND_DIR` | `./frontend` | Bundled web client location |
 
-Output is H.264 / AAC, 1080×1920, `+faststart`, ready to upload.
+Settings UI controls playlist/channels/topics, auto-download, server/device cache limits, per-source scan cap, and maximum duration (15–180 seconds).
 
-## AI voice
+## API overview
 
-Any voice you can save as one file per sentence drops straight in — ElevenLabs,
-OpenAI, PlayHT, a human read. Name the files `0000.wav`, `0001.wav`, … in
-sentence order, then:
+- `GET /api/health`, `GET/PUT /api/settings`
+- `GET /api/feed`, `GET /api/status`, `GET /api/queue`, `GET /api/history`
+- `POST /api/scan`
+- `GET /media/{id}.mp4` with byte ranges
+- `POST /api/videos/{id}/watched`, `DELETE /api/videos/{id}`
+- `POST /api/videos/{id}/feedback` (`progress`, `skip`, `replay`, `complete`)
+- `POST /api/preferences/reset`
+- `GET /api/avatars/{channel_id}.jpg`
+
+Interactive OpenAPI docs: `/docs` while the server is running.
+
+## Tests
 
 ```bash
-python main.py examples/laundry.json \
-  --tts clips --clips-dir assets/voice \
-  --background assets/background.png \
-  --music assets/room-tone.wav \
-  -o out/short.mp4
+pip install -r requirements-dev.txt
+pytest tests -q
+ruff check backend tests
+node --check frontend/app.js
+node --check frontend/sw.js
 ```
 
-Clips are resampled to 16 kHz mono and their head/tail silence is trimmed, so
-caption timing stays tight against the voice. `assets/voice/` in this repo holds
-the nine clips behind `demo/laundry-short.mp4`.
+The backend suite covers settings validation, range serving, immediate file/row deletion, watched history, feedback scoring, restart recovery, and a delete/download publication race. The web client was also exercised in headless Chromium for cached playback, offline reload, offline delete, reconnect sync, and mobile layout. Live YouTube extraction depends on network/YouTube availability and is not mocked as a real download in tests.
 
-A still image is enough for a background: `--background shot.png` builds a
-seamlessly looping breathing zoom from it (`rsm/render.py:image_background`).
+## Project layout
 
-## How it works
+```text
+backend/       FastAPI app, SQLite layer, scheduler/downloader/scoring
+frontend/      Dependency-free dark SPA, service worker, PWA assets
+android/       Java WebView companion with native offline media cache
+tests/         Backend contract and race tests
+scripts/       Server launch and signed APK build
+docs/          systemd unit and architecture notes
+releases/      Sideloadable APK
+```
 
-| file | job |
-|---|---|
-| `rsm/post.py` | loads the post, strips markdown, splits it into sentences |
-| `rsm/tts.py` | narrates sentence by sentence so each sentence's length is exact (flite, any CLI, or pre-recorded clips), then allocates word timings by weight with punctuation pauses taken out |
-| `rsm/captions.py` | wraps words four to a line and paints the active word knocked out of a solid highlight |
-| `rsm/layout.py` | renders the whole frame chrome once — subreddit header, avatar, title card, scrims |
-| `rsm/render.py` | streams the background as raw RGB, pastes the chrome, draws the caption, pipes frames straight into the encoder |
-| `rsm/fetch.py` | pulls a post from Reddit's public JSON endpoint |
-| `rsm/cli.py` | the one command |
-
-Renders at about 25 fps of finished video per wall-clock second on two cores.
-
-## Customising
-
-- **Background** — drop any clip in with `--background clip.mp4`. It is scaled to cover, centre-cropped, and looped to whatever length the narration runs.
-- **Voice** — `--tts-cmd` takes any TTS that writes a 16 kHz mono wav: `"piper -m voice.onnx -f {out}"`, `"say -o {out} --data-format=LEI16@16000 {text}"` on macOS.
-- **Look** — colours, padding and the caption highlight live at the top of `layout.py` and `captions.py`.
-- **Music** — `--music` loops a bed under the narration.
-
-## Why not just use RedditVideoMakerBot?
-
-[RedditVideoMakerBot](https://github.com/elebumm/RedditVideoMakerBot) is the
-project that made this genre — a full bot: scrape, narrate, edit, upload, all
-driven by `config.toml`. It is heavy: Reddit API credentials, Playwright for
-comment screenshots, moviepy, ~40 transitive dependencies, and a render that
-takes a while per minute of video.
-
-This repo is the 80% that actually ships a short: ~900 lines, two dependencies
-(`pillow`, `imageio-ffmpeg`), no credentials, no browser, frames streamed
-straight into libx264. Reach for RedditVideoMakerBot when you want an automated
-channel pulling posts on a schedule; reach for this when you want one clean
-1080×1920 file in a couple of minutes.
-
-## Notes
-
-- The bot renders; it does not upload. You publish.
-- `--background auto` is a placeholder gradient so the pipeline runs with zero assets. For a real video you supply the clip.
-- Reddit's public JSON endpoint is rate-limited and blocks many hosts; if it 403s, save the post to JSON and pass the file.
+The previous Reddit-short application was removed as requested. The repository's MIT license and Git history are preserved.
