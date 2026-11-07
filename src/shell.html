@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<title>LEAP — a machine that isn't stored</title>
+<meta name="description" content="LEAP is an operating environment with no disk. Its entire identity is a 9-character seed, rendered live in WebGL and audio." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230b0a09'/><circle cx='16' cy='16' r='7' fill='none' stroke='%23e8b26a' stroke-width='2'/></svg>" />
+<style>
+  :root {
+    --ink: #0a0908;
+    --paper: #f4efe6;
+    --dim: rgba(244, 239, 230, 0.52);
+    --faint: rgba(244, 239, 230, 0.22);
+    --hair: rgba(244, 239, 230, 0.14);
+    --amber: #e8b26a;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono", Menlo, Consolas, monospace;
+    --pad: clamp(18px, 3.2vw, 44px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #field {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+  }
+
+  /* a very thin scanline veil keeps the field from looking like a wallpaper */
+  #veil {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),
+      radial-gradient(120% 100% at 50% 0%, transparent 35%, rgba(0,0,0,0.55) 100%);
+    mix-blend-mode: multiply;
+  }
+
+  #app {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    padding: var(--pad);
+    gap: clamp(10px, 2vh, 26px);
+    pointer-events: none;
+  }
+  #app > * { pointer-events: auto; }
+
+  /* ------------------------------------------------------------- header -- */
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand { display: flex; align-items: center; gap: 14px; }
+
+  .sigil {
+    width: 34px; height: 34px; flex: none;
+    border: 1px solid var(--faint);
+    border-radius: 50%;
+    position: relative;
+    display: grid; place-items: center;
+  }
+  .sigil::after {
+    content: "";
+    position: absolute; inset: 5px;
+    border-radius: 50%;
+    border: 1px solid var(--amber);
+    opacity: .85;
+    animation: spin 24s linear infinite;
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 15px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-left: 2px;
+  }
+  .machine-line {
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  button {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    background: rgba(10, 9, 8, 0.34);
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  button:hover { color: var(--paper); border-color: var(--faint); }
+  button:focus-visible { outline: 1px solid var(--amber); outline-offset: 2px; }
+  button[data-on="true"] { color: var(--amber); border-color: rgba(232, 178, 106, .45); }
+
+  /* --------------------------------------------------------------- stage -- */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+    min-height: 0;
+    transition: opacity .8s ease, transform .8s ease;
+  }
+
+  .mode-name {
+    font-family: var(--serif);
+    font-size: clamp(46px, 10.5vw, 132px);
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+    text-shadow: 0 2px 60px rgba(0, 0, 0, .55);
+  }
+  .mode-name em { font-style: italic; color: var(--amber); }
+
+  .mode-verb {
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 18px;
+    max-width: 46ch;
+  }
+
+  .meter {
+    margin-top: 26px;
+    width: min(360px, 62vw);
+    height: 1px;
+    background: var(--hair);
+    position: relative;
+    overflow: hidden;
+  }
+  .meter > i {
+    position: absolute; inset: 0 auto 0 0;
+    width: 100%;
+    background: var(--amber);
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  /* the thesis, only shown in reveal */
+  .thesis {
+    font-family: var(--serif);
+    font-size: clamp(19px, 2.3vw, 30px);
+    line-height: 1.34;
+    max-width: 30ch;
+    color: var(--paper);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    text-shadow: 0 2px 40px rgba(0,0,0,.7);
+    position: absolute;
+    left: var(--pad);
+    bottom: clamp(150px, 24vh, 240px);
+  }
+  body[data-mode="reveal"] .thesis { opacity: 1; transform: none; }
+  body[data-mode="reveal"] .stage { opacity: 0.18; }
+  /* the shell recedes while the machine is resting */
+  body[data-mode="settle"] .meter > i { background: var(--faint); }
+
+  /* ------------------------------------------------------------ itinerary -- */
+  .itinerary { display: flex; gap: 3px; align-items: center; }
+  .tick {
+    height: 2px;
+    flex: 1 1 0;
+    background: var(--hair);
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .tick > i {
+    position: absolute; inset: 0;
+    background: var(--paper);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .tick.done > i { background: var(--faint); transform: scaleX(1); }
+  .tick.now > i { background: var(--amber); }
+  .itinerary-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 8px;
+  }
+
+  /* --------------------------------------------------------------- shell -- */
+  .shell {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--hair);
+    padding-top: 14px;
+  }
+  .prompt {
+    color: var(--amber);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+  }
+  #cmd {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    caret-color: var(--amber);
+  }
+  #cmd::placeholder { color: rgba(244, 239, 230, 0.3); }
+  .shell-meta {
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  #out {
+    grid-column: 1 / -1;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--dim);
+    white-space: pre-wrap;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  #out.show { max-height: 34vh; overflow-y: auto; }
+  #out b { color: var(--paper); font-weight: 500; }
+  #out i { color: var(--amber); font-style: normal; }
+
+  /* ---------------------------------------------------------------- mint -- */
+  #mint {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(8, 7, 6, 0.72);
+    backdrop-filter: blur(18px) saturate(0.8);
+    -webkit-backdrop-filter: blur(18px) saturate(0.8);
+    transition: opacity .9s ease, visibility .9s;
+  }
+  #mint.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .mint-card {
+    width: min(560px, 100%);
+    border: 1px solid var(--hair);
+    background: rgba(10, 9, 8, 0.66);
+    padding: clamp(24px, 4vw, 44px);
+    border-radius: 3px;
+  }
+  .kicker {
+    font-size: 9.5px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .mint-card h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 16px 0 12px;
+  }
+  .mint-card p {
+    font-size: 11.5px;
+    line-height: 1.85;
+    color: var(--dim);
+    max-width: 46ch;
+  }
+  .mint-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 26px;
+    border-bottom: 1px solid var(--faint);
+    padding-bottom: 10px;
+    align-items: center;
+  }
+  #word {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+  }
+  #word::placeholder { color: rgba(244,239,230,.28); }
+  .mint-actions { display: flex; gap: 8px; margin-top: 22px; flex-wrap: wrap; }
+  .primary {
+    color: var(--ink);
+    background: var(--paper);
+    border-color: var(--paper);
+    font-weight: 600;
+  }
+  .primary:hover { background: var(--amber); border-color: var(--amber); color: var(--ink); }
+  .mint-note {
+    margin-top: 26px;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    line-height: 2;
+    color: var(--faint);
+    text-transform: uppercase;
+  }
+
+  /* ---------------------------------------------------------------- misc -- */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+    transform: translate(-50%, 20px);
+    z-index: 20;
+    background: rgba(10,9,8,.9);
+    border: 1px solid var(--hair);
+    color: var(--paper);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity .3s, transform .3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @media (max-width: 640px) {
+    .shell-meta { display: none; }
+    .stage { justify-content: flex-end; padding-bottom: 6px; }
+    .mode-name { font-size: clamp(40px, 15vw, 76px); }
+    .thesis { bottom: clamp(180px, 30vh, 260px); max-width: 24ch; }
+    .machine-line { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sigil::after { animation: none; }
+    .stage, .thesis, #mint { transition-duration: .01ms; }
+  }
+</style>
+</head>
+<body data-mode="orbit">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div id="veil" aria-hidden="true"></div>
+
+  <main id="app">
+    <header>
+      <div class="brand">
+        <div class="sigil" aria-hidden="true"></div>
+        <div>
+          <div class="wordmark">Leap</div>
+          <div class="machine-line" id="machine-line">reconstructing…</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="btn-seed" title="Copy the seed — the whole machine">seed · —</button>
+        <button id="btn-sound" data-on="false" aria-pressed="false">sound · off</button>
+        <button id="btn-new">new machine</button>
+      </div>
+    </header>
+
+    <section class="stage">
+      <h1 class="mode-name" id="mode-name" aria-live="polite">orbit</h1>
+      <div class="mode-verb" id="mode-verb">surveying the field</div>
+      <div class="meter"><i id="meter"></i></div>
+    </section>
+
+    <p class="thesis" id="thesis"></p>
+
+    <section>
+      <div class="itinerary" id="itinerary" aria-hidden="true"></div>
+      <div class="itinerary-meta">
+        <span id="itinerary-pos">—</span>
+        <span id="itinerary-total">—</span>
+      </div>
+    </section>
+
+    <section class="shell">
+      <span class="prompt">›</span>
+      <input id="cmd" autocomplete="off" spellcheck="false" aria-label="Command"
+             placeholder="type a word — help, seed, name, again, settle, night, verify, close" />
+      <span class="shell-meta" id="shell-meta">no storage</span>
+      <div id="out" role="status"></div>
+    </section>
+  </main>
+
+  <section id="mint" role="dialog" aria-modal="true" aria-labelledby="mint-title">
+    <div class="mint-card">
+      <div class="kicker">Leap · first boot</div>
+      <h1 id="mint-title">This machine has<br />no disk.</h1>
+      <p>
+        there is nothing to install and nothing to save. a machine is nine
+        characters: three billion of them, and each is a different field, a
+        different key, a different way of holding time. give it a word you'll
+        remember, or take one at random.
+      </p>
+      <div class="mint-row">
+        <span class="prompt">›</span>
+        <input id="word" placeholder="a word, a place, your name" autocomplete="off"
+               spellcheck="false" aria-label="Seed word" maxlength="64" />
+      </div>
+      <div class="mint-actions">
+        <button class="primary" id="btn-boot">derive &amp; boot</button>
+        <button id="btn-random">surprise me</button>
+      </div>
+      <div class="mint-note">
+        your word is never sent and never stored — it becomes the address.
+        close the tab and the machine is gone. the link brings it back exactly.
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

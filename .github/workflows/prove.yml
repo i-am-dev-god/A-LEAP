@@ -1,0 +1,30 @@
+name: prove
+
+on:
+  push:
+    branches: [main, 'arena/**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  storage-proof:
+    name: storage proof
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build the single-file machine
+        run: node scripts/build.mjs
+      - name: Prove nothing is stored, fetched, or kept
+        run: node test/storage-proof.test.mjs
+      - name: Install the simulated browser
+        run: npm install --no-audit --no-fund
+      - name: Boot the machine and drive its shell
+        run: node test/boot.test.mjs
+      - name: The build must not drift from the source
+        run: |
+          node scripts/build.mjs
+          git diff --exit-code -- index.html docs/index.html \
+            || (echo "index.html is stale: run npm run build" && exit 1)

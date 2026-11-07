@@ -1,116 +1,159 @@
-# reddit-short
+# LEAP
 
-**One command turns a Reddit post into a 1080×1920 narrated short.**
+**An operating environment with no disk.**
+
+Nine characters in the address bar reconstruct an entire machine: its field, its
+key, its temperament, and its itinerary. Nothing is written down. Nothing is
+fetched. Close the tab and the machine is gone; paste the address and it is
+exactly, byte-for-byte, back.
 
 ```
-post  ->  narration  ->  word timings  ->  captions  ->  frames  ->  mp4
+naaldwijk.4g1c7j0m4   →   Junwisp, an ember machine in adagio
 ```
+
+*One address, one engraved atlas that has never existed and is never saved.*
 
 ```bash
-python main.py examples/post.json -o out/short.mp4
+git clone https://github.com/i-am-dev-god/A-LEAP && cd A-LEAP
+npm run dev        # → http://localhost:8080
+npm run build      # → index.html, one file, 54 kB, nothing else
 ```
 
-```
-  r/AmItheAsshole · 11 sentences
-  narrated · 48.7s · 157 words
-  rendered 1462 frames
-  wrote out/short.mp4 · 6.9 MB
-```
+No dependencies at runtime. No build step required to use it. No assets, no fonts,
+no images, no audio files, no database, no cookies, no `localStorage`. The
+repository is smaller than a single photograph, and it is the whole machine.
 
-`demo/short.mp4` is the output of exactly that command.
-`demo/laundry-short.mp4` is the same pipeline with an AI voice, a generated
-background and a room-tone bed — see [AI voice](#ai-voice).
+---
 
-## Install
+## The idea, in one paragraph
 
-```bash
-pip install -r requirements.txt     # imageio-ffmpeg, pillow
-apt install flite                   # any TTS works; flite is the offline default
-```
+Every operating system you have used is a machine **plus a pile of things it
+remembers**: your files, your settings, your history, your accounts. The pile is
+the point, and the pile is the problem — it is what breaks, what leaks, what has
+to be migrated, what dies with the hardware. LEAP takes the opposite axiom:
 
-No API keys. No browser. No ffmpeg install (the binary ships inside `imageio-ffmpeg`).
+> **Anything that can be recomputed should never have been stored.**
 
-## Use
+A machine's identity is not a record. It is a rule. Give me a rule and I can grow
+the machine again anywhere, forever, from nothing. So LEAP replaces storage with
+derivation, and asks the honest question that follows: *what is an operating
+system for, if it cannot remember anything about you?* The answer it gives is the
+best part of the design — **it remembers you by returning, not by keeping.**
 
-```bash
-python main.py examples/post.json                       # from a saved post
-python main.py --subreddit AmItheAsshole                # top post of the day
-python main.py --url https://reddit.com/r/AmItheAsshole/comments/xxxxx
-python main.py examples/post.json --background gameplay.mp4 --music bed.mp3
-```
+## How storage is made impossible
 
-| flag | default | what it does |
+| layer | ordinary OS | LEAP |
 |---|---|---|
-| `-o, --out` | `out/short.mp4` | where the video lands |
-| `--background` | `auto` | background clip **or still image**; `auto` generates a gradient stand-in |
-| `--music` | — | music bed, looped, mixed at 16% |
-| `--voice` | `slt` | flite voice: `slt` (female), `awb`, `rms` (male), `kal` |
-| `--tts` | `flite` | speech backend: `flite`, `cmd`, or `clips` |
-| `--tts-cmd` | — | any TTS CLI, e.g. `'espeak-ng -w {out} {text}'` |
-| `--clips-dir` | — | pre-recorded voice: `0000.wav`, `0001.wav`, … (see below) |
-| `--font` | DejaVu Sans Bold | caption + title typeface |
-| `--fps` | 30 | frame rate |
+| identity | a user account, a row in a database | 42 bits in a URL fragment |
+| appearance | a theme file, wallpapers | 2.9 kB of GLSL generated at boot, then discarded |
+| sound | audio assets on disk | oscillator graph built from the seed; no samples |
+| state | a session, a save file | `f(seed, clock)` — a pure function |
+| documents | files | none exist; the shell is a naming ceremony |
+| sync | a server | the address bar |
 
-Output is H.264 / AAC, 1080×1920, `+faststart`, ready to upload.
+The address is the *only* persistent artifact, and you own it. If you do not
+share it, LEAP has no idea who you are, because it never knew.
 
-## AI voice
+## What it actually does
 
-Any voice you can save as one file per sentence drops straight in — ElevenLabs,
-OpenAI, PlayHT, a human read. Name the files `0000.wav`, `0001.wav`, … in
-sentence order, then:
+**The plate.** Each machine is an engraved contour atlas of terrain that does not
+exist. A continental mask decides where the high ground is, ridged noise decides
+how sharp it is, and the contours are true level sets — their screen width is
+derived from the slope, so every line holds the same weight and steep ground never
+fills in solid. Round the map with a seed-derived sun bloom, a focal falloff, a
+vignette and print grain, and you have a cartographic plate nobody has ever seen.
 
-```bash
-python main.py examples/laundry.json \
-  --tts clips --clips-dir assets/voice \
-  --background assets/background.png \
-  --music assets/room-tone.wav \
-  -o out/short.mp4
+The GLSL is **generated as a string** from the genome, compiled at boot, and
+thrown away at shutdown. Sixteen thousand names, each with its own palette,
+landform, sun and line weight — and not one pixel of it stored.
+
+**The organ.** There are no `.wav` files. The machine's key, its scale, its pad,
+its air, and the bell it rings when it composes are synthesised by Web Audio from
+the same seed. The analyser output is fed straight back into the fragment shader,
+so three lit contours cut across the plate when the machine speaks. What you hear *is* what you
+see, in the literal signal-flow sense.
+
+**The itinerary.** LEAP has modes, not windows: `orbit`, `listen`, `compose`,
+`reveal`, `settle`. They unfold as a timed score whose tempo comes from the
+machine's patience dial. There is no "current mode" variable anywhere in the
+system. Ask "what time is it?" and the answer is computed; ask "what mode am I in?"
+and the answer is *the same computation*. That is why refreshing never loses your
+place — there was no place to lose.
+
+**The shell.** One input. It is deliberately not a terminal for files, because
+there are no files. Typing a word that is not a command **renames the machine**:
+unknown input becomes identity. It is the only OS I have used whose error message
+is a naming ceremony.
+
+```
+› help      › seed      › name naaldwijk     › verify
+› again     › settle    › pause / play       › motion  › night
+› sound     › liturgy   › law                › close
 ```
 
-Clips are resampled to 16 kHz mono and their head/tail silence is trimmed, so
-caption timing stays tight against the voice. `assets/voice/` in this repo holds
-the nine clips behind `demo/laundry-short.mp4`.
+**The refusal.** A seed carries a 10-bit checksum of the word it came from
+(`4g1c7j0m4` ⟵ `naaldwijk`). Paste a machine with someone else's name on it and
+LEAP boots the machine but tells you the name is not proven. Identity here is
+verifiable, not asserted.
 
-A still image is enough for a background: `--background shot.png` builds a
-seamlessly looping breathing zoom from it (`rsm/render.py:image_background`).
+## The four laws
 
-## How it works
+```
+1. The seed reconstructs the machine. The machine never stores the seed.
+2. Nothing is written to disk: there is no disk.
+3. Every pixel is a pure function of the seed, the clock, and you.
+4. A machine is not its files. A machine is a way of returning.
+```
 
-| file | job |
-|---|---|
-| `rsm/post.py` | loads the post, strips markdown, splits it into sentences |
-| `rsm/tts.py` | narrates sentence by sentence so each sentence's length is exact (flite, any CLI, or pre-recorded clips), then allocates word timings by weight with punctuation pauses taken out |
-| `rsm/captions.py` | wraps words four to a line and paints the active word knocked out of a solid highlight |
-| `rsm/layout.py` | renders the whole frame chrome once — subreddit header, avatar, title card, scrims |
-| `rsm/render.py` | streams the background as raw RGB, pastes the chrome, draws the caption, pipes frames straight into the encoder |
-| `rsm/fetch.py` | pulls a post from Reddit's public JSON endpoint |
-| `rsm/cli.py` | the one command |
+## Try the proof yourself
 
-Renders at about 25 fps of finished video per wall-clock second on two cores.
+```bash
+npm test
+```
 
-## Customising
+Two suites, no trust required:
 
-- **Background** — drop any clip in with `--background clip.mp4`. It is scaled to cover, centre-cropped, and looped to whatever length the narration runs.
-- **Voice** — `--tts-cmd` takes any TTS that writes a 16 kHz mono wav: `"piper -m voice.onnx -f {out}"`, `"say -o {out} --data-format=LEI16@16000 {text}"` on macOS.
-- **Look** — colours, padding and the caption highlight live at the top of `layout.py` and `captions.py`.
-- **Music** — `--music` loops a bed under the narration.
+* **The storage proof** (`test/storage-proof.test.mjs`) greps the *executable
+  bundle* for every API that can persist — `localStorage`, `indexedDB`,
+  `document.cookie`, `serviceWorker`, `fetch`, `XMLHttpRequest`, `WebSocket`,
+  `FileReader` — and fails the build if one appears. It also asserts that the
+  repository contains zero asset and zero database files, that the page makes no
+  external requests, and that 2,000 seeds round-trip losslessly through nine
+  characters.
+* **The boot test** (`test/boot.test.mjs`) runs the real built page in a simulated
+  browser with a recording WebGL stub, drives every shell command, and asserts
+  that two loads of one address are identical machines, that a corrupt address
+  degrades gracefully, and that a false name claim is refused.
 
-## Why not just use RedditVideoMakerBot?
+Tests that can fail are the only kind worth writing.
 
-[RedditVideoMakerBot](https://github.com/elebumm/RedditVideoMakerBot) is the
-project that made this genre — a full bot: scrape, narrate, edit, upload, all
-driven by `config.toml`. It is heavy: Reddit API credentials, Playwright for
-comment screenshots, moviepy, ~40 transitive dependencies, and a render that
-takes a while per minute of video.
+## Layout
 
-This repo is the 80% that actually ships a short: ~900 lines, two dependencies
-(`pillow`, `imageio-ffmpeg`), no credentials, no browser, frames streamed
-straight into libx264. Reach for RedditVideoMakerBot when you want an automated
-channel pulling posts on a schedule; reach for this when you want one clean
-1080×1920 file in a couple of minutes.
+```
+index.html            the build: one file, the whole OS
+docs/index.html       the same, for GitHub Pages
+src/core.js           seed ⇄ genome ⇄ GLSL. Pure. The whole machine.
+src/cognition.js      modes, itinerary, liturgy. Pure functions of time.
+src/render.js         WebGL cockpit: one triangle, no meshes
+src/organ.js          Web Audio synthesis: no samples
+src/app.js            boot, shell, address
+src/shell.html        the visible shell (typography + structure)
+scripts/build.mjs     ~90-line hand-rolled bundler
+scripts/serve.mjs     ~30-line dev server
+test/                 the storage proof and the boot test
+```
 
-## Notes
+## Why this, and not another app
 
-- The bot renders; it does not upload. You publish.
-- `--background auto` is a placeholder gradient so the pipeline runs with zero assets. For a real video you supply the clip.
-- Reddit's public JSON endpoint is rate-limited and blocks many hosts; if it 403s, save the post to JSON and pass the file.
+- **It cannot leak you**, because there is nothing about you to leak.
+- **It cannot rot**, because there is no data to migrate and no dependency tree.
+- **It cannot be lost**, because the machine is an address you can write on paper.
+- **It can be given away infinitely**, because giving it away costs zero bytes —
+  which is the definition of a gift that does not deplete.
+
+An OS that needs no storage is not a smaller OS. It is a different claim about
+what a computer is: not a container you fill, but a place you can always return to.
+
+---
+
+MIT. Take it, rename it, seed it with your own town.
