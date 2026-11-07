@@ -144,6 +144,21 @@ node --check frontend/sw.js
 
 The backend suite covers settings validation, range serving, immediate file/row deletion, watched history, feedback scoring, restart recovery, and a delete/download publication race. The web client was also exercised in headless Chromium for cached playback, offline reload, offline delete, reconnect sync, and mobile layout. Live YouTube extraction depends on network/YouTube availability and is not mocked as a real download in tests.
 
+## Troubleshooting: no real Shorts appear
+
+If the feed only shows demo clips or stays empty after adding a channel/playlist:
+
+1. Open **Download activity** or look at the banner on the feed — a failed scan now shows the actual error (for example `Unable to download API page: TLS/SSL connection …`).
+2. That error means the **backend machine cannot reach youtube.com**. Confirm from the same machine:
+   ```bash
+   curl -I https://www.youtube.com
+   ```
+   If this fails, the network is blocking YouTube (common in restricted/sandboxed cloud environments, corporate proxies, or some VPS regions). Run the backend on a computer or server with normal, unrestricted YouTube access.
+3. Make sure the source is **public** (unlisted/private playlists and age-restricted videos may need cookies — see `SHORTS_COOKIES_FILE`).
+4. Keep yt-dlp current: `pip install -U yt-dlp`, then restart the backend and press **Retry**.
+
+The Android app and the preview cannot download videos themselves — the Python backend does the downloading, so it must run somewhere YouTube is reachable.
+
 ## Project layout
 
 ```text
