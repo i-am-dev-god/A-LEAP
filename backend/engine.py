@@ -5,6 +5,7 @@ import asyncio
 import logging
 import math
 import os
+import random
 import re
 import shutil
 import threading
@@ -20,6 +21,19 @@ from .db import SCAN_SECONDS, Database
 log = logging.getLogger("shorts.engine")
 VIDEO_ID = re.compile(r"^[A-Za-z0-9_-]{6,80}$")
 STOP_WORDS = set("the a an and or of to in for with on is my your our this that shorts short video youtube".split())
+SHUFFLE_TOPICS = (
+    "amazing science", "satisfying art", "funny animals", "quick recipes", "football skills",
+    "space discoveries", "travel moments", "music performances", "gaming highlights", "DIY crafts",
+    "nature landscapes", "basketball skills", "photography tips", "everyday experiments", "dance",
+)
+SHUFFLE_POOL = 40
+
+
+def shuffle_search(topic: str = "") -> str:
+    term = topic.strip() or random.choice(SHUFFLE_TOPICS)
+    if not re.search(r"#shorts\b", term, re.IGNORECASE):
+        term += " #shorts"
+    return f"ytsearch{SHUFFLE_POOL}:{term}"
 
 
 def tokens(text: str) -> list[str]:
@@ -58,6 +72,9 @@ def channel_url(value: str) -> str:
 
 
 def score(info: dict, source: str, weights: dict, settings: dict) -> tuple[float, list[str]]:
+    if source == "shuffle":
+        # Random mode deliberately ignores learned affinities and configured interests.
+        return 50.0, ["Random public Short", "Shuffled from YouTube search"]
     value = 50.0
     reasons = ["New public Short"]
     channel = (info.get("channel_id") or info.get("channel") or info.get("uploader") or "").lower()
@@ -113,6 +130,11 @@ class Engine:
         self.last_scan = db.meta("last_scan")
         self.next_scan = time.time() + SCAN_SECONDS
         self.scanning = False
+        self.discovery_task: asyncio.Task | None = None
+        self.last_discovery = db.meta("last_discovery")
+        if self.last_discovery and self.last_discovery.get("state") == "running":
+            self.last_discovery.update(state="error", errors=["The server restarted before this shuffle finished."])
+            db.set_meta("last_discovery", self.last_discovery)
         self.stopping = False
         self.recover()
 
@@ -138,14 +160,18 @@ class Engine:
         with self.flags_lock:
             for flag in self.cancel_flags.values():
                 flag.set()
-        for task in self.tasks:
+        tasks = [*self.tasks]
+        if self.discovery_task and not self.discovery_task.done():
+            tasks.append(self.discovery_task)
+        for task in tasks:
             task.cancel()
-        await asyncio.gather(*self.tasks, return_exceptions=True)
+        await asyncio.gather(*tasks, return_exceptions=True)
 
     async def scheduler(self):
         while not self.stopping:
             settings = self.db.settings()
-            if settings["auto_download"] and (settings["playlist_url"] or settings["channels"] or settings["topics"]):
+            if not self.busy and settings["auto_download"] and (
+                    settings["playlist_url"] or settings["channels"] or settings["topics"]):
                 try:
                     await self.scan()
                 except Exception:
@@ -159,6 +185,26 @@ class Engine:
 
     def request_scan(self):
         self.wake.set()
+
+    @property
+    def busy(self) -> bool:
+        return self.scanning or self.scan_lock.locked() or bool(
+            self.discovery_task and not self.discovery_task.done())
+
+    def request_discovery(self, topic: str = "", count: int = 5) -> dict:
+        if self.stopping:
+            raise RuntimeError("The engine is stopping. Try again after it restarts.")
+        if self.busy:
+            raise RuntimeError("A scan is already running. Your next shuffle can start when it finishes.")
+        if self.storage()["free_bytes"] < 10 * 1024 * 1024:
+            raise RuntimeError("Server storage is nearly full. Watch or delete a few videos, then shuffle again.")
+        self.discovery_task = asyncio.create_task(self.scan(shuffle_topic=topic, count=count))
+        self.discovery_task.add_done_callback(self._discovery_done)
+        return {"ok": True, "message": f"Finding up to {count} public Shorts. They will play here when downloaded."}
+
+    def _discovery_done(self, task: asyncio.Task):
+        if not task.cancelled() and task.exception():
+            log.error("Shuffle failed", exc_info=task.exception())
 
     @staticmethod
     def base_opts() -> dict:
@@ -181,39 +227,61 @@ class Engine:
         result.extend(("search", f"ytsearchdate20:{t} #shorts") for t in settings["topics"] if t.strip())
         return result
 
-    async def scan(self):
+    async def scan(self, *, shuffle_topic: str | None = None, count: int = 5):
         if self.scan_lock.locked():
             return
         async with self.scan_lock:
             self.scanning = True
+            is_shuffle = shuffle_topic is not None
             errors = []
-            found = new = 0
+            found = new = rejected = 0
             try:
                 settings = self.db.settings()
-                for source, url in self.sources(settings):
+                if is_shuffle:
+                    search = shuffle_search(shuffle_topic or "")
+                    sources = [("shuffle", search)]
+                    self.last_discovery = {
+                        "state": "running", "topic": (shuffle_topic or "").strip(),
+                        "search": search.removeprefix(f"ytsearch{SHUFFLE_POOL}:"),
+                        "requested": count, "found": 0, "queued": 0, "errors": [],
+                        "at": time.time(), "finished_at": None,
+                    }
+                    self.db.set_meta("last_discovery", self.last_discovery)
+                else:
+                    sources = self.sources(settings)
+                for source, url in sources:
                     try:
-                        opts = {**self.base_opts(), "extract_flat": "in_playlist", "playlistend": 50}
+                        opts = {**self.base_opts(), "extract_flat": "in_playlist", "playlistend": SHUFFLE_POOL}
                         listing = await asyncio.to_thread(self._extract, url, opts)
-                        entries = list(listing.get("entries") or [])
+                        entries = [e for e in (listing.get("entries") or []) if e]
                         found += len(entries)
-                        weights = self.db.weights()
+                        if is_shuffle:
+                            random.shuffle(entries)
+                        weights = {} if is_shuffle else self.db.weights()
                         examined = 0
                         for entry in entries:
-                            if self.stopping or examined >= settings["per_scan_limit"]:
+                            if self.stopping or (is_shuffle and new >= count):
+                                break
+                            if not is_shuffle and examined >= settings["per_scan_limit"]:
+                                break
+                            if is_shuffle and examined >= min(SHUFFLE_POOL, count * 5):
                                 break
                             vid = entry.get("id")
                             if not vid or not VIDEO_ID.fullmatch(vid) or self.db.blocked(vid):
+                                continue
+                            if is_shuffle and self.db.video(vid):
                                 continue
                             examined += 1
                             try:
                                 info = await asyncio.to_thread(
                                     self._extract, f"https://www.youtube.com/watch?v={vid}", self.base_opts())
                                 duration = float(info.get("duration") or 0)
-                                if not 0 < duration <= settings["max_duration"]:
+                                if not 0 < duration <= min(settings["max_duration"], 180):
+                                    rejected += 1
                                     continue
-                                # Search results may be ordinary videos. Only accept vertical Shorts.
-                                w, h = info.get("width") or 0, info.get("height") or 0
-                                if source == "search" and (w <= 0 or h <= 0 or w >= h) and "/shorts/" not in (info.get("original_url") or ""):
+                                # Search can return landscape/ordinary videos. Accept only confirmed portrait media.
+                                if source in ("search", "shuffle") and not self._is_vertical(info):
+                                    rejected += 1
                                     continue
                                 value, reasons = score(info, source, weights, settings)
                                 channel_id = info.get("channel_id") or info.get("uploader_id") or ""
@@ -229,18 +297,40 @@ class Engine:
                                     "webpage_url": f"https://www.youtube.com/shorts/{vid}",
                                     "source": source, "score": value, "reasons": reasons,
                                 }
-                                if settings["auto_download"]:
-                                    self.db.add_candidate(item)
-                                    new += 1
+                                if is_shuffle or settings["auto_download"]:
+                                    if self.db.add_candidate(item):
+                                        new += 1
                             except Exception as exc:
                                 errors.append(f"{vid}: {str(exc)[:180]}")
                     except Exception as exc:
                         errors.append(f"{source}: {str(exc)[:220]}")
-                self.last_scan = {"at": time.time(), "found": found, "new": new, "errors": errors[:8]}
-                self.db.set_meta("last_scan", self.last_scan)
+                if is_shuffle:
+                    state = "complete" if new else ("error" if errors else "empty")
+                    self.last_discovery.update(state=state, found=found, queued=new, rejected=rejected,
+                                               errors=errors[:8], finished_at=time.time())
+                    self.db.set_meta("last_discovery", self.last_discovery)
+                else:
+                    self.last_scan = {"at": time.time(), "found": found, "new": new, "errors": errors[:8]}
+                    self.db.set_meta("last_scan", self.last_scan)
+            except asyncio.CancelledError:
+                if is_shuffle and self.last_discovery:
+                    self.last_discovery.update(state="error", errors=["Shuffle cancelled."], finished_at=time.time())
+                    self.db.set_meta("last_discovery", self.last_discovery)
+                raise
             finally:
                 self.scanning = False
                 self.next_scan = time.time() + SCAN_SECONDS
+
+    @staticmethod
+    def _is_vertical(info: dict) -> bool:
+        try:
+            width, height = float(info.get("width") or 0), float(info.get("height") or 0)
+            if width > 0 and height > 0:
+                return height > width
+            ratio = float(info.get("aspect_ratio") or 0)
+            return 0 < ratio < 1
+        except (TypeError, ValueError):
+            return False
 
     @staticmethod
     def _extract(url: str, opts: dict) -> dict:
@@ -286,7 +376,10 @@ class Engine:
     async def downloader(self):
         while not self.stopping:
             settings = self.db.settings()
-            queue = self.db.videos(("queued", "candidate"), limit=100) if settings["auto_download"] else []
+            queue = self.db.videos(("queued", "candidate"), limit=100)
+            if not settings["auto_download"]:
+                # The toggle pauses scheduled sources, not an explicit "Surprise me" request.
+                queue = [v for v in queue if v["source"] == "shuffle"]
             if not queue or self.storage()["free_bytes"] < 10 * 1024 * 1024:
                 await asyncio.sleep(2)
                 continue
@@ -434,6 +527,7 @@ class Engine:
             counts = {r["status"]: r["n"] for r in c.execute("SELECT status,COUNT(*) n FROM videos GROUP BY status")}
             blocked = c.execute("SELECT COUNT(*) FROM tombstones").fetchone()[0]
             prefs = [dict(r) for r in c.execute("SELECT * FROM preferences ORDER BY ABS(weight) DESC LIMIT 12")]
-        return {"scanning": self.scanning, "next_scan": self.next_scan, "scan_seconds": SCAN_SECONDS,
-                "last_scan": self.last_scan, "active": self.active, "counts": counts,
+        return {"scanning": self.busy, "next_scan": self.next_scan, "scan_seconds": SCAN_SECONDS,
+                "last_scan": self.last_scan, "last_discovery": self.last_discovery,
+                "active": self.active, "counts": counts,
                 "storage": self.storage(), "blocked_count": blocked, "preferences": prefs}

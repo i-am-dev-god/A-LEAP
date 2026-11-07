@@ -4,6 +4,7 @@ const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const native = window.AndroidBridge || null;
 const ICONS = {
+  shuffle: '<path d="M3 6h3c5 0 7 12 12 12h3M18 15l3 3-3 3M3 18h3c2.2 0 3.8-2.4 5.3-5.2M13.7 8.8C15 7.2 16.4 6 18 6h3M18 3l3 3-3 3"/>',
   feed: '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="m10 8 5 4-5 4Z"/>',
   activity: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
   settings: '<path d="m9 3-.6 2.3-2 .9-2.1-.6-1.5 2.6 1.6 1.7-.2 2.2-1.5 1.6 1.5 2.6 2.2-.5 1.9 1 .7 2.2h3l.7-2.2 1.9-1 2.2.5 1.5-2.6-1.5-1.6-.2-2.2 1.6-1.7-1.5-2.6-2.1.6-2-.9L12 3Z"/><circle cx="10.5" cy="11" r="3"/>',
@@ -48,8 +49,9 @@ const state = {
   pending: store.get('pending', []), activeId: null, muted: store.get('muted', true),
   settings: store.get('settings', {device_cache_mb:1024}), status: null, caching: false,
   cacheDone: 0, cacheTotal: 0, token: store.get('token', ''), sw: null, initialized: false,
+  demo: false, discoveryBusy: false, discoveryKey: '', discoveryRequesting: false,
 };
-let toastTimer, observer, confirmAction, polling, lastSync = 0;
+let toastTimer, observer, confirmAction, polling, discoveryTimer, lastSync = 0;
 function toast(message, error = false) { clearTimeout(toastTimer); $('#toast').textContent = message; $('#toast').className = `toast visible${error ? ' error' : ''}`; toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 4200); }
 function savePending() { store.set('pending', state.pending); $('#pending-label').textContent = state.pending.length ? `${state.pending.length} offline action(s) waiting to sync.` : 'No offline actions waiting to sync.'; }
 function enqueue(method, path, body) {
@@ -117,7 +119,7 @@ async function initOffline() {
     $('#access-token').value = state.token;
   } else if ('serviceWorker' in navigator && window.isSecureContext) {
     try {
-      state.sw = await navigator.serviceWorker.register('/sw.js');
+      state.sw = await navigator.serviceWorker.register('/sw.js', {updateViaCache:'none'});
       await navigator.serviceWorker.ready;
       navigator.serviceWorker.addEventListener('controllerchange', tellWorker);
       await tellWorker();
@@ -182,7 +184,7 @@ function videoCard(video, index) {
     <div class="video-top"><span class="saved-chip">${icon('check')}Saved on device</span><span class="video-number">${String(index+1).padStart(2,'0')} / ${String(state.videos.length).padStart(2,'0')}</span></div>
     <button class="video-center-play" aria-label="Play video">${icon('play')}</button>
     <div class="video-actions"><button class="video-action mute" aria-label="Unmute"><span>${icon('volume')}</span><span>Sound on</span></button><button class="video-action skip" aria-label="Skip and show less like this"><span>${icon('skip')}</span><span>Skip</span></button><button class="video-action watched" aria-label="Mark as watched and free server storage"><span>${icon('check')}</span><span>Watched</span></button><button class="video-action delete" aria-label="Delete video permanently"><span>${icon('trash')}</span><span>Delete</span></button></div>
-    <div class="video-info"><div class="creator"><span class="creator-avatar">${initial}${video.channel_avatar ? `<img src="${esc(video.channel_avatar)}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span><div><div class="creator-name">${esc(video.channel_name)}</div><div class="creator-sub">${video.source === 'demo' ? 'Original demo creator' : 'Creator · YouTube Shorts'}</div></div></div><h2 class="video-title">${esc(video.title)}</h2><div class="video-meta">${icon('eye')}<span>${views ? esc(views) + ' views' : 'Views unavailable'}</span><i class="dot"></i><span>${esc(dateLabel(video.upload_date))}</span></div><div class="match-chip" title="${esc((video.reasons || []).join(' · '))}">${icon('spark')}<span>${video.source === 'demo' ? 'Demo clip · not from YouTube' : `${Math.round(video.score)}% match · ${esc(video.reasons?.[1] || 'Picked for your feed')}`}</span></div></div>
+    <div class="video-info"><div class="creator"><span class="creator-avatar">${initial}${video.channel_avatar ? `<img src="${esc(video.channel_avatar)}" alt="" loading="lazy" onerror="this.remove()">` : ''}</span><div><div class="creator-name">${esc(video.channel_name)}</div><div class="creator-sub">${video.source === 'demo' ? 'Original demo creator' : 'Creator · YouTube Shorts'}</div></div></div><h2 class="video-title">${esc(video.title)}</h2><div class="video-meta">${icon('eye')}<span>${views ? esc(views) + ' views' : 'Views unavailable'}</span><i class="dot"></i><span>${esc(dateLabel(video.upload_date))}</span></div><div class="match-chip" title="${esc((video.reasons || []).join(' · '))}">${icon('spark')}<span>${video.source === 'demo' ? 'Demo clip · not from YouTube' : video.source === 'shuffle' ? 'Shuffled Short · public YouTube' : `${Math.round(video.score)}% match · ${esc(video.reasons?.[1] || 'Picked for your feed')}`}</span></div></div>
     <div class="video-progress"><i></i><input type="range" min="0" max="100" step="0.1" value="0" aria-label="Video playback position"></div><div class="video-bottom"><span>${icon('offline')}<span class="device-state">Offline ready</span></span><span class="duration">0:00 / 0:00</span></div>`;
   const v = $('video', card); v.muted = state.muted;
   const playButton = $('.video-center-play', card);
@@ -271,40 +273,115 @@ async function updateStatus() {
     $('#scan-button').classList.toggle('spinning', status.scanning);
     renderPreferences(status.preferences);
     renderScanBanner(status);
+    renderDiscovery(status);
     if (state.page === 'activity') updateActivity();
   } catch { setOnline(false); }
 }
+function scanErrorBanner(title, message, hint, retry = true) {
+  const banner = $('#scan-banner');
+  banner.hidden = false; banner.className = 'scan-banner warn';
+  banner.innerHTML = `${icon('info')}<div><strong>${esc(title)}</strong><details class="scan-details"><summary>Details & what to do</summary><span>${esc(message)}</span><span class="scan-hint">${esc(hint)}</span></details></div>${retry ? '<button class="text-button" id="banner-retry">Retry</button>' : ''}`;
+  $('#banner-retry')?.addEventListener('click', () => surpriseMe());
+}
 function renderScanBanner(status) {
   const banner = $('#scan-banner'); if (!banner) return;
-  const scan = status.last_scan;
+  const scan = status.last_scan, discovery = status.last_discovery;
+  if (discovery && (!scan || discovery.at >= scan.at)) return renderDiscoveryBanner(discovery, status.scanning);
   const errors = (scan && scan.errors) || [];
   if (status.scanning) {
     banner.hidden = false; banner.className = 'scan-banner info';
     banner.innerHTML = `${icon('refresh')}<div><strong>Scanning your sources…</strong><span>New Shorts download automatically when found.</span></div>`;
   } else if (errors.length) {
-    const unreachable = errors.some(e => /TLS|SSL|EOF|resolve|timed? ?out|Network|urlopen|Connection/i.test(e));
-    const clean = errors[0]
-      .replace(/^(channel|playlist|topic):\s*/,'')
-      .replace(/^ERROR:\s*\[[^\]]*\]\s*/,'')
-      .split(' (caused by')[0].split('; please report')[0]
-      .replace(/\(_ssl\.c:\d+\)/,'').trim().slice(0,180);
-    banner.hidden = false; banner.className = 'scan-banner warn';
-    banner.innerHTML = `${icon('info')}<div><strong>Last scan couldn't fetch from YouTube</strong><span>${esc(clean)}</span>${unreachable ? '<span class="scan-hint">This backend can\'t reach youtube.com. It needs unrestricted internet — if it runs in a restricted or sandboxed network, run the backend on your own computer or server (see README).</span>' : '<span class="scan-hint">Check the source URL is public, or try again. YouTube may be rate-limiting; keep yt-dlp updated.</span>'}</div><button class="text-button" id="banner-retry">Retry</button>`;
+    const unreachable = /TLS|SSL|EOF|resolve|timed? ?out|Network|urlopen|Connection/i.test(errors[0]);
+    const clean = errors[0].replace(/^(channel|playlist|topic|search|shuffle):\s*/,'').replace(/^ERROR:\s*\[[^\]]*\]\s*/,'').split(' (caused by')[0].split('; please report')[0].replace(/\(_ssl\.c:\d+\)/,'').trim().slice(0,240);
+    scanErrorBanner(unreachable ? "YouTube couldn't be reached" : 'Last scan failed', clean,
+      unreachable ? 'The backend needs access to youtube.com. This hosted preview blocks YouTube; run the backend on your own computer or server to download real Shorts.' : 'Check that the source is public, keep yt-dlp updated, and try again.');
     $('#banner-retry')?.addEventListener('click', scanNow);
   } else if (scan && scan.new > 0) {
     banner.hidden = false; banner.className = 'scan-banner ok';
     banner.innerHTML = `${icon('check')}<div><strong>Found ${scan.new} new Short${scan.new > 1 ? 's' : ''}</strong><span>Saving to your offline feed.</span></div>`;
-  } else {
-    banner.hidden = true; banner.innerHTML = '';
+  } else { banner.hidden = true; banner.innerHTML = ''; }
+}
+function renderDiscoveryBanner(discovery, scanning = false) {
+  const banner = $('#scan-banner');
+  if (!discovery) { banner.hidden = true; return; }
+  if (discovery.state === 'running') {
+    banner.hidden = false; banner.className = 'scan-banner info';
+    banner.innerHTML = `${icon('shuffle')}<div><strong>Finding your next five Shorts…</strong><span>${esc(discovery.search || 'Public YouTube search')} · Downloads appear in Activity.</span></div>`;
+    return;
   }
+  const errors = discovery.errors || [];
+  if (errors.length) {
+    const unreachable = /TLS|SSL|EOF|resolve|timed? ?out|Network|urlopen|Connection/i.test(errors[0]);
+    const clean = errors[0].replace(/^(shuffle|search):\s*/,'').replace(/^ERROR:\s*\[[^\]]*\]\s*/,'').split(' (caused by')[0].split('; please report')[0].replace(/\(_ssl\.c:\d+\)/,'').trim().slice(0,240);
+    scanErrorBanner(unreachable ? "YouTube couldn't be reached" : 'Shuffle needs attention', clean,
+      unreachable ? 'No YouTube video was downloaded. This preview cannot reach YouTube. Run the backend on your computer or a server with YouTube access, then connect the APK to it.' : 'Try another topic or Retry. Public search can be rate-limited; keep yt-dlp updated.');
+  } else if (discovery.state === 'empty') {
+    banner.hidden = false; banner.className = 'scan-banner info';
+    banner.innerHTML = `${icon('info')}<div><strong>No new vertical Shorts matched</strong><span>Try a different topic or shuffle again. Previously watched and deleted IDs stay excluded.</span></div><button class="text-button" id="banner-retry">Retry</button>`;
+    $('#banner-retry')?.addEventListener('click', () => surpriseMe());
+  } else if (discovery.queued > 0) {
+    banner.hidden = false; banner.className = 'scan-banner ok';
+    banner.innerHTML = `${icon('check')}<div><strong>${discovery.queued} public Short${discovery.queued > 1 ? 's' : ''} queued</strong><span>They join the player as each MP4 finishes downloading.</span></div>`;
+  } else banner.hidden = true;
+}
+function renderDiscovery(status) {
+  const discovery = status.last_discovery;
+  const running = discovery?.state === 'running' || status.scanning;
+  state.discoveryBusy = running;
+  $$('[data-shuffle]').forEach(button => { button.disabled = running || state.discoveryRequesting; });
+  $('#shuffle-button span:last-child').textContent = running ? 'Finding Shorts…' : 'Surprise me';
+  $('#shuffle-button').classList.toggle('spinning', running);
+  if (running) { startDiscoveryPolling(); return; }
+  stopDiscoveryPolling();
+  if (discovery && discovery.finished_at) {
+    const key = `${discovery.at}:${discovery.finished_at}`;
+    if (state.discoveryKey && state.discoveryKey !== key) {
+      if (discovery.queued > 0) toast(`${discovery.queued} public Shorts queued. Watch them here as downloads finish.`);
+      else if (discovery.errors?.length) toast('Shuffle could not download Shorts. Open the banner for details.', true);
+    }
+    state.discoveryKey = key;
+  }
+}
+function stopDiscoveryPolling() { if (discoveryTimer) { clearInterval(discoveryTimer); discoveryTimer = null; } }
+function startDiscoveryPolling() {
+  if (discoveryTimer) return;
+  let ticking = false;
+  discoveryTimer = setInterval(async () => {
+    if (ticking || document.hidden) return;
+    ticking = true;
+    try { await refreshFeed(); } finally { ticking = false; }
+  }, 2500);
+}
+async function surpriseMe() {
+  if (state.discoveryBusy || state.discoveryRequesting) return;
+  if (native && !native.getBackend()) { toast('Connect your Python backend in Settings first.', true); showPage('settings'); return; }
+  if (!state.online || !navigator.onLine) { toast('Reconnect to download a new shuffle. Already-cached Shorts still play offline.', true); return; }
+  const topic = $('#shuffle-topic').value.trim().slice(0,80);
+  state.discoveryRequesting = true; $$('[data-shuffle]').forEach(b => { b.disabled = true; });
+  try {
+    await request('/api/discover', {method:'POST', body:JSON.stringify({topic, count:5})});
+    store.set('shuffleTopic', topic); showPage('feed');
+    toast('Shuffling public YouTube Shorts. Finished downloads will play here.');
+    startDiscoveryPolling(); await updateStatus();
+  } catch (e) {
+    scanErrorBanner('Could not start shuffle', e.message, 'Check the backend connection and storage, then try again.');
+    toast(e.message, true);
+  } finally { state.discoveryRequesting = false; await updateStatus(); $$('[data-shuffle]').forEach(b => { b.disabled = state.discoveryBusy; }); }
+}
+function renderDemoNotice() {
+  const notice = $('#demo-notice');
+  const hasDemo = state.videos.some(v => v.source === 'demo');
+  notice.hidden = !(state.demo && (hasDemo || !state.videos.length));
+  notice.textContent = 'Preview: “Demo” clips are synthetic, not YouTube. Real downloads need a backend with YouTube access.';
 }
 async function refreshFeed(showToast = false) {
   if (native && !native.getBackend()) { renderFeed(); return; }
   await syncPending();
   try {
     const data = await request('/api/feed'); state.videos = data.videos; store.set('feed', state.videos); setOnline(true);
-    renderFeed(); await refreshCached(); cacheVideos();
-    if (showToast) toast(state.videos.length ? 'Feed refreshed. Saving available videos for offline.' : 'No finished downloads yet. Add sources or check Download activity.');
+    renderFeed(); renderDemoNotice(); await refreshCached(); cacheVideos();
+    if (showToast) toast(state.videos.length ? 'Feed refreshed. Saving available videos for offline.' : 'No finished downloads yet. Tap Surprise me or check Download activity.');
   } catch (e) { setOnline(false); renderFeed(); if (showToast) toast(state.cached.size ? 'You’re offline. Your saved Shorts are still here.' : e.status ? e.message : 'Cannot reach the engine. Check its URL in Settings.', true); }
   await updateStatus();
 }
@@ -329,9 +406,8 @@ async function saveSettings(event) {
   if (native && !native.getBackend()) { toast('Connect your Python backend first.', true); $('#connection-card').scrollIntoView({behavior:'smooth'}); return; }
   const split = text => [...new Set(text.split(/[\n,]+/).map(x => x.trim()).filter(Boolean))];
   const body = {playlist_url:$('#playlist-url').value.trim(), channels:split($('#channels').value), topics:split($('#topics').value), auto_download:$('#auto-download').checked, max_storage_mb:Number($('#max-storage').value), device_cache_mb:Number($('#device-cache').value), per_scan_limit:Number($('#per-scan').value), max_duration:Number($('#max-duration').value)};
-  if (!body.playlist_url && !body.channels.length && !body.topics.length) { toast('Add a playlist, channel, or topic to start your feed.', true); return; }
   const button = $('#settings-form button[type=submit]'); button.disabled = true;
-  try { state.settings = await request('/api/settings', {method:'PUT',body:JSON.stringify(body)}); store.set('settings', state.settings); if (native) native.setCacheLimit(String(body.device_cache_mb * 1048576)); await tellWorker(); $('#settings-result').textContent = 'Saved. Your engine will check these sources now.'; toast('Preferences saved. Let’s find your next favorite.'); updateStatus(); cacheVideos(); }
+  try { state.settings = await request('/api/settings', {method:'PUT',body:JSON.stringify(body)}); store.set('settings', state.settings); if (native) native.setCacheLimit(String(body.device_cache_mb * 1048576)); await tellWorker(); $('#settings-result').textContent = (body.playlist_url || body.channels.length || body.topics.length) ? 'Saved. Scheduled sources apply to your next scan.' : 'Saved. No scheduled sources — use Surprise me for random Shorts.'; toast('Preferences saved. Let’s find your next favorite.'); updateStatus(); cacheVideos(); }
   catch (e) { const detail = Array.isArray(e.detail) ? e.detail.map(x => x.msg).join(' ') : e.message; $('#settings-result').textContent = typeof detail === 'string' ? detail : 'Check your source URLs and limits.'; toast(typeof detail === 'string' ? detail : 'Check your source URLs and limits.', true); }
   finally { button.disabled = false; }
 }
@@ -362,10 +438,13 @@ async function boot() {
   hydrate();
   $$('[data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
   $('#refresh-button').addEventListener('click', () => refreshFeed(true));
+  $('#shuffle-form').addEventListener('submit', event => { event.preventDefault(); surpriseMe(); });
+  $$('[data-shuffle]').filter(b => b.type !== 'submit').forEach(b => b.addEventListener('click', surpriseMe));
+  $('#shuffle-topic').value = store.get('shuffleTopic', '');
   $('#scan-button').addEventListener('click', scanNow); $('#activity-scan').addEventListener('click', scanNow);
   $('#previous-video').addEventListener('click', () => navigateVideo(-1)); $('#next-video').addEventListener('click', () => navigateVideo(1));
   $('#settings-form').addEventListener('submit', saveSettings); $('#connect-button').addEventListener('click', connectBackend);
-  $('#demo-button').addEventListener('click', async () => { try { await request('/api/demo', {method:'POST'}); await refreshFeed(); toast('Three original demo clips are ready. These are not YouTube downloads.'); } catch (e) { toast(e.message, true); } });
+  $('#demo-button').addEventListener('click', async () => { try { await request('/api/demo', {method:'POST'}); await refreshFeed(); toast('Synthetic demo clips only — these are not YouTube downloads.'); } catch (e) { toast(e.message, true); } });
   $('#reset-learning').addEventListener('click', () => confirmDialog('Reset your learned taste?', 'Creator and topic scores return to zero. Your watch history and deleted-video blocks stay intact.', async () => { try { await request('/api/preferences/reset', {method:'POST'}); toast('Learned preferences reset.'); updateStatus(); } catch (e) { toast(e.message, true); } }, 'Reset taste'));
   $('#clear-device').addEventListener('click', () => confirmDialog('Clear this device’s cache?', 'Remove all locally saved MP4s. Server copies and watch history are kept. Videos can be cached again when connected.', async () => { for (const id of [...state.cached]) await removeDeviceCopy(id); toast('Device video cache cleared.'); renderFeed(true); }, 'Clear cache'));
   $('#dialog-cancel').addEventListener('click', () => $('#confirm-dialog').close());
@@ -377,10 +456,11 @@ async function boot() {
   await initOffline(); savePending();
   if (native && !native.getBackend()) { showPage('settings'); renderFeed(); }
   else {
-    try { const health = await request('/api/health'); $('#demo-button').hidden = !health.demo; state.settings = await request('/api/settings'); store.set('settings', state.settings); state.initialized = true; await refreshFeed(); } catch { renderFeed(); }
+    try { const health = await request('/api/health'); state.demo = Boolean(health.demo); $('#demo-button').hidden = !health.demo; state.settings = await request('/api/settings'); store.set('settings', state.settings); state.initialized = true; await refreshFeed(); } catch { renderFeed(); }
     showPage(location.hash.slice(1) || 'feed');
   }
   if (native && native.getBackend()) { state.initialized = true; await refreshFeed(); showPage(location.hash.slice(1) || 'feed'); }
-  polling = setInterval(async () => { if (document.hidden) return; await refreshFeed(); }, 30000);
+  renderDemoNotice();
+  polling = setInterval(async () => { if (document.hidden || discoveryTimer) return; await refreshFeed(); }, 30000);
 }
 boot().catch(e => { console.error(e); toast('The app could not finish starting. Refresh to try again.', true); });

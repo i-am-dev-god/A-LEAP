@@ -4,7 +4,7 @@
 
 One Uvicorn process hosts the API, static SPA, byte-range media endpoint, scheduler task, and download worker. SQLite WAL mode allows short concurrent reads/writes. Blocking yt-dlp calls run in threads so the UI/API event loop stays responsive.
 
-The scheduler scans configured public sources every 1800 seconds. The worker publishes a staged MP4 only after checking tombstones and video status under the same lock used by deletion. This closes the delete-versus-finishing-download race. Interrupted downloads return to the queue on restart; completed files missing from disk are requeued unless watched/deleted.
+The scheduler scans configured public sources every 1800 seconds. A separate one-tap discovery request searches public YouTube Shorts, shuffles candidates, filters portrait/short-duration media, and feeds the same persistent download queue. It shares the scan lock with scheduled scans, ignores learned affinities, and works even when scheduled automatic downloads are paused. Discovery progress/errors persist in SQLite metadata; no demo is substituted for a failed YouTube fetch. The worker publishes a staged MP4 only after checking tombstones and video status under the same lock used by deletion. This closes the delete-versus-finishing-download race. Interrupted downloads return to the queue on restart; completed files missing from disk are requeued unless watched/deleted.
 
 ## Data
 
@@ -22,7 +22,7 @@ The Python/yt-dlp engine is remote. Android does not execute Python, and backgro
 
 ## Security boundaries
 
-Only YouTube playlist/channel URL shapes are accepted. Media paths are derived from validated IDs and database filenames. Avatar downloads are restricted to YouTube avatar CDN hosts. The optional shared secret protects API/media routes. The Android WebView blocks external navigation and exposes its bridge only to the bundled virtual origin. Use HTTPS and a strong token for remote deployment; LAN HTTP is supported for personal setup convenience.
+Configured sources accept only YouTube playlist/channel URL shapes. Shuffle topics are length-limited plain text and are passed inside a fixed yt-dlp search prefix, never as shell commands. Media paths are derived from validated IDs and database filenames. Avatar downloads are restricted to YouTube avatar CDN hosts. The optional shared secret protects API/media routes. The Android WebView blocks external navigation and exposes its bridge only to the bundled virtual origin. Use HTTPS and a strong token for remote deployment; LAN HTTP is supported for personal setup convenience.
 
 ## Known limitations
 

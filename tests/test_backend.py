@@ -180,3 +180,145 @@ def test_delete_during_download_never_publishes(tmp_path):
         assert not (engine.media_dir / "racevideo1.mp4").exists()
         assert db.blocked("racevideo1")
     asyncio.run(run())
+
+
+def test_shuffle_search_is_public_and_optional():
+    from backend.engine import SHUFFLE_TOPICS, shuffle_search
+
+    assert shuffle_search("gaming") == "ytsearch40:gaming #shorts"
+    assert shuffle_search("funny #Shorts") == "ytsearch40:funny #Shorts"
+    blank = shuffle_search("")
+    assert blank.startswith("ytsearch40:") and blank.endswith(" #shorts")
+    assert blank.removeprefix("ytsearch40:").removesuffix(" #shorts") in SHUFFLE_TOPICS
+
+
+def test_shuffle_filters_and_queues_without_sources(tmp_path, monkeypatch):
+    async def run():
+        db = Database(tmp_path / "db.sqlite3")
+        engine = Engine(db, tmp_path)
+        engine.delete("blocked0001")
+        db.learn("channel", "ucgood", -30)
+        calls = []
+        entries = [{"id": v} for v in ("blocked0001", "landscape01", "toolong0001", "portrait001", "portrait002")]
+
+        def extract(url, opts):
+            calls.append(url)
+            if url.startswith("ytsearch"):
+                return {"entries": entries}
+            vid = url.split("v=")[1]
+            return {"id": vid, "title": f"Short {vid}", "channel": "Public creator", "channel_id": "UCgood",
+                    "duration": 200 if vid == "toolong0001" else 20,
+                    "width": 1920 if vid == "landscape01" else 1080,
+                    "height": 1080 if vid == "landscape01" else 1920,
+                    "view_count": 100, "upload_date": "20261101"}
+
+        monkeypatch.setattr(engine, "_extract", extract)
+        monkeypatch.setattr(engine, "_avatar", lambda *args: "")
+        await engine.scan(shuffle_topic="gaming", count=5)
+        assert calls[0] == "ytsearch40:gaming #shorts"
+        assert not any("blocked0001" in url for url in calls[1:])
+        queued = db.videos(("queued",))
+        assert {v["id"] for v in queued} == {"portrait001", "portrait002"}
+        assert all(v["source"] == "shuffle" and v["score"] == 50 for v in queued)
+        assert all(v["webpage_url"].startswith("https://www.youtube.com/shorts/") for v in queued)
+        assert engine.last_discovery["state"] == "complete"
+        assert engine.last_discovery["queued"] == 2
+        assert engine.last_discovery["rejected"] == 2
+        assert db.meta("last_discovery")["queued"] == 2
+        assert db.settings()["channels"] == [] and db.settings()["topics"] == []
+        await engine.stop()
+    asyncio.run(run())
+
+
+def test_shuffle_network_failure_is_not_a_demo(tmp_path, monkeypatch):
+    async def run():
+        engine = Engine(Database(tmp_path / "db.sqlite3"), tmp_path)
+
+        def unavailable(*args):
+            raise OSError("TLS/SSL connection has been closed (EOF)")
+
+        monkeypatch.setattr(engine, "_extract", unavailable)
+        await engine.scan(shuffle_topic="", count=5)
+        assert engine.last_discovery["state"] == "error"
+        assert "TLS/SSL" in engine.last_discovery["errors"][0]
+        assert engine.last_discovery["queued"] == 0
+        assert engine.db.videos(("queued", "ready")) == []
+        assert engine.status()["last_discovery"]["state"] == "error"
+        await engine.stop()
+    asyncio.run(run())
+
+
+def test_discovery_api_validation_and_busy(client, monkeypatch):
+    calls = []
+
+    def start(topic="", count=5):
+        calls.append((topic, count))
+        if len(calls) > 2:
+            raise RuntimeError("A scan is already running.")
+        return {"ok": True, "message": "Finding public Shorts."}
+
+    monkeypatch.setattr(client.app.state.engine, "request_discovery", start)
+    assert client.post("/api/discover", json={}).status_code == 202
+    assert calls == [("", 5)]
+    assert client.post("/api/discover", json={"topic": "  gaming  ", "count": 3}).status_code == 202
+    assert calls[-1] == ("gaming", 3)
+    assert client.post("/api/discover", json={}).status_code == 409
+    assert client.post("/api/discover", json={"count": 11}).status_code == 422
+    assert client.post("/api/discover", json={"topic": "x" * 81}).status_code == 422
+    assert client.post("/api/discover", json={"topic": "bad\nsearch"}).status_code == 422
+    assert client.put("/api/settings", json={"channels": [], "topics": [], "playlist_url": ""}).status_code == 200
+
+
+def test_manual_shuffle_downloads_when_automatic_is_off(tmp_path):
+    async def run():
+        db = Database(tmp_path / "db.sqlite3")
+        engine = Engine(db, tmp_path)
+        db.save_settings({"auto_download": False})
+        db.add_candidate({"id": "scheduled01", "title": "Scheduled", "channel_name": "C", "duration": 10})
+        db.add_candidate({"id": "manual00001", "title": "Manual", "channel_name": "C", "duration": 10,
+                          "source": "shuffle", "score": 50})
+        finished = threading.Event()
+
+        def fake_download(video, flag):
+            assert video["id"] == "manual00001"
+            work = engine.stage_dir / video["id"]
+            work.mkdir(exist_ok=True)
+            path = work / "video.mp4"
+            path.write_bytes(b"manual-video")
+            finished.set()
+            return path
+
+        engine._download = fake_download
+        task = asyncio.create_task(engine.downloader())
+        await asyncio.to_thread(finished.wait, 5)
+        for _ in range(100):
+            if db.video("manual00001")["status"] == "ready":
+                break
+            await asyncio.sleep(0.01)
+        engine.stopping = True
+        await asyncio.wait_for(task, 2)
+        assert db.video("manual00001")["status"] == "ready"
+        assert db.video("scheduled01")["status"] == "queued"
+        assert (engine.media_dir / "manual00001.mp4").read_bytes() == b"manual-video"
+    asyncio.run(run())
+
+
+def test_shuffle_stops_at_requested_count(tmp_path, monkeypatch):
+    async def run():
+        engine = Engine(Database(tmp_path / "db.sqlite3"), tmp_path)
+        calls = []
+
+        def extract(url, opts):
+            calls.append(url)
+            if url.startswith("ytsearch"):
+                return {"entries": [{"id": f"portrait{i:03d}"} for i in range(10)]}
+            return {"title": "Short", "channel": "C", "duration": 20, "width": 1080, "height": 1920}
+
+        monkeypatch.setattr(engine, "_extract", extract)
+        monkeypatch.setattr(engine, "_avatar", lambda *args: "")
+        await engine.scan(shuffle_topic="", count=5)
+        assert len(engine.db.videos(("queued",))) == 5
+        assert len(calls) == 6  # one search plus five metadata lookups
+        assert engine.last_discovery["queued"] == 5
+        await engine.stop()
+    asyncio.run(run())

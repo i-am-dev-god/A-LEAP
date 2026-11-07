@@ -21,7 +21,7 @@ KEYTOOL_BIN="${JAVA_HOME:+$JAVA_HOME/bin/}keytool"
 "$BT/aapt2" compile --dir android/res -o "$BUILD/resources.zip"
 "$BT/aapt2" link -o "$BUILD/unsigned.apk" -I "$JAR" \
   --manifest android/AndroidManifest.xml --min-sdk-version 26 --target-sdk-version 35 \
-  --version-code 1 --version-name 1.0.0 "$BUILD/resources.zip"
+  --version-code 2 --version-name 1.1.0 "$BUILD/resources.zip"
 
 find android/src -name '*.java' > "$BUILD/sources.txt"
 "$JAVAC_BIN" -source 8 -target 8 -bootclasspath "$JAR" -d "$BUILD/classes" @"$BUILD/sources.txt"
@@ -55,8 +55,8 @@ fi
 "$JAVA_BIN" -jar "$BT/lib/apksigner.jar" sign --ks "$KEYSTORE" --ks-key-alias "$ALIAS" \
   --ks-pass "pass:$STORE_PASSWORD" --key-pass "pass:$STORE_PASSWORD" \
   --v1-signing-enabled true --v2-signing-enabled true --v3-signing-enabled true --v4-signing-enabled false \
-  --out "$OUT/Predictive-Offline-Shorts-Manager-1.0.0.apk" "$BUILD/aligned.apk"
+  --out "$OUT/Predictive-Offline-Shorts-Manager-1.1.0.apk" "$BUILD/aligned.apk"
 "$JAVA_BIN" -jar "$BT/lib/apksigner.jar" verify --verbose --print-certs \
-  "$OUT/Predictive-Offline-Shorts-Manager-1.0.0.apk"
-"$BT/zipalign" -c -p 4 "$OUT/Predictive-Offline-Shorts-Manager-1.0.0.apk"
-echo "APK ready: $OUT/Predictive-Offline-Shorts-Manager-1.0.0.apk"
+  "$OUT/Predictive-Offline-Shorts-Manager-1.1.0.apk"
+"$BT/zipalign" -c -p 4 "$OUT/Predictive-Offline-Shorts-Manager-1.1.0.apk"
+echo "APK ready: $OUT/Predictive-Offline-Shorts-Manager-1.1.0.apk"

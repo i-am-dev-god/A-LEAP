@@ -17,3 +17,12 @@ Signer #1 public key SHA-1 digest: dcb6edcc466dfb5bbf6dc93739991c2e4d27ed80
 Signer #1 public key MD5 digest: 4fa52d0490ba619d1bc88cc457558c3e
 
 zipalign: OK
+
+package: name='com.offline.shortsmanager' versionCode='2' versionName='1.1.0' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+minSdkVersion:'26'
+targetSdkVersion:'35'
+uses-permission: name='android.permission.INTERNET'
+uses-permission: name='android.permission.ACCESS_NETWORK_STATE'
+application-label:'Offline Shorts'
+application-icon-160:'res/drawable/ic_launcher.xml'
+application: label='Offline Shorts' icon='res/drawable/ic_launcher.xml'

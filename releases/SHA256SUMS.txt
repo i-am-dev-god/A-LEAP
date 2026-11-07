@@ -1,1 +1,1 @@
-d46f967a9c904fd63860fcf37ca5fe202777b594926f74786919ee9dc691e7ef  releases/Predictive-Offline-Shorts-Manager-1.0.0.apk
+ee9fbc134ddbdb8ee4b2eba128ab986b7a6fed43eeec98cbf965ba9793d9eada  releases/Predictive-Offline-Shorts-Manager-1.1.0.apk

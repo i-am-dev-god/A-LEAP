@@ -54,6 +54,19 @@ class SettingsInput(BaseModel):
         return list(dict.fromkeys(x.strip()[:80] for x in v if x.strip()))
 
 
+class DiscoveryInput(BaseModel):
+    topic: str = Field(default="", max_length=80)
+    count: int = Field(default=5, ge=1, le=10)
+
+    @field_validator("topic")
+    @classmethod
+    def validate_topic(cls, v):
+        v = v.strip()
+        if any(ord(c) < 32 or ord(c) == 127 for c in v):
+            raise ValueError("Use a plain topic without control characters.")
+        return v
+
+
 class FeedbackInput(BaseModel):
     event: Literal["progress", "skip", "replay", "complete"]
     position: float = Field(default=0, ge=0, le=86400)
@@ -129,6 +142,13 @@ def create_app(data_dir: Path = DATA, frontend_dir: Path = FRONTEND, *, demo: bo
             raise HTTPException(400, "Add a playlist, channel, or topic in Settings first.")
         engine.request_scan()
         return {"ok": True, "message": "Scan requested. New Shorts will appear when downloaded."}
+
+    @app.post("/api/discover", status_code=202)
+    async def discover(body: DiscoveryInput):
+        try:
+            return engine.request_discovery(body.topic, body.count)
+        except RuntimeError as exc:
+            raise HTTPException(409, str(exc)) from exc
 
     @app.post("/api/videos/{video_id}/watched")
     def watched(video_id: str, body: WatchedInput | None = None):

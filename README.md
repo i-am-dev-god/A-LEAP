@@ -1,6 +1,6 @@
 # Predictive Offline Shorts Manager
 
-A personal, offline-first Shorts feed. A Python engine watches public YouTube playlists, channels, and topics; downloads new vertical Shorts as high-quality MP4; learns from your in-app feedback; and serves a dark, mobile-responsive player. The Android APK caches completed videos on the phone so they still play with zero internet.
+A personal, offline-first Shorts feed. Tap **Surprise me** for a shuffled batch of public YouTube Shorts, or let a Python engine watch public playlists, channels, and topics; downloads new vertical Shorts as high-quality MP4; learns from your in-app feedback; and serves a dark, mobile-responsive player. The Android APK caches completed videos on the phone so they still play with zero internet.
 
 > **Important architecture:** the APK is a companion client, not a Python runtime. Run the backend on a computer, home server, VPS, or Docker host that stays online. The phone needs a connection to that backend to discover/download new videos; already-cached videos play offline. This app does **not** read YouTube's private recommendation algorithm.
 
@@ -8,7 +8,8 @@ A personal, offline-first Shorts feed. A Python engine watches public YouTube pl
 
 - **FastAPI + yt-dlp backend** with an asynchronous 30-minute monitoring loop and a persistent, one-at-a-time download queue.
 - **SQLite** metadata, settings, queue state, watch history, learned preferences, and deletion tombstones.
-- **Public playlist monitoring**, channel Shorts tabs, and topic search seeds.
+- **One-tap random player:** Surprise me searches public YouTube Shorts, shuffles up to five results, downloads them, and adds them to the vertical player. Optional topic; blank uses a rotating general-topic pool. No login or source setup required.
+- **Public playlist monitoring**, channel Shorts tabs, and topic search seeds for the scheduled feed.
 - **Explainable feedback ranking:** watches/replays raise creator/topic affinity; skips and deletes lower it. Each candidate shows score reasons.
 - **Highest-resolution MP4 video + M4A audio** selection, merged/remuxed to MP4 with FFmpeg.
 - Metadata: title, creator name/channel ID/URL, channel avatar when available, view count, upload date, duration, source, and score.
@@ -31,7 +32,9 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Open **http://127.0.0.1:8000**. Go to **Settings**, add at least one public playlist URL, `@channel`, or topic, and save. The engine scans immediately and then every 30 minutes while the server process is running.
+Open **http://127.0.0.1:8000** and tap **Surprise me**. Leave the topic blank for a mixed shuffle, or enter something like `gaming` or `cooking`. The backend queues up to five public vertical Shorts and the player shows each MP4 when it finishes downloading. This is random public search, not YouTube's private recommendation feed.
+
+For a scheduled feed, go to **Settings**, add a public playlist URL, `@channel`, or topic, and save. The engine scans configured sources immediately and then every 30 minutes while the server process is running. Scheduled sources are optional; Surprise me works without them and still downloads when the automatic-download toggle is off.
 
 For a phone on the same LAN:
 
@@ -63,7 +66,7 @@ The in-process scheduler is intentionally simple: run **one** server worker. Mul
 
 Prebuilt file:
 
-[`releases/Predictive-Offline-Shorts-Manager-1.0.0.apk`](releases/Predictive-Offline-Shorts-Manager-1.0.0.apk)
+[`releases/Predictive-Offline-Shorts-Manager-1.1.0.apk`](releases/Predictive-Offline-Shorts-Manager-1.1.0.apk)
 
 - Android **8.0+** (API 26), target SDK 35.
 - Sideload the APK and allow installation from the browser/file manager you used. Android may show its standard unknown-app warning.
@@ -81,7 +84,9 @@ The script creates `build/offline-shorts.keystore` if needed. **Back up that key
 
 ## How selection works
 
-Starting sources are explicit:
+**Shuffle mode:** `POST /api/discover` accepts an optional topic and count (1–10; the player requests five). Blank topics choose from a fixed general-interest pool. The engine searches public YouTube results with `#shorts`, shuffles the result list, checks duration and portrait dimensions, skips known/watched/deleted IDs, and queues new videos without applying learned affinities. It cannot sample every Short uniformly or access your logged-in recommendations. Discovery runs in the background; progress and failures appear in the feed banner and Activity.
+
+**Scheduled mode:** starting sources are explicit:
 
 1. A public playlist URL (`?list=…`; not Watch Later/private library playlists).
 2. Up to 10 channel handles/URLs, using their Shorts tabs.
@@ -123,7 +128,8 @@ Settings UI controls playlist/channels/topics, auto-download, server/device cach
 
 - `GET /api/health`, `GET/PUT /api/settings`
 - `GET /api/feed`, `GET /api/status`, `GET /api/queue`, `GET /api/history`
-- `POST /api/scan`
+- `POST /api/scan` (configured sources)
+- `POST /api/discover` with `{ "topic": "", "count": 5 }` (public shuffle; no source setup)
 - `GET /media/{id}.mp4` with byte ranges
 - `POST /api/videos/{id}/watched`, `DELETE /api/videos/{id}`
 - `POST /api/videos/{id}/feedback` (`progress`, `skip`, `replay`, `complete`)
@@ -142,11 +148,11 @@ node --check frontend/app.js
 node --check frontend/sw.js
 ```
 
-The backend suite covers settings validation, range serving, immediate file/row deletion, watched history, feedback scoring, restart recovery, and a delete/download publication race. The web client was also exercised in headless Chromium for cached playback, offline reload, offline delete, reconnect sync, and mobile layout. Live YouTube extraction depends on network/YouTube availability and is not mocked as a real download in tests.
+The backend suite covers settings validation, range serving, immediate file/row deletion, watched history, feedback scoring, restart recovery, a delete/download publication race, and shuffle validation/filtering/count limits/error reporting/manual-download behavior. The web client was also exercised in headless Chromium for cached playback, offline reload, offline delete, reconnect sync, and mobile layout. Live YouTube extraction depends on network/YouTube availability and is not mocked as a real download in tests.
 
 ## Troubleshooting: no real Shorts appear
 
-If the feed only shows demo clips or stays empty after adding a channel/playlist:
+If the feed only shows demo clips or stays empty after tapping Surprise me or adding a channel/playlist:
 
 1. Open **Download activity** or look at the banner on the feed — a failed scan now shows the actual error (for example `Unable to download API page: TLS/SSL connection …`).
 2. That error means the **backend machine cannot reach youtube.com**. Confirm from the same machine:

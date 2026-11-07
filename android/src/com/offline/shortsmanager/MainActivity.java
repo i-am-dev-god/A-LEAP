@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         settings.setAllowContentAccess(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setUserAgentString(settings.getUserAgentString() + " OfflineShortsAndroid/1.0");
+        settings.setUserAgentString(settings.getUserAgentString() + " OfflineShortsAndroid/1.1");
         web.addJavascriptInterface(new Bridge(), "AndroidBridge");
         web.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {

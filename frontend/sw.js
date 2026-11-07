@@ -1,5 +1,5 @@
 /* Predictable offline behavior: local shell, cached feed, complete MP4s with byte ranges. */
-const SHELL = 'shorts-shell-v3';
+const SHELL = 'shorts-shell-v4';
 const MEDIA = 'shorts-media-v1';
 const API = 'shorts-api-v1';
 const ASSETS = ['/', '/index.html', '/styles.css', '/app.js', '/icon.svg', '/poster.svg', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'];
@@ -51,8 +51,7 @@ self.addEventListener('fetch', event => {
   event.respondWith((async () => {
     const cache = await caches.open(SHELL);
     const hit = await cache.match(request, {ignoreSearch:true});
-    if (hit) return hit;
-    try { return await fetch(request); }
-    catch { if (request.mode === 'navigate') return cache.match('/index.html'); return new Response('Offline', {status:503}); }
+    try { const response = await fetch(request); if (response.ok) await cache.put(request, response.clone()); return response; }
+    catch { if (hit) return hit; if (request.mode === 'navigate') return cache.match('/index.html'); return new Response('Offline', {status:503}); }
   })());
 });

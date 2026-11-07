@@ -125,7 +125,7 @@ class Database:
         with self.connect() as c:
             rows = c.execute(
                 f"SELECT * FROM videos WHERE status IN ({marks}) "
-                "ORDER BY score DESC, COALESCE(downloaded_at, discovered_at) DESC LIMIT ?",
+                "ORDER BY score DESC, COALESCE(downloaded_at, discovered_at) DESC, rowid ASC LIMIT ?",
                 (*statuses, limit)).fetchall()
         return [self.decode(r) for r in rows]
 
@@ -142,7 +142,8 @@ class Database:
         keys = ",".join(item)
         marks = ",".join("?" for _ in item)
         with self.connect() as c:
-            c.execute(f"INSERT OR IGNORE INTO videos({keys}) VALUES({marks})", tuple(item.values()))
+            cursor = c.execute(f"INSERT OR IGNORE INTO videos({keys}) VALUES({marks})", tuple(item.values()))
+        return cursor.rowcount > 0
 
     def update_video(self, video_id: str, **fields):
         if "reasons" in fields:
