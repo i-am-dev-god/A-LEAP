@@ -270,8 +270,33 @@ async function updateStatus() {
     $('#watched-count').textContent = status.counts.watched || 0;
     $('#scan-button').classList.toggle('spinning', status.scanning);
     renderPreferences(status.preferences);
+    renderScanBanner(status);
     if (state.page === 'activity') updateActivity();
   } catch { setOnline(false); }
+}
+function renderScanBanner(status) {
+  const banner = $('#scan-banner'); if (!banner) return;
+  const scan = status.last_scan;
+  const errors = (scan && scan.errors) || [];
+  if (status.scanning) {
+    banner.hidden = false; banner.className = 'scan-banner info';
+    banner.innerHTML = `${icon('refresh')}<div><strong>Scanning your sources…</strong><span>New Shorts download automatically when found.</span></div>`;
+  } else if (errors.length) {
+    const unreachable = errors.some(e => /TLS|SSL|EOF|resolve|timed? ?out|Network|urlopen|Connection/i.test(e));
+    const clean = errors[0]
+      .replace(/^(channel|playlist|topic):\s*/,'')
+      .replace(/^ERROR:\s*\[[^\]]*\]\s*/,'')
+      .split(' (caused by')[0].split('; please report')[0]
+      .replace(/\(_ssl\.c:\d+\)/,'').trim().slice(0,180);
+    banner.hidden = false; banner.className = 'scan-banner warn';
+    banner.innerHTML = `${icon('info')}<div><strong>Last scan couldn't fetch from YouTube</strong><span>${esc(clean)}</span>${unreachable ? '<span class="scan-hint">This backend can\'t reach youtube.com. It needs unrestricted internet — if it runs in a restricted or sandboxed network, run the backend on your own computer or server (see README).</span>' : '<span class="scan-hint">Check the source URL is public, or try again. YouTube may be rate-limiting; keep yt-dlp updated.</span>'}</div><button class="text-button" id="banner-retry">Retry</button>`;
+    $('#banner-retry')?.addEventListener('click', scanNow);
+  } else if (scan && scan.new > 0) {
+    banner.hidden = false; banner.className = 'scan-banner ok';
+    banner.innerHTML = `${icon('check')}<div><strong>Found ${scan.new} new Short${scan.new > 1 ? 's' : ''}</strong><span>Saving to your offline feed.</span></div>`;
+  } else {
+    banner.hidden = true; banner.innerHTML = '';
+  }
 }
 async function refreshFeed(showToast = false) {
   if (native && !native.getBackend()) { renderFeed(); return; }

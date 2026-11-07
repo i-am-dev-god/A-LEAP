@@ -1,5 +1,5 @@
 /* Predictable offline behavior: local shell, cached feed, complete MP4s with byte ranges. */
-const SHELL = 'shorts-shell-v2';
+const SHELL = 'shorts-shell-v3';
 const MEDIA = 'shorts-media-v1';
 const API = 'shorts-api-v1';
 const ASSETS = ['/', '/index.html', '/styles.css', '/app.js', '/icon.svg', '/poster.svg', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'];
