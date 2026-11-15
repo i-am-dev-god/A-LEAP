@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [ arena/7be6b43f-a-leap ]
+    branches: [ main, arena/a8d7f9a9-a-leap ]
   pull_request:
     branches: [ main ]
 
