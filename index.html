@@ -68,6 +68,8 @@
       color: #ffcc00;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.0.1/dist/index.js"></script>
 </head>
 <body>
   <h1>Object Detection AI</h1>
@@ -106,28 +108,15 @@
       status.textContent = 'Loading AI model (COCO-SSD)...';
       status.classList.add('loading');
       try {
-        // Load from CDN (allowed in browser)
-        await Promise.all([
-          import('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js'),
-          import('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.0.1/dist/index.js')
-        ]);
-        // Note: in a real environment, we would use the imported modules.
-        // For simplicity and reliability in this sandbox preview, we'll load via script tags dynamically.
-        // Let's do a more robust dynamic script loading:
-        const loadScript = (src) => new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = src;
-          script.onload = resolve;
-          script.onerror = reject;
-          document.head.appendChild(script);
-        });
-        await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js');
-        await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.0.1/dist/index.js');
-        
-        detector = await cocoSsd.load();
-        status.textContent = 'Model loaded. Ready to start.';
-        status.classList.remove('loading');
-        startBtn.disabled = false;
+        // The scripts are already loaded via <script> tags in <head>
+        if (typeof cocoSsd !== 'undefined' && cocoSsd.load) {
+          detector = await cocoSsd.load();
+          status.textContent = 'Model loaded. Ready to start.';
+          status.classList.remove('loading');
+          startBtn.disabled = false;
+        } else {
+          throw new Error('cocoSsd is not defined');
+        }
       } catch (e) {
         status.textContent = 'Error loading model: ' + e.message;
         console.error(e);
