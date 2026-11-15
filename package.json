@@ -1,0 +1,13 @@
+{
+  "name": "object-detection-ai",
+  "version": "1.0.0",
+  "description": "A website integrated with AI to detect objects held in front of the camera",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
