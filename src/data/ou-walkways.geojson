@@ -1,0 +1,3370 @@
+{
+ "type": "FeatureCollection",
+ "name": "ou-walkways",
+ "metadata": {
+  "datum": {
+   "lng": 78.5285,
+   "lat": 17.4175
+  },
+  "units": "metres (local tangent plane)",
+  "generated": "2026-11-17T19:09:24.535Z"
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-001",
+    "from": "rrN",
+    "to": "rrNE",
+    "from_label": "Arts College Ring — North",
+    "to_label": "Arts College Ring — North East",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 164.5,
+    "elev_from": 9.8,
+    "elev_to": 11.8,
+    "grade": 0.012,
+    "shade": 0.2,
+    "name": "Arts College Ring — North → Arts College Ring — North East"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.419444
+     ],
+     [
+      78.529216,
+      17.41916
+     ],
+     [
+      78.529931,
+      17.418875
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-002",
+    "from": "rrNE",
+    "to": "rrE",
+    "from_label": "Arts College Ring — North East",
+    "to_label": "Arts College Ring — East",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 164.5,
+    "elev_from": 11.8,
+    "elev_to": 11.4,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Arts College Ring — North East → Arts College Ring — East"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.418875
+     ],
+     [
+      78.530228,
+      17.418187
+     ],
+     [
+      78.530524,
+      17.4175
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-003",
+    "from": "rrE",
+    "to": "rrSE",
+    "from_label": "Arts College Ring — East",
+    "to_label": "Arts College Ring — South East",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 164.5,
+    "elev_from": 11.4,
+    "elev_to": 9.7,
+    "grade": -0.01,
+    "shade": 0.2,
+    "name": "Arts College Ring — East → Arts College Ring — South East"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.530524,
+      17.4175
+     ],
+     [
+      78.530228,
+      17.416813
+     ],
+     [
+      78.529931,
+      17.416125
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-004",
+    "from": "rrSE",
+    "to": "rrS",
+    "from_label": "Arts College Ring — South East",
+    "to_label": "Arts College Ring — South",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 167.2,
+    "elev_from": 9.7,
+    "elev_to": 9,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Arts College Ring — South East → Arts College Ring — South"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.416125
+     ],
+     [
+      78.529269,
+      17.415717
+     ],
+     [
+      78.5285,
+      17.415556
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-005",
+    "from": "rrS",
+    "to": "rrSW",
+    "from_label": "Arts College Ring — South",
+    "to_label": "Arts College Ring — South West",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 167.2,
+    "elev_from": 9,
+    "elev_to": 8.7,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Arts College Ring — South → Arts College Ring — South West"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.415556
+     ],
+     [
+      78.527838,
+      17.415964
+     ],
+     [
+      78.527069,
+      17.416125
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-006",
+    "from": "rrSW",
+    "to": "rrW",
+    "from_label": "Arts College Ring — South West",
+    "to_label": "Arts College Ring — West",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 164.5,
+    "elev_from": 8.7,
+    "elev_to": 7.9,
+    "grade": -0.005,
+    "shade": 0.2,
+    "name": "Arts College Ring — South West → Arts College Ring — West"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.416125
+     ],
+     [
+      78.526772,
+      17.416813
+     ],
+     [
+      78.526476,
+      17.4175
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-007",
+    "from": "rrW",
+    "to": "rrNW",
+    "from_label": "Arts College Ring — West",
+    "to_label": "Arts College Ring — North West",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 164.5,
+    "elev_from": 7.9,
+    "elev_to": 8,
+    "grade": 0.001,
+    "shade": 0.2,
+    "name": "Arts College Ring — West → Arts College Ring — North West"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.526476,
+      17.4175
+     ],
+     [
+      78.526772,
+      17.418187
+     ],
+     [
+      78.527069,
+      17.418875
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-008",
+    "from": "rrNW",
+    "to": "rrN",
+    "from_label": "Arts College Ring — North West",
+    "to_label": "Arts College Ring — North",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 167.2,
+    "elev_from": 8,
+    "elev_to": 9.8,
+    "grade": 0.011,
+    "shade": 0.2,
+    "name": "Arts College Ring — North West → Arts College Ring — North"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.418875
+     ],
+     [
+      78.527838,
+      17.419036
+     ],
+     [
+      78.5285,
+      17.419444
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-009",
+    "from": "rrS",
+    "to": "fountain",
+    "from_label": "Arts College Ring — South",
+    "to_label": "Fountain Plaza",
+    "kind": "promenade",
+    "surface": "paver",
+    "width_m": 5.5,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 104.7,
+    "elev_from": 9,
+    "elev_to": 9.3,
+    "grade": 0.003,
+    "shade": 0.2,
+    "name": "Arts College Ring — South → Fountain Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.415556
+     ],
+     [
+      78.528587,
+      17.416021
+     ],
+     [
+      78.5285,
+      17.416487
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-010",
+    "from": "fountain",
+    "to": "artsN",
+    "from_label": "Fountain Plaza",
+    "to_label": "Arts College North Portico",
+    "kind": "promenade",
+    "surface": "paver",
+    "width_m": 5.5,
+    "lit": 1,
+    "crowd": 0.3,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 158,
+    "elev_from": 9.3,
+    "elev_to": 9.7,
+    "grade": 0.003,
+    "shade": 0.2,
+    "name": "Fountain Plaza → Arts College North Portico"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.416487
+     ],
+     [
+      78.5285,
+      17.417202
+     ],
+     [
+      78.5285,
+      17.417916
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-011",
+    "from": "rrN",
+    "to": "artsN",
+    "from_label": "Arts College Ring — North",
+    "to_label": "Arts College North Portico",
+    "kind": "promenade",
+    "surface": "paver",
+    "width_m": 5.5,
+    "lit": 1,
+    "crowd": 0.3,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 171.7,
+    "elev_from": 9.8,
+    "elev_to": 9.7,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Arts College Ring — North → Arts College North Portico"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.419444
+     ],
+     [
+      78.528643,
+      17.41868
+     ],
+     [
+      78.5285,
+      17.417916
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-012",
+    "from": "rrNW",
+    "to": "artsN",
+    "from_label": "Arts College Ring — North West",
+    "to_label": "Arts College North Portico",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 185.3,
+    "elev_from": 8,
+    "elev_to": 9.7,
+    "grade": 0.009,
+    "shade": 0.2,
+    "name": "Arts College Ring — North West → Arts College North Portico"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.418875
+     ],
+     [
+      78.527784,
+      17.418395
+     ],
+     [
+      78.5285,
+      17.417916
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-013",
+    "from": "rrNE",
+    "to": "masjidForecourt",
+    "from_label": "Arts College Ring — North East",
+    "to_label": "Masjid Forecourt",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 115,
+    "elev_from": 11.8,
+    "elev_to": 10.9,
+    "grade": -0.008,
+    "shade": 0.2,
+    "name": "Arts College Ring — North East → Masjid Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.418875
+     ],
+     [
+      78.529679,
+      17.418414
+     ],
+     [
+      78.529611,
+      17.417898
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-014",
+    "from": "rrS",
+    "to": "libPlaza",
+    "from_label": "Arts College Ring — South",
+    "to_label": "Library Plaza",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 121,
+    "elev_from": 9,
+    "elev_to": 8.8,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Arts College Ring — South → Library Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.415556
+     ],
+     [
+      78.527945,
+      17.415678
+     ],
+     [
+      78.527389,
+      17.4158
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-015",
+    "from": "rrSW",
+    "to": "libPlaza",
+    "from_label": "Arts College Ring — South West",
+    "to_label": "Library Plaza",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 50.3,
+    "elev_from": 8.7,
+    "elev_to": 8.8,
+    "grade": 0.002,
+    "shade": 0.2,
+    "name": "Arts College Ring — South West → Library Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.416125
+     ],
+     [
+      78.52726,
+      17.41599
+     ],
+     [
+      78.527389,
+      17.4158
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-016",
+    "from": "fountain",
+    "to": "libPlaza",
+    "from_label": "Fountain Plaza",
+    "to_label": "Library Plaza",
+    "kind": "stairs",
+    "surface": "steps",
+    "width_m": 3.2,
+    "lit": 1,
+    "crowd": 0.3,
+    "accessible": 0,
+    "steps": 14,
+    "length_m": 140.4,
+    "elev_from": 9.3,
+    "elev_to": 8.8,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Fountain Plaza → Library Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.416487
+     ],
+     [
+      78.527389,
+      17.4158
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-017",
+    "from": "rrSE",
+    "to": "canteenFront",
+    "from_label": "Arts College Ring — South East",
+    "to_label": "Students Centre Walk",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 30.1,
+    "elev_from": 9.7,
+    "elev_to": 9.9,
+    "grade": 0.007,
+    "shade": 0.2,
+    "name": "Arts College Ring — South East → Students Centre Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.416125
+     ],
+     [
+      78.529922,
+      17.416261
+     ],
+     [
+      78.529912,
+      17.416397
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-018",
+    "from": "rrSW",
+    "to": "fountain",
+    "from_label": "Arts College Ring — South West",
+    "to_label": "Fountain Plaza",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 159.7,
+    "elev_from": 8.7,
+    "elev_to": 9.3,
+    "grade": 0.004,
+    "shade": 0.35,
+    "name": "Arts College Ring — South West → Fountain Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.416125
+     ],
+     [
+      78.527818,
+      17.416183
+     ],
+     [
+      78.5285,
+      17.416487
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-019",
+    "from": "rrNE",
+    "to": "convocationFront",
+    "from_label": "Arts College Ring — North East",
+    "to_label": "Convocation Esplanade",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 144.7,
+    "elev_from": 11.8,
+    "elev_to": 12.8,
+    "grade": 0.007,
+    "shade": 0.2,
+    "name": "Arts College Ring — North East → Convocation Esplanade"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.418875
+     ],
+     [
+      78.530557,
+      17.418617
+     ],
+     [
+      78.531183,
+      17.418359
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-020",
+    "from": "rrW",
+    "to": "scienceFront",
+    "from_label": "Arts College Ring — West",
+    "to_label": "Science College Forecourt",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 181.1,
+    "elev_from": 7.9,
+    "elev_to": 6.6,
+    "grade": -0.007,
+    "shade": 0.2,
+    "name": "Arts College Ring — West → Science College Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.526476,
+      17.4175
+     ],
+     [
+      78.525628,
+      17.41759
+     ],
+     [
+      78.524781,
+      17.417681
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-021",
+    "from": "rrSE",
+    "to": "adminFront",
+    "from_label": "Arts College Ring — South East",
+    "to_label": "Administration Forecourt",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 233.9,
+    "elev_from": 9.7,
+    "elev_to": 8.3,
+    "grade": -0.006,
+    "shade": 0.2,
+    "name": "Arts College Ring — South East → Administration Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529931,
+      17.416125
+     ],
+     [
+      78.529686,
+      17.415094
+     ],
+     [
+      78.529441,
+      17.414063
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-022",
+    "from": "adminFront",
+    "to": "lawFront",
+    "from_label": "Administration Forecourt",
+    "to_label": "Law College Walk",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 180.3,
+    "elev_from": 8.3,
+    "elev_to": 8.9,
+    "grade": 0.003,
+    "shade": 0.2,
+    "name": "Administration Forecourt → Law College Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529441,
+      17.414063
+     ],
+     [
+      78.530148,
+      17.414516
+     ],
+     [
+      78.530854,
+      17.414968
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-023",
+    "from": "lawFront",
+    "to": "rrSE",
+    "from_label": "Law College Walk",
+    "to_label": "Arts College Ring — South East",
+    "kind": "path",
+    "surface": "concrete",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 161.2,
+    "elev_from": 8.9,
+    "elev_to": 9.7,
+    "grade": 0.005,
+    "shade": 0.2,
+    "name": "Law College Walk → Arts College Ring — South East"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.530854,
+      17.414968
+     ],
+     [
+      78.530392,
+      17.415547
+     ],
+     [
+      78.529931,
+      17.416125
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-025",
+    "from": "rrSW",
+    "to": "commerceFront",
+    "from_label": "Arts College Ring — South West",
+    "to_label": "Commerce Forecourt",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 222.2,
+    "elev_from": 8.7,
+    "elev_to": 8.5,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Arts College Ring — South West → Commerce Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527069,
+      17.416125
+     ],
+     [
+      78.526329,
+      17.415416
+     ],
+     [
+      78.525864,
+      17.414516
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-026",
+    "from": "libPlaza",
+    "to": "examFront",
+    "from_label": "Library Plaza",
+    "to_label": "Examination Branch Walk",
+    "kind": "path",
+    "surface": "concrete",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 268.5,
+    "elev_from": 8.8,
+    "elev_to": 8.4,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Library Plaza → Examination Branch Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527389,
+      17.4158
+     ],
+     [
+      78.527521,
+      17.414592
+     ],
+     [
+      78.527653,
+      17.413385
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-027",
+    "from": "rrS",
+    "to": "examFront",
+    "from_label": "Arts College Ring — South",
+    "to_label": "Examination Branch Walk",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 258.8,
+    "elev_from": 9,
+    "elev_to": 8.4,
+    "grade": -0.002,
+    "shade": 0.35,
+    "name": "Arts College Ring — South → Examination Branch Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.415556
+     ],
+     [
+      78.528235,
+      17.414413
+     ],
+     [
+      78.527653,
+      17.413385
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-028",
+    "from": "examFront",
+    "to": "adminFront",
+    "from_label": "Examination Branch Walk",
+    "to_label": "Administration Forecourt",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 204.3,
+    "elev_from": 8.4,
+    "elev_to": 8.3,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Examination Branch Walk → Administration Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527653,
+      17.413385
+     ],
+     [
+      78.528547,
+      17.413724
+     ],
+     [
+      78.529441,
+      17.414063
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-029",
+    "from": "commerceFront",
+    "to": "healthFront",
+    "from_label": "Commerce Forecourt",
+    "to_label": "Health Centre Approach",
+    "kind": "path",
+    "surface": "concrete",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.7,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 200.4,
+    "elev_from": 8.5,
+    "elev_to": 8.1,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Commerce Forecourt → Health Centre Approach"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.525864,
+      17.414516
+     ],
+     [
+      78.525249,
+      17.413828
+     ],
+     [
+      78.524922,
+      17.412978
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-030",
+    "from": "healthFront",
+    "to": "botGarden",
+    "from_label": "Health Centre Approach",
+    "to_label": "Botanical Garden Gate",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.8,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 173.9,
+    "elev_from": 8.1,
+    "elev_to": 7.7,
+    "grade": -0.002,
+    "shade": 0.35,
+    "name": "Health Centre Approach → Botanical Garden Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524922,
+      17.412978
+     ],
+     [
+      78.524872,
+      17.412193
+     ],
+     [
+      78.525111,
+      17.411441
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-031",
+    "from": "examFront",
+    "to": "gatePlaza",
+    "from_label": "Examination Branch Walk",
+    "to_label": "Main Gate Plaza",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 187.4,
+    "elev_from": 8.4,
+    "elev_to": 7.8,
+    "grade": -0.003,
+    "shade": 0.2,
+    "name": "Examination Branch Walk → Main Gate Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527653,
+      17.413385
+     ],
+     [
+      78.527511,
+      17.412549
+     ],
+     [
+      78.52737,
+      17.411712
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-032",
+    "from": "botGarden",
+    "to": "gatePlaza",
+    "from_label": "Botanical Garden Gate",
+    "to_label": "Main Gate Plaza",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.65,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 244.5,
+    "elev_from": 7.7,
+    "elev_to": 7.8,
+    "grade": 0,
+    "shade": 0.35,
+    "name": "Botanical Garden Gate → Main Gate Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.525111,
+      17.411441
+     ],
+     [
+      78.526219,
+      17.411738
+     ],
+     [
+      78.52737,
+      17.411712
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-033",
+    "from": "gatePlaza",
+    "to": "mainGate",
+    "from_label": "Main Gate Plaza",
+    "to_label": "Main Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 142.2,
+    "elev_from": 7.8,
+    "elev_to": 7.2,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Main Gate Plaza → Main Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.52737,
+      17.411712
+     ],
+     [
+      78.527489,
+      17.411079
+     ],
+     [
+      78.52737,
+      17.410446
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-034",
+    "from": "rrN",
+    "to": "northPlaza",
+    "from_label": "Arts College Ring — North",
+    "to_label": "North Plaza",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 85,
+    "elev_from": 9.8,
+    "elev_to": 9.8,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Arts College Ring — North → North Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.419444
+     ],
+     [
+      78.5285,
+      17.419829
+     ],
+     [
+      78.5285,
+      17.420213
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-035",
+    "from": "northPlaza",
+    "to": "northJunction",
+    "from_label": "North Plaza",
+    "to_label": "North Hostel Road",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 186.8,
+    "elev_from": 9.8,
+    "elev_to": 8.5,
+    "grade": -0.007,
+    "shade": 0.2,
+    "name": "North Plaza → North Hostel Road"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.420213
+     ],
+     [
+      78.528315,
+      17.421039
+     ],
+     [
+      78.527841,
+      17.421751
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-036",
+    "from": "northJunction",
+    "to": "northGate",
+    "from_label": "North Hostel Road",
+    "to_label": "North Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 319.8,
+    "elev_from": 8.5,
+    "elev_to": 8.2,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "North Hostel Road → North Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527841,
+      17.421751
+     ],
+     [
+      78.528336,
+      17.423116
+     ],
+     [
+      78.5285,
+      17.424554
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-037",
+    "from": "northJunction",
+    "to": "hostelJunction",
+    "from_label": "North Hostel Road",
+    "to_label": "Hostel Circle",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 327.6,
+    "elev_from": 8.5,
+    "elev_to": 5.8,
+    "grade": -0.008,
+    "shade": 0.2,
+    "name": "North Hostel Road → Hostel Circle"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527841,
+      17.421751
+     ],
+     [
+      78.526335,
+      17.421434
+     ],
+     [
+      78.524828,
+      17.421117
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-038",
+    "from": "northJunction",
+    "to": "intlFront",
+    "from_label": "North Hostel Road",
+    "to_label": "International House Walk",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 234.3,
+    "elev_from": 8.5,
+    "elev_to": 7.1,
+    "grade": -0.006,
+    "shade": 0.2,
+    "name": "North Hostel Road → International House Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527841,
+      17.421751
+     ],
+     [
+      78.526994,
+      17.422429
+     ],
+     [
+      78.526146,
+      17.423107
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-039",
+    "from": "hostelJunction",
+    "to": "westGate",
+    "from_label": "Hostel Circle",
+    "to_label": "West Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 572.5,
+    "elev_from": 5.8,
+    "elev_to": 5.1,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Hostel Circle → West Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524828,
+      17.421117
+     ],
+     [
+      78.522157,
+      17.420774
+     ],
+     [
+      78.519462,
+      17.420756
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-040",
+    "from": "hostelJunction",
+    "to": "nizamFront",
+    "from_label": "Hostel Circle",
+    "to_label": "Nizam Hostel Forecourt",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 151.3,
+    "elev_from": 5.8,
+    "elev_to": 5.7,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Hostel Circle → Nizam Hostel Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524828,
+      17.421117
+     ],
+     [
+      78.524122,
+      17.421208
+     ],
+     [
+      78.523416,
+      17.421298
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-041",
+    "from": "hostelJunction",
+    "to": "girlsFront",
+    "from_label": "Hostel Circle",
+    "to_label": "Girls Hostel Approach",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 87.4,
+    "elev_from": 5.8,
+    "elev_to": 6.2,
+    "grade": 0.005,
+    "shade": 0.2,
+    "name": "Hostel Circle → Girls Hostel Approach"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524828,
+      17.421117
+     ],
+     [
+      78.525004,
+      17.421475
+     ],
+     [
+      78.525299,
+      17.421751
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-042",
+    "from": "hostelJunction",
+    "to": "pgFront",
+    "from_label": "Hostel Circle",
+    "to_label": "PG Hostel Lane",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 281.2,
+    "elev_from": 5.8,
+    "elev_to": 5.6,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Hostel Circle → PG Hostel Lane"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524828,
+      17.421117
+     ],
+     [
+      78.523515,
+      17.420959
+     ],
+     [
+      78.522286,
+      17.420484
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-043",
+    "from": "hostelJunction",
+    "to": "facultyFront",
+    "from_label": "Hostel Circle",
+    "to_label": "Faculty Quarters Lane",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 0,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 533.6,
+    "elev_from": 5.8,
+    "elev_to": 4.8,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Hostel Circle → Faculty Quarters Lane"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524828,
+      17.421117
+     ],
+     [
+      78.522695,
+      17.419843
+     ],
+     [
+      78.520403,
+      17.418857
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-044",
+    "from": "pgFront",
+    "to": "guestFront",
+    "from_label": "PG Hostel Lane",
+    "to_label": "Guest House Drive",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 0,
+    "crowd": 0.7,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 385,
+    "elev_from": 5.6,
+    "elev_to": 5.1,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "PG Hostel Lane → Guest House Drive"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.522286,
+      17.420484
+     ],
+     [
+      78.522286,
+      17.418744
+     ],
+     [
+      78.522286,
+      17.417003
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-045",
+    "from": "guestFront",
+    "to": "scienceFront",
+    "from_label": "Guest House Drive",
+    "to_label": "Science College Forecourt",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.55,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 277.8,
+    "elev_from": 5.1,
+    "elev_to": 6.6,
+    "grade": 0.005,
+    "shade": 0.2,
+    "name": "Guest House Drive → Science College Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.522286,
+      17.417003
+     ],
+     [
+      78.52358,
+      17.417185
+     ],
+     [
+      78.524781,
+      17.417681
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-046",
+    "from": "scienceFront",
+    "to": "scienceGate",
+    "from_label": "Science College Forecourt",
+    "to_label": "Science Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 427.8,
+    "elev_from": 6.6,
+    "elev_to": 5.1,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Science College Forecourt → Science Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524781,
+      17.417681
+     ],
+     [
+      78.523345,
+      17.416324
+     ],
+     [
+      78.52191,
+      17.414968
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-047",
+    "from": "scienceGate",
+    "to": "commerceFront",
+    "from_label": "Science Gate",
+    "to_label": "Commerce Forecourt",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.85,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 423,
+    "elev_from": 5.1,
+    "elev_to": 8.5,
+    "grade": 0.008,
+    "shade": 0.35,
+    "name": "Science Gate → Commerce Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.52191,
+      17.414968
+     ],
+     [
+      78.523887,
+      17.414742
+     ],
+     [
+      78.525864,
+      17.414516
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-048",
+    "from": "rrE",
+    "to": "ouceFront",
+    "from_label": "Arts College Ring — East",
+    "to_label": "OUCE Plaza",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 281.8,
+    "elev_from": 11.4,
+    "elev_to": 11.6,
+    "grade": 0.001,
+    "shade": 0.2,
+    "name": "Arts College Ring — East → OUCE Plaza"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.530524,
+      17.4175
+     ],
+     [
+      78.531725,
+      17.416957
+     ],
+     [
+      78.532925,
+      17.416415
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-049",
+    "from": "ouceFront",
+    "to": "biotechFront",
+    "from_label": "OUCE Plaza",
+    "to_label": "Biotech Walk",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 261.7,
+    "elev_from": 11.6,
+    "elev_to": 13.1,
+    "grade": 0.006,
+    "shade": 0.2,
+    "name": "OUCE Plaza → Biotech Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.416415
+     ],
+     [
+      78.533819,
+      17.417229
+     ],
+     [
+      78.534714,
+      17.418043
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-050",
+    "from": "biotechFront",
+    "to": "eastGate",
+    "from_label": "Biotech Walk",
+    "to_label": "East Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 247.4,
+    "elev_from": 13.1,
+    "elev_to": 12,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Biotech Walk → East Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.534714,
+      17.418043
+     ],
+     [
+      78.535844,
+      17.417771
+     ],
+     [
+      78.536973,
+      17.4175
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-051",
+    "from": "ouceFront",
+    "to": "engineJunction",
+    "from_label": "OUCE Plaza",
+    "to_label": "Engineering South Road",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.45,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 200,
+    "elev_from": 11.6,
+    "elev_to": 9.6,
+    "grade": -0.01,
+    "shade": 0.2,
+    "name": "OUCE Plaza → Engineering South Road"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.416415
+     ],
+     [
+      78.532925,
+      17.41551
+     ],
+     [
+      78.532925,
+      17.414606
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-052",
+    "from": "engineJunction",
+    "to": "lakeEdge",
+    "from_label": "Engineering South Road",
+    "to_label": "Lakeside Promenade",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 0,
+    "crowd": 0.75,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 340.3,
+    "elev_from": 9.6,
+    "elev_to": 10.4,
+    "grade": 0.002,
+    "shade": 0.35,
+    "name": "Engineering South Road → Lakeside Promenade"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.414606
+     ],
+     [
+      78.534376,
+      17.413955
+     ],
+     [
+      78.535938,
+      17.413611
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-053",
+    "from": "engineJunction",
+    "to": "lawFront",
+    "from_label": "Engineering South Road",
+    "to_label": "Law College Walk",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 223.6,
+    "elev_from": 9.6,
+    "elev_to": 8.9,
+    "grade": -0.003,
+    "shade": 0.2,
+    "name": "Engineering South Road → Law College Walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.414606
+     ],
+     [
+      78.531889,
+      17.414787
+     ],
+     [
+      78.530854,
+      17.414968
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-054",
+    "from": "rrE",
+    "to": "sportsJunction",
+    "from_label": "Arts College Ring — East",
+    "to_label": "Sports Complex Junction",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 1,
+    "crowd": 0.4,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 342,
+    "elev_from": 11.4,
+    "elev_to": 14.3,
+    "grade": 0.008,
+    "shade": 0.2,
+    "name": "Arts College Ring — East → Sports Complex Junction"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.530524,
+      17.4175
+     ],
+     [
+      78.531456,
+      17.418761
+     ],
+     [
+      78.532643,
+      17.419806
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-055",
+    "from": "sportsJunction",
+    "to": "sportsFront",
+    "from_label": "Sports Complex Junction",
+    "to_label": "Sports Complex Forecourt",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.3,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 95.9,
+    "elev_from": 14.3,
+    "elev_to": 14.1,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Sports Complex Junction → Sports Complex Forecourt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532643,
+      17.419806
+     ],
+     [
+      78.533061,
+      17.419645
+     ],
+     [
+      78.533396,
+      17.419354
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-056",
+    "from": "sportsFront",
+    "to": "cricketJunction",
+    "from_label": "Sports Complex Forecourt",
+    "to_label": "Cricket Ground Approach",
+    "kind": "path",
+    "surface": "gravel",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.5,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 265.8,
+    "elev_from": 14.1,
+    "elev_to": 12.8,
+    "grade": -0.005,
+    "shade": 0.35,
+    "name": "Sports Complex Forecourt → Cricket Ground Approach"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.533396,
+      17.419354
+     ],
+     [
+      78.53349,
+      17.420552
+     ],
+     [
+      78.533584,
+      17.421751
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-057",
+    "from": "cricketJunction",
+    "to": "nePlaza",
+    "from_label": "Cricket Ground Approach",
+    "to_label": "North East Boulevard",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 0,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 143.7,
+    "elev_from": 12.8,
+    "elev_to": 11.4,
+    "grade": -0.01,
+    "shade": 0.2,
+    "name": "Cricket Ground Approach → North East Boulevard"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.533584,
+      17.421751
+     ],
+     [
+      78.53397,
+      17.422284
+     ],
+     [
+      78.534525,
+      17.422655
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-058",
+    "from": "nePlaza",
+    "to": "eastGate",
+    "from_label": "North East Boulevard",
+    "to_label": "East Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 0,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 626.5,
+    "elev_from": 11.4,
+    "elev_to": 12,
+    "grade": 0.001,
+    "shade": 0.2,
+    "name": "North East Boulevard → East Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.534525,
+      17.422655
+     ],
+     [
+      78.535749,
+      17.420077
+     ],
+     [
+      78.536973,
+      17.4175
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-059",
+    "from": "nePlaza",
+    "to": "northGate",
+    "from_label": "North East Boulevard",
+    "to_label": "North Gate",
+    "kind": "road",
+    "surface": "asphalt",
+    "width_m": 7.5,
+    "lit": 0,
+    "crowd": 0.6,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 674.5,
+    "elev_from": 11.4,
+    "elev_to": 8.2,
+    "grade": -0.005,
+    "shade": 0.2,
+    "name": "North East Boulevard → North Gate"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.534525,
+      17.422655
+     ],
+     [
+      78.53146,
+      17.42345
+     ],
+     [
+      78.5285,
+      17.424554
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-060",
+    "from": "fountain",
+    "to": "ent-artscollege",
+    "from_label": "Fountain Plaza",
+    "to_label": "ARTS entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 80.7,
+    "elev_from": 9.3,
+    "elev_to": 9.5,
+    "grade": 0.002,
+    "shade": 0.2,
+    "name": "Fountain Plaza → ARTS entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.5285,
+      17.416487
+     ],
+     [
+      78.528589,
+      17.416842
+     ],
+     [
+      78.528543,
+      17.417204
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-061",
+    "from": "libPlaza",
+    "to": "ent-library",
+    "from_label": "Library Plaza",
+    "to_label": "LIB entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 31.2,
+    "elev_from": 8.8,
+    "elev_to": 8.8,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Library Plaza → LIB entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527389,
+      17.4158
+     ],
+     [
+      78.527395,
+      17.415659
+     ],
+     [
+      78.527401,
+      17.415518
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-062",
+    "from": "masjidForecourt",
+    "to": "ent-masjid",
+    "from_label": "Masjid Forecourt",
+    "to_label": "MSJ entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 5.4,
+    "elev_from": 10.9,
+    "elev_to": 10.9,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Masjid Forecourt → MSJ entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529611,
+      17.417898
+     ],
+     [
+      78.529627,
+      17.417917
+     ],
+     [
+      78.529642,
+      17.417936
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-063",
+    "from": "convocationFront",
+    "to": "ent-convocation",
+    "from_label": "Convocation Esplanade",
+    "to_label": "CNV entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 30.9,
+    "elev_from": 12.8,
+    "elev_to": 13.1,
+    "grade": 0.01,
+    "shade": 0.2,
+    "name": "Convocation Esplanade → CNV entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.531183,
+      17.418359
+     ],
+     [
+      78.531223,
+      17.418493
+     ],
+     [
+      78.531264,
+      17.418628
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-064",
+    "from": "ouceFront",
+    "to": "ent-ouce",
+    "from_label": "OUCE Plaza",
+    "to_label": "OUCE entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 50.1,
+    "elev_from": 11.6,
+    "elev_to": 11.4,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "OUCE Plaza → OUCE entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.416415
+     ],
+     [
+      78.533096,
+      17.416259
+     ],
+     [
+      78.533268,
+      17.416103
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-065",
+    "from": "ouceFront",
+    "to": "ent-ouce-b",
+    "from_label": "OUCE Plaza",
+    "to_label": "OUCE-B entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 139.9,
+    "elev_from": 11.6,
+    "elev_to": 12.3,
+    "grade": 0.005,
+    "shade": 0.2,
+    "name": "OUCE Plaza → OUCE-B entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.532925,
+      17.416415
+     ],
+     [
+      78.533532,
+      17.41666
+     ],
+     [
+      78.53419,
+      17.416686
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-066",
+    "from": "scienceFront",
+    "to": "ent-science",
+    "from_label": "Science College Forecourt",
+    "to_label": "SCI entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 39.2,
+    "elev_from": 6.6,
+    "elev_to": 6.4,
+    "grade": -0.005,
+    "shade": 0.2,
+    "name": "Science College Forecourt → SCI entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524781,
+      17.417681
+     ],
+     [
+      78.524778,
+      17.417858
+     ],
+     [
+      78.524774,
+      17.418036
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-067",
+    "from": "scienceFront",
+    "to": "ent-science-annexe",
+    "from_label": "Science College Forecourt",
+    "to_label": "SCI-A entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 78.2,
+    "elev_from": 6.6,
+    "elev_to": 6.5,
+    "grade": -0.001,
+    "shade": 0.2,
+    "name": "Science College Forecourt → SCI-A entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524781,
+      17.417681
+     ],
+     [
+      78.524488,
+      17.417468
+     ],
+     [
+      78.52429,
+      17.417169
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-068",
+    "from": "commerceFront",
+    "to": "ent-commerce",
+    "from_label": "Commerce Forecourt",
+    "to_label": "CBM entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 32.4,
+    "elev_from": 8.5,
+    "elev_to": 8.5,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Commerce Forecourt → CBM entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.525864,
+      17.414516
+     ],
+     [
+      78.525862,
+      17.414369
+     ],
+     [
+      78.525808,
+      17.414233
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-069",
+    "from": "lawFront",
+    "to": "ent-law",
+    "from_label": "Law College Walk",
+    "to_label": "LAW entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 27.5,
+    "elev_from": 8.9,
+    "elev_to": 8.8,
+    "grade": -0.004,
+    "shade": 0.2,
+    "name": "Law College Walk → LAW entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.530854,
+      17.414968
+     ],
+     [
+      78.530906,
+      17.414854
+     ],
+     [
+      78.530996,
+      17.414765
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-070",
+    "from": "facultyFront",
+    "to": "ent-education",
+    "from_label": "Faculty Quarters Lane",
+    "to_label": "IER entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 152.2,
+    "elev_from": 4.8,
+    "elev_to": 5.3,
+    "grade": 0.003,
+    "shade": 0.2,
+    "name": "Faculty Quarters Lane → IER entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.520403,
+      17.418857
+     ],
+     [
+      78.521094,
+      17.419041
+     ],
+     [
+      78.521674,
+      17.419444
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-071",
+    "from": "adminFront",
+    "to": "ent-admin",
+    "from_label": "Administration Forecourt",
+    "to_label": "ADM entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 20.9,
+    "elev_from": 8.3,
+    "elev_to": 8.2,
+    "grade": -0.005,
+    "shade": 0.2,
+    "name": "Administration Forecourt → ADM entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529441,
+      17.414063
+     ],
+     [
+      78.529401,
+      17.413977
+     ],
+     [
+      78.529394,
+      17.413883
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-072",
+    "from": "examFront",
+    "to": "ent-exam",
+    "from_label": "Examination Branch Walk",
+    "to_label": "EXM entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 16,
+    "elev_from": 8.4,
+    "elev_to": 8.4,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Examination Branch Walk → EXM entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.527653,
+      17.413385
+     ],
+     [
+      78.527653,
+      17.413313
+     ],
+     [
+      78.527653,
+      17.41324
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-073",
+    "from": "healthFront",
+    "to": "ent-health",
+    "from_label": "Health Centre Approach",
+    "to_label": "HLT entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 4,
+    "elev_from": 8.1,
+    "elev_to": 8.1,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Health Centre Approach → HLT entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.524922,
+      17.412978
+     ],
+     [
+      78.524922,
+      17.41296
+     ],
+     [
+      78.524922,
+      17.412942
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-074",
+    "from": "canteenFront",
+    "to": "ent-canteen",
+    "from_label": "Students Centre Walk",
+    "to_label": "STC entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 9.1,
+    "elev_from": 9.9,
+    "elev_to": 10,
+    "grade": 0.011,
+    "shade": 0.2,
+    "name": "Students Centre Walk → STC entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.529912,
+      17.416397
+     ],
+     [
+      78.52992,
+      17.416437
+     ],
+     [
+      78.529912,
+      17.416478
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-075",
+    "from": "sportsFront",
+    "to": "ent-sports",
+    "from_label": "Sports Complex Forecourt",
+    "to_label": "SPT entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 47.9,
+    "elev_from": 14.1,
+    "elev_to": 14,
+    "grade": -0.002,
+    "shade": 0.2,
+    "name": "Sports Complex Forecourt → SPT entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.533396,
+      17.419354
+     ],
+     [
+      78.53354,
+      17.41952
+     ],
+     [
+      78.533615,
+      17.419724
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-076",
+    "from": "cricketJunction",
+    "to": "ent-cricket",
+    "from_label": "Cricket Ground Approach",
+    "to_label": "CRK entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 80.7,
+    "elev_from": 12.8,
+    "elev_to": 12.9,
+    "grade": 0.001,
+    "shade": 0.2,
+    "name": "Cricket Ground Approach → CRK entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.533584,
+      17.421751
+     ],
+     [
+      78.533866,
+      17.421506
+     ],
+     [
+      78.534149,
+      17.421262
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-077",
+    "from": "nizamFront",
+    "to": "ent-nizam",
+    "from_label": "Nizam Hostel Forecourt",
+    "to_label": "NZM entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 20.5,
+    "elev_from": 5.7,
+    "elev_to": 5.7,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Nizam Hostel Forecourt → NZM entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.523416,
+      17.421298
+     ],
+     [
+      78.523409,
+      17.421391
+     ],
+     [
+      78.523436,
+      17.42148
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-078",
+    "from": "girlsFront",
+    "to": "ent-girls",
+    "from_label": "Girls Hostel Approach",
+    "to_label": "GHS entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 22,
+    "elev_from": 6.2,
+    "elev_to": 6.2,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Girls Hostel Approach → GHS entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.525299,
+      17.421751
+     ],
+     [
+      78.525299,
+      17.42185
+     ],
+     [
+      78.525299,
+      17.42195
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-079",
+    "from": "pgFront",
+    "to": "ent-pg",
+    "from_label": "PG Hostel Lane",
+    "to_label": "PGR entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 20,
+    "elev_from": 5.6,
+    "elev_to": 5.6,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "PG Hostel Lane → PGR entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.522286,
+      17.420484
+     ],
+     [
+      78.522286,
+      17.420575
+     ],
+     [
+      78.522286,
+      17.420665
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-080",
+    "from": "intlFront",
+    "to": "ent-international",
+    "from_label": "International House Walk",
+    "to_label": "ISH entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 15.2,
+    "elev_from": 7.1,
+    "elev_to": 7.2,
+    "grade": 0.007,
+    "shade": 0.2,
+    "name": "International House Walk → ISH entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.526146,
+      17.423107
+     ],
+     [
+      78.526134,
+      17.423175
+     ],
+     [
+      78.526146,
+      17.423243
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-081",
+    "from": "guestFront",
+    "to": "ent-guest",
+    "from_label": "Guest House Drive",
+    "to_label": "GST entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 15.3,
+    "elev_from": 5.1,
+    "elev_to": 5.1,
+    "grade": 0,
+    "shade": 0.2,
+    "name": "Guest House Drive → GST entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.522286,
+      17.417003
+     ],
+     [
+      78.522272,
+      17.416935
+     ],
+     [
+      78.522258,
+      17.416867
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-082",
+    "from": "facultyFront",
+    "to": "ent-faculty",
+    "from_label": "Faculty Quarters Lane",
+    "to_label": "FQ entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 27.4,
+    "elev_from": 4.8,
+    "elev_to": 4.9,
+    "grade": 0.004,
+    "shade": 0.2,
+    "name": "Faculty Quarters Lane → FQ entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.520403,
+      17.418857
+     ],
+     [
+      78.520529,
+      17.418881
+     ],
+     [
+      78.520639,
+      17.418947
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-083",
+    "from": "biotechFront",
+    "to": "ent-biotech",
+    "from_label": "Biotech Walk",
+    "to_label": "IBT entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 33.3,
+    "elev_from": 13.1,
+    "elev_to": 13.2,
+    "grade": 0.003,
+    "shade": 0.2,
+    "name": "Biotech Walk → IBT entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.534714,
+      17.418043
+     ],
+     [
+      78.534756,
+      17.418187
+     ],
+     [
+      78.534743,
+      17.418337
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-084",
+    "from": "botGarden",
+    "to": "ent-botany",
+    "from_label": "Botanical Garden Gate",
+    "to_label": "BOT entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 30.5,
+    "elev_from": 7.7,
+    "elev_to": 7.6,
+    "grade": -0.003,
+    "shade": 0.2,
+    "name": "Botanical Garden Gate → BOT entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.525111,
+      17.411441
+     ],
+     [
+      78.525085,
+      17.411305
+     ],
+     [
+      78.525111,
+      17.411169
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "e-085",
+    "from": "mainGate",
+    "to": "ent-gatehouse",
+    "from_label": "Main Gate",
+    "to_label": "MGS entrance",
+    "kind": "path",
+    "surface": "paver",
+    "width_m": 3.6,
+    "lit": 1,
+    "crowd": 0.35,
+    "accessible": 1,
+    "steps": 0,
+    "length_m": 36.1,
+    "elev_from": 7.2,
+    "elev_to": 7,
+    "grade": -0.006,
+    "shade": 0.2,
+    "name": "Main Gate → MGS entrance"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      78.52737,
+      17.410446
+     ],
+     [
+      78.527276,
+      17.41031
+     ],
+     [
+      78.527182,
+      17.410175
+     ]
+    ]
+   }
+  }
+ ]
+}
