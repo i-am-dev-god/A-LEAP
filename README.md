@@ -151,11 +151,23 @@ Target: 60 fps on a mid-range 2020 laptop GPU at 1080p.
 
 ---
 
+## Live
+
+**https://i-am-dev-god.github.io/A-LEAP/** — served from the static export of this repo by `.github/workflows/pages.yml` on every push to `main`.
+
+---
+
 ## Deployment
 
-### Vercel (recommended)
+### GitHub Pages (live today)
 
-The project is a standard Next.js App Router app — import the repository in Vercel and deploy. Add the two optional Supabase environment variables in project settings if you want the live feed.
+`.github/workflows/pages.yml` runs `npm ci` → `typecheck` → `STATIC_EXPORT=1 PAGES_BASE_PATH=/A-LEAP npm run build` and publishes `out/` through `actions/deploy-pages`. No secrets required.
+
+### Vercel
+
+The project is a standard Next.js App Router app — import the repository in Vercel and deploy (framework preset **Next.js**, no build overrides, no environment variables required). Add the two optional Supabase environment variables in project settings if you want the live feed.
+
+> Vercel deploys built from the Vercel dashboard need the repo authorised through *Vercel → Account Settings → Login Connections → GitHub*. Without it the API rejects repository linking, which is why the automated deploy currently targets GitHub Pages.
 
 ### Self-hosting
 
