@@ -1,0 +1,1470 @@
+{
+ "type": "FeatureCollection",
+ "name": "ou-buildings",
+ "metadata": {
+  "datum": {
+   "lng": 78.5285,
+   "lat": 17.4175
+  },
+  "units": "metres (local tangent plane)",
+  "generated": "2026-11-17T19:09:24.535Z"
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "artscollege",
+    "name": "Arts College",
+    "short": "ARTS",
+    "code": "OU-01",
+    "category": "heritage",
+    "floors": 2,
+    "height_m": 17,
+    "base_m": 9.6,
+    "rot": 8,
+    "w_m": 132,
+    "d_m": 48,
+    "footprint_m2": 6336,
+    "hero": "arts",
+    "hub": "fountain",
+    "entrance_node": "ent-artscollege",
+    "entrance_lng": 78.528543,
+    "entrance_lat": 17.417204,
+    "cx_lng": 78.5285,
+    "cy_lat": 17.4175,
+    "aliases": "arts|arts college|daira|main building|heritage|history|english|telugu",
+    "hours": "08:00 – 20:00",
+    "access": "Main portico (south) · north portico step-free",
+    "description": "The 1939 Osmania Arts College — a fusion of Indo-Saracenic and Osmanian architecture, crowned by the great dome that anchors the campus axis.",
+    "pois": "[{\"name\":\"Department of English\",\"floor\":0,\"kind\":\"office\"},{\"name\":\"Department of History\",\"floor\":0,\"kind\":\"office\"},{\"name\":\"Daira-e-Urdu Hall\",\"floor\":1,\"kind\":\"room\"},{\"name\":\"Arts Auditorium\",\"floor\":1,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.527916,
+       17.417202
+      ],
+      [
+       78.529147,
+       17.417368
+      ],
+      [
+       78.529084,
+       17.417798
+      ],
+      [
+       78.527853,
+       17.417632
+      ],
+      [
+       78.527916,
+       17.417202
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "library",
+    "name": "Dr. Zakir Husain Library",
+    "short": "LIB",
+    "code": "OU-02",
+    "category": "library",
+    "floors": 4,
+    "height_m": 20,
+    "base_m": 8.8,
+    "rot": -6,
+    "w_m": 64,
+    "d_m": 44,
+    "footprint_m2": 2816,
+    "hero": "library",
+    "hub": "libPlaza",
+    "entrance_node": "ent-library",
+    "entrance_lng": 78.527401,
+    "entrance_lat": 17.415518,
+    "cx_lng": 78.52737,
+    "cy_lat": 17.415239,
+    "aliases": "library|zakir husain|central library|study|reading hall|seats|books|manuscripts",
+    "hours": "07:30 – 23:00",
+    "access": "North stair · ramp via east annexe",
+    "description": "The campus knowledge core: four stack floors, a daylight reading atrium and 24-hour exam-season study zones.",
+    "pois": "[{\"name\":\"Reading Hall\",\"floor\":1,\"kind\":\"facility\"},{\"name\":\"Digital Resource Zone\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Rare Manuscripts Archive\",\"floor\":3,\"kind\":\"facility\"},{\"name\":\"Thesis Repository\",\"floor\":4,\"kind\":\"facility\"},{\"name\":\"Discussion Pods\",\"floor\":2,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.527049,
+       17.415071
+      ],
+      [
+       78.527648,
+       17.415011
+      ],
+      [
+       78.527691,
+       17.415407
+      ],
+      [
+       78.527092,
+       17.415467
+      ],
+      [
+       78.527049,
+       17.415071
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "masjid",
+    "name": "Jama Masjid, OU",
+    "short": "MSJ",
+    "code": "OU-03",
+    "category": "worship",
+    "floors": 1,
+    "height_m": 13,
+    "base_m": 11,
+    "rot": 8,
+    "w_m": 30,
+    "d_m": 30,
+    "footprint_m2": 900,
+    "hero": "mosque",
+    "hub": "masjidForecourt",
+    "entrance_node": "ent-masjid",
+    "entrance_lng": 78.529642,
+    "entrance_lat": 17.417936,
+    "cx_lng": 78.529611,
+    "cy_lat": 17.418151,
+    "aliases": "mosque|masjid|jama masjid|prayer|namaaz",
+    "hours": "05:00 – 22:00",
+    "access": "Forecourt steps · wudu plaza",
+    "description": "The campus mosque on the north-east axis of the Arts College, its dome and slim minarets visible across the quadrangle.",
+    "pois": "[{\"name\":\"Prayer Hall\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Wudu Plaza\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.529491,
+       17.417998
+      ],
+      [
+       78.52977,
+       17.418036
+      ],
+      [
+       78.529731,
+       17.418304
+      ],
+      [
+       78.529451,
+       17.418267
+      ],
+      [
+       78.529491,
+       17.417998
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "convocation",
+    "name": "Convocation Hall",
+    "short": "CNV",
+    "code": "OU-04",
+    "category": "events",
+    "floors": 2,
+    "height_m": 15,
+    "base_m": 13.3,
+    "rot": -12,
+    "w_m": 66,
+    "d_m": 44,
+    "footprint_m2": 2904,
+    "hero": "hall",
+    "hub": "convocationFront",
+    "entrance_node": "ent-convocation",
+    "entrance_lng": 78.531264,
+    "entrance_lat": 17.418628,
+    "cx_lng": 78.531324,
+    "cy_lat": 17.418902,
+    "aliases": "convocation|auditorium|centenary|graduation|events",
+    "hours": "By event · 10:00 – 22:00",
+    "access": "Esplanade ramp (step-free)",
+    "description": "Convocation hall and centenary auditorium — the ceremonial heart of the university, seating 1,400.",
+    "pois": "[{\"name\":\"Main Auditorium\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Banquet Gallery\",\"floor\":1,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.530977,
+       17.418769
+      ],
+      [
+       78.531585,
+       17.418645
+      ],
+      [
+       78.531671,
+       17.419034
+      ],
+      [
+       78.531064,
+       17.419158
+      ],
+      [
+       78.530977,
+       17.418769
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "ouce",
+    "name": "University College of Engineering",
+    "short": "OUCE",
+    "code": "OU-05",
+    "category": "academic",
+    "floors": 4,
+    "height_m": 19,
+    "base_m": 10.9,
+    "rot": -8,
+    "w_m": 132,
+    "d_m": 74,
+    "footprint_m2": 9768,
+    "hero": "ouce",
+    "hub": "ouceFront",
+    "entrance_node": "ent-ouce",
+    "entrance_lng": 78.533268,
+    "entrance_lat": 17.416103,
+    "cx_lng": 78.533207,
+    "cy_lat": 17.415691,
+    "aliases": "engineering|ouce|engineering college|cse|ece|mech|civil|mtech|btech|placement",
+    "hours": "08:00 – 21:00",
+    "access": "North plaza entry · lifts to all floors",
+    "description": "OUCE — the engineering flagship. Four floors of studios, fabrication bays and the central computing facility.",
+    "pois": "[{\"name\":\"CSE Seminar Hall\",\"floor\":3,\"kind\":\"room\"},{\"name\":\"Robotics & Automation Lab\",\"floor\":1,\"kind\":\"lab\"},{\"name\":\"Central Computing Facility\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Mechanical Workshop\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"ECE Signal Processing Lab\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Training & Placement Cell\",\"floor\":3,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.532544,
+       17.415443
+      ],
+      [
+       78.533774,
+       17.415277
+      ],
+      [
+       78.533871,
+       17.41594
+      ],
+      [
+       78.532641,
+       17.416106
+      ],
+      [
+       78.532544,
+       17.415443
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "ouce-b",
+    "name": "OUCE — Block B (Computer Science)",
+    "short": "OUCE-B",
+    "code": "OU-06",
+    "category": "academic",
+    "floors": 3,
+    "height_m": 14,
+    "base_m": 12.3,
+    "rot": -8,
+    "w_m": 54,
+    "d_m": 40,
+    "footprint_m2": 2160,
+    "hero": "",
+    "hub": "ouceFront",
+    "entrance_node": "ent-ouce-b",
+    "entrance_lng": 78.53419,
+    "entrance_lat": 17.416686,
+    "cx_lng": 78.534525,
+    "cy_lat": 17.416641,
+    "aliases": "block b|cse block|computer science|it|software",
+    "hours": "08:00 – 21:00",
+    "access": "West entry from OUCE plaza",
+    "description": "The newer CSE block: software engineering studios and the AI/ML research cluster.",
+    "pois": "[{\"name\":\"AI/ML Research Lab\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Software Engineering Studio\",\"floor\":1,\"kind\":\"room\"},{\"name\":\"Server Room\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.534248,
+       17.416496
+      ],
+      [
+       78.534751,
+       17.416428
+      ],
+      [
+       78.534803,
+       17.416786
+      ],
+      [
+       78.5343,
+       17.416854
+      ],
+      [
+       78.534248,
+       17.416496
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "science",
+    "name": "University College of Science",
+    "short": "SCI",
+    "code": "OU-07",
+    "category": "academic",
+    "floors": 3,
+    "height_m": 17,
+    "base_m": 6.2,
+    "rot": 6,
+    "w_m": 104,
+    "d_m": 64,
+    "footprint_m2": 6656,
+    "hero": "science",
+    "hub": "scienceFront",
+    "entrance_node": "ent-science",
+    "entrance_lng": 78.524774,
+    "entrance_lat": 17.418036,
+    "cx_lng": 78.524734,
+    "cy_lat": 17.418404,
+    "aliases": "science|science college|physics|chemistry|maths|botany|zoology|statistics",
+    "hours": "08:00 – 20:00",
+    "access": "South forecourt · step-free",
+    "description": "College of Science — physics, chemistry, mathematics and the life sciences, wrapped around an open central court.",
+    "pois": "[{\"name\":\"Physics Lecture Theatre\",\"floor\":1,\"kind\":\"room\"},{\"name\":\"Analytical Chemistry Lab\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Mathematics Seminar Room\",\"floor\":0,\"kind\":\"room\"},{\"name\":\"Botany Museum\",\"floor\":1,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.524279,
+       17.418067
+      ],
+      [
+       78.525252,
+       17.418166
+      ],
+      [
+       78.525189,
+       17.418741
+      ],
+      [
+       78.524216,
+       17.418643
+      ],
+      [
+       78.524279,
+       17.418067
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "science-annexe",
+    "name": "Science College — Research Annexe",
+    "short": "SCI-A",
+    "code": "OU-08",
+    "category": "research",
+    "floors": 2,
+    "height_m": 10,
+    "base_m": 6.3,
+    "rot": 6,
+    "w_m": 48,
+    "d_m": 32,
+    "footprint_m2": 1536,
+    "hero": "",
+    "hub": "scienceFront",
+    "entrance_node": "ent-science-annexe",
+    "entrance_lng": 78.52429,
+    "entrance_lat": 17.417169,
+    "cx_lng": 78.523981,
+    "cy_lat": 17.417138,
+    "aliases": "research annexe|science research|labs",
+    "hours": "09:00 – 19:00",
+    "access": "East annexe door",
+    "description": "Instrumentation and sponsored-research annexe serving the science faculty.",
+    "pois": "[{\"name\":\"Instrumentation Lab\",\"floor\":1,\"kind\":\"lab\"},{\"name\":\"Research Scholars Room\",\"floor\":0,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.523772,
+       17.416972
+      ],
+      [
+       78.524221,
+       17.417017
+      ],
+      [
+       78.52419,
+       17.417305
+      ],
+      [
+       78.52374,
+       17.417259
+      ],
+      [
+       78.523772,
+       17.416972
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "commerce",
+    "name": "College of Commerce & Business Management",
+    "short": "CBM",
+    "code": "OU-09",
+    "category": "academic",
+    "floors": 3,
+    "height_m": 15,
+    "base_m": 8.5,
+    "rot": -8,
+    "w_m": 58,
+    "d_m": 40,
+    "footprint_m2": 2320,
+    "hero": "",
+    "hub": "commerceFront",
+    "entrance_node": "ent-commerce",
+    "entrance_lng": 78.525808,
+    "entrance_lat": 17.414233,
+    "cx_lng": 78.52577,
+    "cy_lat": 17.413973,
+    "aliases": "commerce|business|management|mba|bcom|cbm",
+    "hours": "08:30 – 20:00",
+    "access": "North forecourt",
+    "description": "Commerce and business management, with the campus trading-floor simulation room.",
+    "pois": "[{\"name\":\"MBA Seminar Hall\",\"floor\":2,\"kind\":\"room\"},{\"name\":\"Trading Floor Simulation Lab\",\"floor\":1,\"kind\":\"lab\"},{\"name\":\"Commerce Library Annexe\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.525473,
+       17.41383
+      ],
+      [
+       78.526014,
+       17.413757
+      ],
+      [
+       78.526066,
+       17.414116
+      ],
+      [
+       78.525526,
+       17.414189
+      ],
+      [
+       78.525473,
+       17.41383
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "law",
+    "name": "College of Law",
+    "short": "LAW",
+    "code": "OU-10",
+    "category": "academic",
+    "floors": 3,
+    "height_m": 14,
+    "base_m": 8.6,
+    "rot": 10,
+    "w_m": 56,
+    "d_m": 38,
+    "footprint_m2": 2128,
+    "hero": "",
+    "hub": "lawFront",
+    "entrance_node": "ent-law",
+    "entrance_lng": 78.530996,
+    "entrance_lat": 17.414765,
+    "cx_lng": 78.531042,
+    "cy_lat": 17.414516,
+    "aliases": "law|law college|legal|moot court|llb",
+    "hours": "08:00 – 19:00",
+    "access": "North entry",
+    "description": "College of Law, home of the OU moot court and the legal aid clinic.",
+    "pois": "[{\"name\":\"Moot Court Hall\",\"floor\":1,\"kind\":\"facility\"},{\"name\":\"Legal Aid Clinic\",\"floor\":0,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.530813,
+       17.414302
+      ],
+      [
+       78.531333,
+       17.41439
+      ],
+      [
+       78.531271,
+       17.414729
+      ],
+      [
+       78.530751,
+       17.414641
+      ],
+      [
+       78.530813,
+       17.414302
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "education",
+    "name": "Institute of Education & Research",
+    "short": "IER",
+    "code": "OU-11",
+    "category": "academic",
+    "floors": 2,
+    "height_m": 11,
+    "base_m": 5.2,
+    "rot": 0,
+    "w_m": 52,
+    "d_m": 34,
+    "footprint_m2": 1768,
+    "hero": "",
+    "hub": "facultyFront",
+    "entrance_node": "ent-education",
+    "entrance_lng": 78.521674,
+    "entrance_lat": 17.419444,
+    "cx_lng": 78.521345,
+    "cy_lat": 17.419444,
+    "aliases": "education|ier|teacher training|bed|med",
+    "hours": "08:30 – 18:00",
+    "access": "East entry from faculty lane",
+    "description": "Teacher education, curriculum research and the campus demonstration school.",
+    "pois": "[{\"name\":\"Curriculum Lab\",\"floor\":1,\"kind\":\"lab\"},{\"name\":\"Demonstration Classroom\",\"floor\":0,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.5211,
+       17.419291
+      ],
+      [
+       78.52159,
+       17.419291
+      ],
+      [
+       78.52159,
+       17.419598
+      ],
+      [
+       78.5211,
+       17.419598
+      ],
+      [
+       78.5211,
+       17.419291
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "admin",
+    "name": "Administrative Building",
+    "short": "ADM",
+    "code": "OU-12",
+    "category": "admin",
+    "floors": 3,
+    "height_m": 16,
+    "base_m": 8.1,
+    "rot": 0,
+    "w_m": 64,
+    "d_m": 42,
+    "footprint_m2": 2688,
+    "hero": "",
+    "hub": "adminFront",
+    "entrance_node": "ent-admin",
+    "entrance_lng": 78.529394,
+    "entrance_lat": 17.413883,
+    "cx_lng": 78.529394,
+    "cy_lat": 17.413611,
+    "aliases": "admin|administration|registrar|vice chancellor|vc office|accounts",
+    "hours": "09:30 – 17:30",
+    "access": "North forecourt · step-free",
+    "description": "Registrar, finance and vice-chancellor offices — the administrative command of the campus.",
+    "pois": "[{\"name\":\"Registrar's Office\",\"floor\":1,\"kind\":\"office\"},{\"name\":\"Vice-Chancellor Secretariat\",\"floor\":2,\"kind\":\"office\"},{\"name\":\"Accounts & Fees Counter\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.529093,
+       17.413421
+      ],
+      [
+       78.529696,
+       17.413421
+      ],
+      [
+       78.529696,
+       17.413801
+      ],
+      [
+       78.529093,
+       17.413801
+      ],
+      [
+       78.529093,
+       17.413421
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "exam",
+    "name": "Examination Branch",
+    "short": "EXM",
+    "code": "OU-13",
+    "category": "admin",
+    "floors": 2,
+    "height_m": 12,
+    "base_m": 8.3,
+    "rot": 0,
+    "w_m": 74,
+    "d_m": 40,
+    "footprint_m2": 2960,
+    "hero": "",
+    "hub": "examFront",
+    "entrance_node": "ent-exam",
+    "entrance_lng": 78.527653,
+    "entrance_lat": 17.41324,
+    "cx_lng": 78.527653,
+    "cy_lat": 17.412978,
+    "aliases": "exam|examination|results|hall ticket|transcripts|marks memo",
+    "hours": "09:30 – 17:00",
+    "access": "North entry",
+    "description": "Examination branch — hall tickets, transcripts, revaluation and degree verification.",
+    "pois": "[{\"name\":\"Results Counter\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Transcripts Desk\",\"floor\":1,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.527304,
+       17.412797
+      ],
+      [
+       78.528001,
+       17.412797
+      ],
+      [
+       78.528001,
+       17.413159
+      ],
+      [
+       78.527304,
+       17.413159
+      ],
+      [
+       78.527304,
+       17.412797
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "health",
+    "name": "University Health Centre",
+    "short": "HLT",
+    "code": "OU-14",
+    "category": "health",
+    "floors": 2,
+    "height_m": 9,
+    "base_m": 8,
+    "rot": 0,
+    "w_m": 46,
+    "d_m": 34,
+    "footprint_m2": 1564,
+    "hero": "",
+    "hub": "healthFront",
+    "entrance_node": "ent-health",
+    "entrance_lng": 78.524922,
+    "entrance_lat": 17.412942,
+    "cx_lng": 78.524922,
+    "cy_lat": 17.412707,
+    "aliases": "health|hospital|clinic|medical|doctor|ambulance|pharmacy",
+    "hours": "24 × 7",
+    "access": "North entrance · ambulance bay",
+    "description": "Round-the-clock campus health centre with ambulance bay and pharmacy.",
+    "pois": "[{\"name\":\"OPD & Consultation\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Pharmacy\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Observation Ward\",\"floor\":1,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.524706,
+       17.412553
+      ],
+      [
+       78.525139,
+       17.412553
+      ],
+      [
+       78.525139,
+       17.412861
+      ],
+      [
+       78.524706,
+       17.412861
+      ],
+      [
+       78.524706,
+       17.412553
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "canteen",
+    "name": "Students' Centre & Canteen",
+    "short": "STC",
+    "code": "OU-15",
+    "category": "amenity",
+    "floors": 2,
+    "height_m": 10,
+    "base_m": 10.2,
+    "rot": 0,
+    "w_m": 46,
+    "d_m": 28,
+    "footprint_m2": 1288,
+    "hero": "",
+    "hub": "canteenFront",
+    "entrance_node": "ent-canteen",
+    "entrance_lng": 78.529912,
+    "entrance_lat": 17.416478,
+    "cx_lng": 78.529912,
+    "cy_lat": 17.416686,
+    "aliases": "canteen|food|mess|students centre|coffee|snacks|chai",
+    "hours": "07:00 – 23:00",
+    "access": "South terrace · step-free",
+    "description": "Student centre, canteen and the rooftop chai terrace overlooking the ring promenade.",
+    "pois": "[{\"name\":\"Main Canteen\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Chai Terrace\",\"floor\":1,\"kind\":\"facility\"},{\"name\":\"Student Clubs Hub\",\"floor\":1,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.529696,
+       17.416559
+      ],
+      [
+       78.530129,
+       17.416559
+      ],
+      [
+       78.530129,
+       17.416813
+      ],
+      [
+       78.529696,
+       17.416813
+      ],
+      [
+       78.529696,
+       17.416559
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "sports",
+    "name": "Indoor Sports Complex",
+    "short": "SPT",
+    "code": "OU-16",
+    "category": "sports",
+    "floors": 2,
+    "height_m": 16,
+    "base_m": 13.7,
+    "rot": -6,
+    "w_m": 96,
+    "d_m": 64,
+    "footprint_m2": 6144,
+    "hero": "sports",
+    "hub": "sportsFront",
+    "entrance_node": "ent-sports",
+    "entrance_lng": 78.533615,
+    "entrance_lat": 17.419724,
+    "cx_lng": 78.534149,
+    "cy_lat": 17.41967,
+    "aliases": "sports|gym|badminton|basketball|indoor|fitness|gymnasium",
+    "hours": "06:00 – 22:00",
+    "access": "West forecourt · step-free",
+    "description": "Indoor arena for badminton, basketball and volleyball, with a strength & conditioning gym.",
+    "pois": "[{\"name\":\"Badminton Courts\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Strength & Conditioning Gym\",\"floor\":1,\"kind\":\"facility\"},{\"name\":\"Basketball Arena\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.533668,
+       17.419428
+      ],
+      [
+       78.534567,
+       17.419337
+      ],
+      [
+       78.53463,
+       17.419913
+      ],
+      [
+       78.533731,
+       17.420004
+      ],
+      [
+       78.533668,
+       17.419428
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "cricket",
+    "name": "Cricket Pavilion",
+    "short": "CRK",
+    "code": "OU-17",
+    "category": "sports",
+    "floors": 1,
+    "height_m": 7,
+    "base_m": 12.7,
+    "rot": 0,
+    "w_m": 46,
+    "d_m": 30,
+    "footprint_m2": 1380,
+    "hero": "",
+    "hub": "cricketJunction",
+    "entrance_node": "ent-cricket",
+    "entrance_lng": 78.534149,
+    "entrance_lat": 17.421262,
+    "cx_lng": 78.534149,
+    "cy_lat": 17.421479,
+    "aliases": "cricket|pavilion|ground|nets|athletics",
+    "hours": "06:00 – 19:00",
+    "access": "South gate to the ground",
+    "description": "Pavilion and changing rooms for the OU cricket ground and athletics track.",
+    "pois": "[{\"name\":\"Pavilion Lounge\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Practice Nets\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.533932,
+       17.421344
+      ],
+      [
+       78.534365,
+       17.421344
+      ],
+      [
+       78.534365,
+       17.421615
+      ],
+      [
+       78.533932,
+       17.421615
+      ],
+      [
+       78.533932,
+       17.421344
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "nizam",
+    "name": "Nizam Hostel",
+    "short": "NZM",
+    "code": "OU-18",
+    "category": "hostel",
+    "floors": 4,
+    "height_m": 14,
+    "base_m": 5.8,
+    "rot": 4,
+    "w_m": 84,
+    "d_m": 42,
+    "footprint_m2": 3528,
+    "hero": "",
+    "hub": "nizamFront",
+    "entrance_node": "ent-nizam",
+    "entrance_lng": 78.523436,
+    "entrance_lat": 17.42148,
+    "cx_lng": 78.523416,
+    "cy_lat": 17.421751,
+    "aliases": "nizam hostel|boys hostel|hostel|accommodation|warden",
+    "hours": "Open 24 × 7 · gate curfew 23:30",
+    "access": "South porch",
+    "description": "Historic men’s hostel with 420 beds, dining hall and the hostel reading room.",
+    "pois": "[{\"name\":\"Hostel Office\",\"floor\":0,\"kind\":\"office\"},{\"name\":\"Dining Hall\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Reading Room\",\"floor\":2,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.523035,
+       17.421535
+      ],
+      [
+       78.523824,
+       17.421588
+      ],
+      [
+       78.523797,
+       17.421966
+      ],
+      [
+       78.523008,
+       17.421914
+      ],
+      [
+       78.523035,
+       17.421535
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "girls",
+    "name": "Osmania Girls Hostel",
+    "short": "GHS",
+    "code": "OU-19",
+    "category": "hostel",
+    "floors": 4,
+    "height_m": 14,
+    "base_m": 6.3,
+    "rot": 0,
+    "w_m": 72,
+    "d_m": 38,
+    "footprint_m2": 2736,
+    "hero": "",
+    "hub": "girlsFront",
+    "entrance_node": "ent-girls",
+    "entrance_lng": 78.525299,
+    "entrance_lat": 17.42195,
+    "cx_lng": 78.525299,
+    "cy_lat": 17.422203,
+    "aliases": "girls hostel|women hostel|hostel|accommodation",
+    "hours": "Open 24 × 7 · gate curfew 22:30",
+    "access": "South entry, security desk",
+    "description": "Women’s hostel with 360 beds, common rooms and a dedicated study wing.",
+    "pois": "[{\"name\":\"Warden Office\",\"floor\":0,\"kind\":\"office\"},{\"name\":\"Study Wing\",\"floor\":3,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.52496,
+       17.422031
+      ],
+      [
+       78.525638,
+       17.422031
+      ],
+      [
+       78.525638,
+       17.422375
+      ],
+      [
+       78.52496,
+       17.422375
+      ],
+      [
+       78.52496,
+       17.422031
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "pg",
+    "name": "PG & Research Hostel",
+    "short": "PGR",
+    "code": "OU-20",
+    "category": "hostel",
+    "floors": 4,
+    "height_m": 13,
+    "base_m": 5.6,
+    "rot": 0,
+    "w_m": 62,
+    "d_m": 36,
+    "footprint_m2": 2232,
+    "hero": "",
+    "hub": "pgFront",
+    "entrance_node": "ent-pg",
+    "entrance_lng": 78.522286,
+    "entrance_lat": 17.420665,
+    "cx_lng": 78.52191,
+    "cy_lat": 17.420665,
+    "aliases": "pg hostel|research hostel|hostel|scholars",
+    "hours": "Open 24 × 7",
+    "access": "East entry",
+    "description": "Post-graduate and research scholars’ hostel with quiet-study floors.",
+    "pois": "[{\"name\":\"Scholars Common Room\",\"floor\":1,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.521618,
+       17.420503
+      ],
+      [
+       78.522202,
+       17.420503
+      ],
+      [
+       78.522202,
+       17.420828
+      ],
+      [
+       78.521618,
+       17.420828
+      ],
+      [
+       78.521618,
+       17.420503
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "international",
+    "name": "International Students House",
+    "short": "ISH",
+    "code": "OU-21",
+    "category": "hostel",
+    "floors": 3,
+    "height_m": 11,
+    "base_m": 7.3,
+    "rot": 0,
+    "w_m": 50,
+    "d_m": 32,
+    "footprint_m2": 1600,
+    "hero": "",
+    "hub": "intlFront",
+    "entrance_node": "ent-international",
+    "entrance_lng": 78.526146,
+    "entrance_lat": 17.423243,
+    "cx_lng": 78.526146,
+    "cy_lat": 17.423469,
+    "aliases": "international|ish|foreign students|hostel",
+    "hours": "Open 24 × 7",
+    "access": "South lobby",
+    "description": "Residence and support office for international students and exchange scholars.",
+    "pois": "[{\"name\":\"International Office\",\"floor\":0,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.525911,
+       17.423324
+      ],
+      [
+       78.526382,
+       17.423324
+      ],
+      [
+       78.526382,
+       17.423614
+      ],
+      [
+       78.525911,
+       17.423614
+      ],
+      [
+       78.525911,
+       17.423324
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "guest",
+    "name": "University Guest House",
+    "short": "GST",
+    "code": "OU-22",
+    "category": "residential",
+    "floors": 3,
+    "height_m": 10,
+    "base_m": 4.9,
+    "rot": 0,
+    "w_m": 56,
+    "d_m": 34,
+    "footprint_m2": 1904,
+    "hero": "",
+    "hub": "guestFront",
+    "entrance_node": "ent-guest",
+    "entrance_lng": 78.522258,
+    "entrance_lat": 17.416867,
+    "cx_lng": 78.52191,
+    "cy_lat": 17.416867,
+    "aliases": "guest house|visitors|stay|vip",
+    "hours": "24 × 7 reception",
+    "access": "East porch",
+    "description": "Guest house for visiting faculty, examiners and delegates.",
+    "pois": "[{\"name\":\"Reception\",\"floor\":0,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.521646,
+       17.416713
+      ],
+      [
+       78.522173,
+       17.416713
+      ],
+      [
+       78.522173,
+       17.417021
+      ],
+      [
+       78.521646,
+       17.417021
+      ],
+      [
+       78.521646,
+       17.416713
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "faculty",
+    "name": "Faculty Quarters",
+    "short": "FQ",
+    "code": "OU-23",
+    "category": "residential",
+    "floors": 2,
+    "height_m": 8,
+    "base_m": 4.7,
+    "rot": 0,
+    "w_m": 72,
+    "d_m": 26,
+    "footprint_m2": 1872,
+    "hero": "",
+    "hub": "facultyFront",
+    "entrance_node": "ent-faculty",
+    "entrance_lng": 78.520639,
+    "entrance_lat": 17.418947,
+    "cx_lng": 78.520215,
+    "cy_lat": 17.418947,
+    "aliases": "faculty quarters|staff quarters|residence|faculty housing",
+    "hours": "Residents only",
+    "access": "East lane",
+    "description": "Faculty residential block set in the western grove.",
+    "pois": "[{\"name\":\"Residents Association Room\",\"floor\":0,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.519876,
+       17.418829
+      ],
+      [
+       78.520554,
+       17.418829
+      ],
+      [
+       78.520554,
+       17.419065
+      ],
+      [
+       78.519876,
+       17.419065
+      ],
+      [
+       78.519876,
+       17.418829
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "biotech",
+    "name": "Institute of Biotechnology",
+    "short": "IBT",
+    "code": "OU-24",
+    "category": "research",
+    "floors": 3,
+    "height_m": 12,
+    "base_m": 13,
+    "rot": -4,
+    "w_m": 56,
+    "d_m": 40,
+    "footprint_m2": 2240,
+    "hero": "",
+    "hub": "biotechFront",
+    "entrance_node": "ent-biotech",
+    "entrance_lng": 78.534743,
+    "entrance_lat": 17.418337,
+    "cx_lng": 78.53509,
+    "cy_lat": 17.418314,
+    "aliases": "biotech|biotechnology|ibt|genetics|research",
+    "hours": "09:00 – 20:00",
+    "access": "West entry",
+    "description": "Biotechnology research institute with BSL-2 labs and the genomics suite.",
+    "pois": "[{\"name\":\"Genomics Suite\",\"floor\":1,\"kind\":\"lab\"},{\"name\":\"BSL-2 Lab\",\"floor\":2,\"kind\":\"lab\"},{\"name\":\"Seminar Room\",\"floor\":0,\"kind\":\"room\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.534814,
+       17.418151
+      ],
+      [
+       78.53534,
+       17.418116
+      ],
+      [
+       78.535366,
+       17.418477
+      ],
+      [
+       78.534841,
+       17.418512
+      ],
+      [
+       78.534814,
+       17.418151
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "botany",
+    "name": "Botanical Garden Glasshouse",
+    "short": "BOT",
+    "code": "OU-25",
+    "category": "research",
+    "floors": 1,
+    "height_m": 8,
+    "base_m": 7.6,
+    "rot": 0,
+    "w_m": 30,
+    "d_m": 22,
+    "footprint_m2": 660,
+    "hero": "",
+    "hub": "botGarden",
+    "entrance_node": "ent-botany",
+    "entrance_lng": 78.525111,
+    "entrance_lat": 17.411169,
+    "cx_lng": 78.525111,
+    "cy_lat": 17.410989,
+    "aliases": "botanical|glasshouse|garden|herbarium|conservatory",
+    "hours": "07:00 – 18:00",
+    "access": "North path",
+    "description": "Glasshouse and herbarium at the heart of the OU botanical garden.",
+    "pois": "[{\"name\":\"Herbarium\",\"floor\":0,\"kind\":\"facility\"},{\"name\":\"Conservatory\",\"floor\":0,\"kind\":\"facility\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.524969,
+       17.410889
+      ],
+      [
+       78.525252,
+       17.410889
+      ],
+      [
+       78.525252,
+       17.411088
+      ],
+      [
+       78.524969,
+       17.411088
+      ],
+      [
+       78.524969,
+       17.410889
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "gatehouse",
+    "name": "Main Gate Security Post",
+    "short": "MGS",
+    "code": "OU-26",
+    "category": "admin",
+    "floors": 1,
+    "height_m": 5,
+    "base_m": 6.9,
+    "rot": 0,
+    "w_m": 34,
+    "d_m": 22,
+    "footprint_m2": 748,
+    "hero": "",
+    "hub": "mainGate",
+    "entrance_node": "ent-gatehouse",
+    "entrance_lng": 78.527182,
+    "entrance_lat": 17.410175,
+    "cx_lng": 78.527182,
+    "cy_lat": 17.409994,
+    "aliases": "security|main gate|gate|lost and found|visitor pass",
+    "hours": "24 × 7",
+    "access": "Gate plaza",
+    "description": "Main gate security, visitor passes and campus lost-and-found.",
+    "pois": "[{\"name\":\"Visitor Pass Desk\",\"floor\":0,\"kind\":\"office\"}]"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       78.527022,
+       17.409894
+      ],
+      [
+       78.527342,
+       17.409894
+      ],
+      [
+       78.527342,
+       17.410093
+      ],
+      [
+       78.527022,
+       17.410093
+      ],
+      [
+       78.527022,
+       17.409894
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

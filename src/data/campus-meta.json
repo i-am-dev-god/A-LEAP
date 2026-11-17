@@ -1,0 +1,75 @@
+{
+  "name": "Osmania University — Main Campus",
+  "shortName": "OU",
+  "city": "Hyderabad",
+  "state": "Telangana",
+  "country": "India",
+  "datum": {
+    "lng": 78.5285,
+    "lat": 17.4175
+  },
+  "centroid": [
+    78.5285,
+    17.4175
+  ],
+  "elevationMean": 530,
+  "areaKm2": 4.6,
+  "gates": [
+    {
+      "id": "gate-main",
+      "node": "mainGate",
+      "name": "Main Gate",
+      "aliases": [
+        "main gate",
+        "gate 1",
+        "entrance"
+      ]
+    },
+    {
+      "id": "gate-east",
+      "node": "eastGate",
+      "name": "East Gate",
+      "aliases": [
+        "east gate",
+        "gate 2",
+        "tarnaka"
+      ]
+    },
+    {
+      "id": "gate-north",
+      "node": "northGate",
+      "name": "North Gate",
+      "aliases": [
+        "north gate",
+        "gate 3"
+      ]
+    },
+    {
+      "id": "gate-west",
+      "node": "westGate",
+      "name": "West Gate",
+      "aliases": [
+        "west gate",
+        "gate 4",
+        "hostel gate"
+      ]
+    },
+    {
+      "id": "gate-science",
+      "node": "scienceGate",
+      "name": "Science Gate",
+      "aliases": [
+        "science gate",
+        "gate 5"
+      ]
+    }
+  ],
+  "counts": {
+    "buildings": 26,
+    "walkwayEdges": 84,
+    "trees": 921,
+    "terrainFeatures": 8
+  },
+  "survey": "Self-authored vector survey · no third-party tile or map API dependencies",
+  "revision": "2026.11"
+}
