@@ -11,7 +11,8 @@ Built with Next.js 14, MapLibre GL, Three.js and a hand-authored campus vector s
 
 | Layer | What it does |
 | --- | --- |
-| **3D campus twin** | Every building footprint is extruded from self-hosted GeoJSON and dressed with procedural hero architecture: the Arts College dome and chhatris, the library's glass atrium, OUCE's mast and louvres, the Jama Masjid minarets, the convocation colonnade and the sports barrel vault. |
+| **3D campus twin** | Every building footprint is extruded from self-hosted GeoJSON and dressed with procedural hero architecture: the library's glass atrium, OUCE's mast and louvres, the Jama Masjid minarets, the convocation colonnade and the sports barrel vault. |
+| **Authored Arts College** | The Arts College is a real authored model — 352k triangles of granite, teak and bronze with 110 m of façade, pishtaq, galleries and ceremonial stairs — fitted onto the surveyed footprint, meshopt-compressed to 3.2 MB and streamed from the app's own bundle. |
 | **A\* routing** | Custom binary-heap A\* over a 70-node / 84-edge walkway graph with terrain, surface, lighting, crowd and accessibility weights. Step-free routing removes steps entirely. |
 | **Holographic navigation** | An elevated GLSL energy ribbon with animated chevrons, a pulsing destination beacon, and a light column — all written as real vertex/fragment shaders. |
 | **Real solar lighting** | NOAA solar position for Hyderabad drives sun azimuth/elevation, shadow direction, neon intensity, HUD tint and a night sky. Presets: **Dawn · Noon · Golden Hour · Cyber Night · Live**. |
@@ -176,6 +177,20 @@ npm run build && npm run start   # binds 0.0.0.0:3000
 ```
 
 Docker and any Node 20+ host work unchanged. There is no database, tile server or external API dependency for the core experience.
+
+---
+
+## Arts College model
+
+The heritage landmark ships as an authored GLB rather than procedural geometry.
+
+| Stage | Result |
+| --- | --- |
+| Drive source (`model.glb`) | 18.0 MB · 352k triangles · 12 PNG albedo maps |
+| `@gltf-transform/cli optimize --compress meshopt --texture-compress webp --texture-size 1024` | 3.19 MB |
+| Runtime | `GLTFLoader` + three's bundled `MeshoptDecoder` — no CDN, no decoder fetch |
+
+The loader measures the model, fits the built mass to the surveyed 132 m × 48 m footprint, rotates it onto the building's 8° axis and nudges it north so the stair flight lands on the Fountain Plaza promenade instead of cutting the route. It streams in 900 ms after the scene mounts and rises into place over 0.85 s; the procedural heritage build stays on screen until then and remains the fallback if the model cannot load.
 
 ---
 

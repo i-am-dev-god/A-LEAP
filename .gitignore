@@ -10,3 +10,6 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+
+# Staged connector drops (raw source assets, not shipped)
+google_drive/

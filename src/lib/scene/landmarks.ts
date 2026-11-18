@@ -4,7 +4,8 @@ import { toMeters } from '../geo';
 import type { Building } from '../types';
 import type { LightingState } from '../lighting';
 import { applyPaletteLighting, createPalette, type Palette } from './materials';
-import type { SceneModule } from './threeWorld';
+import { applyLandmarkLighting, disposeLandmark, loadArtsCollege, type FittedLandmark } from './artsCollege';
+import type { SceneModule, ThreeWorld } from './threeWorld';
 
 const DEG = Math.PI / 180;
 
@@ -122,6 +123,14 @@ export function createLandmarks(): SceneModule {
   root.name = 'landmarks';
   const palette = createPalette();
   const disposables: THREE.BufferGeometry[] = [];
+
+  let artsFallback: THREE.Group | null = null;
+  let landmark: FittedLandmark | null = null;
+  let landmarkArrival = 0;
+  const LANDMARK_BASE_Y = 0.08;
+  let world: ThreeWorld | null = null;
+  let lastLighting: LightingState | null = null;
+  let disposed = false;
 
   for (const b of buildings) {
     const centre = toMeters(b.centroid);
@@ -323,7 +332,39 @@ export function createLandmarks(): SceneModule {
 
     addWindows(group, b, palette);
     root.add(group);
+    if (b.id === 'artscollege') artsFallback = group;
   }
+
+  // The authored Arts College model replaces the procedural mass once it has
+  // streamed in; until then the procedural heritage build stands in for it.
+  const artsBuilding = buildings.find((b) => b.id === 'artscollege');
+  const modelTimer = artsBuilding
+    ? window.setTimeout(() => {
+        void (async () => {
+          try {
+            const loaded = await loadArtsCollege(artsBuilding);
+            if (disposed) {
+              disposeLandmark(loaded);
+              return;
+            }
+            landmark = loaded;
+            if (artsFallback) {
+              root.remove(artsFallback);
+              artsFallback = null;
+            }
+            // rise into place rather than popping in
+            loaded.group.scale.setScalar(0.965);
+            loaded.group.position.y = LANDMARK_BASE_Y - 6;
+            landmarkArrival = 0;
+            root.add(loaded.group);
+            if (lastLighting) applyLandmarkLighting(loaded.materials, lastLighting);
+            world?.markShadowsDirty();
+          } catch (error) {
+            console.warn('[OU scene] Arts College model failed to load', error);
+          }
+        })();
+      }, 900)
+    : 0;
 
   let windowMaterials: THREE.MeshBasicMaterial[] = [];
   root.traverse((obj) => {
@@ -335,20 +376,39 @@ export function createLandmarks(): SceneModule {
   return {
     name: 'landmarks',
     root,
+    attach(nextWorld: ThreeWorld) {
+      world = nextWorld;
+    },
     setLighting(lighting: LightingState) {
+      lastLighting = lighting;
       applyPaletteLighting(palette, lighting);
       palette.window.opacity = lighting.isNight ? 0.9 : 0.12;
       palette.glass.emissiveIntensity = 0.4 + lighting.neon * 1.1;
+      if (landmark) applyLandmarkLighting(landmark.materials, lighting);
     },
     set3D(is3D: boolean) {
       root.visible = true;
       palette.window.opacity = is3D ? palette.window.opacity : 0.4;
     },
-    update(_dt, elapsed) {
+    update(dt, elapsed) {
       // subtle breathing on the entrance markers/edge glow
       palette.edge.opacity = 0.28 + Math.sin(elapsed * 1.2) * 0.06 + (palette.window.opacity > 0.5 ? 0.3 : 0);
+
+      if (landmark && landmarkArrival < 1) {
+        landmarkArrival = Math.min(1, landmarkArrival + dt / 0.85);
+        const eased = 1 - Math.pow(1 - landmarkArrival, 3);
+        landmark.group.scale.setScalar(0.965 + 0.035 * eased);
+        landmark.group.position.y = LANDMARK_BASE_Y - 6 * (1 - eased);
+        if (landmarkArrival >= 1) world?.markShadowsDirty();
+      }
     },
     dispose() {
+      disposed = true;
+      if (modelTimer) window.clearTimeout(modelTimer);
+      if (landmark) {
+        disposeLandmark(landmark);
+        landmark = null;
+      }
       disposables.forEach((geo) => geo.dispose());
       root.traverse((obj) => {
         if (obj instanceof THREE.Mesh && obj.geometry) obj.geometry.dispose();

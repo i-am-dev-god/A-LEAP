@@ -9,6 +9,8 @@ import type { Building, RouteResult } from '../types';
 export interface SceneModule {
   name: string;
   root: THREE.Object3D;
+  /** Called when the module joins the world, giving it access to the map/renderer. */
+  attach?(world: ThreeWorld): void;
   update?(dt: number, elapsed: number): void;
   setLighting?(lighting: LightingState): void;
   setRoute?(route: RouteResult | null, destination: Building | null, floor: number): void;
@@ -165,6 +167,7 @@ export class ThreeWorld {
     module.setRoute?.(this.route, this.destination, this.floor);
     module.setSelection?.(this.selection, this.floor);
     module.set3D?.(this.is3D);
+    module.attach?.(this);
   }
 
   removeModule(name: string): void {
@@ -222,6 +225,13 @@ export class ThreeWorld {
 
     for (const module of this.modules.values()) module.setLighting?.(lighting);
     if (force || this.renderer.shadowMap) this.renderer.shadowMap.needsUpdate = true;
+  }
+
+  /** Re-bake the static shadow map after late geometry (e.g. a loaded model) appears. */
+  markShadowsDirty(): void {
+    if (!this.renderer) return;
+    this.renderer.shadowMap.needsUpdate = true;
+    this.sunLight.shadow.needsUpdate = true;
   }
 
   setQuality(quality: 'cinematic' | 'balanced'): void {

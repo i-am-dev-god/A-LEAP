@@ -25,6 +25,11 @@ const nextConfig = {
       test: /\.geojson$/i,
       type: 'json',
     });
+    // Authored landmark models become cache-busted static assets under _next/static.
+    config.module.rules.push({
+      test: /\.glb$/i,
+      type: 'asset/resource',
+    });
     return config;
   },
   experimental: {

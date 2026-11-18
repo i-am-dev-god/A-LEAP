@@ -109,3 +109,17 @@ Route planning is a store action: it reads current environment (night flag from 
 | Shadows | 2048², on-demand only |
 | HUD updates | camera telemetry ~9 Hz, metrics 24 s |
 | Data | ~420 KB raw GeoJSON, bundled as JSON modules (lazy chunked with the map) |
+
+
+---
+
+## Authored landmark: Arts College
+
+`src/data/arts-college.glb` is an offline-processed asset, not a runtime download.
+
+1. **Source** — `model.glb` from Google Drive: 18.0 MB, 9 nodes / 9 meshes, 352,372 vertices, 13 materials, 12 PNG albedo maps, authored y-up in metres with the ceremonial stairs on +Z.
+2. **Optimise** — `npx gltf-transform optimize ... --compress meshopt --texture-compress webp --texture-size 1024` produces 3.19 MB: meshopt-compressed buffers (`EXT_meshopt_compression`), quantised attributes (`KHR_mesh_quantization`), 1024 px WebP maps (`EXT_texture_webp`).
+3. **Ship** — webpack `asset/resource` emits it as `_next/static/media/arts-college.<hash>.glb`; Next prefixes the URL with the deployment `basePath`, so the same import works at `/` on Vercel and `/A-LEAP/` on GitHub Pages.
+4. **Decode** — `GLTFLoader.setMeshoptDecoder(MeshoptDecoder)` uses the decoder bundled inside `three` (WASM embedded as base64), so the page makes exactly one request for the model and no third-party calls.
+5. **Fit** — `src/lib/scene/artsCollege.ts` measures the `Box3`, averages the width-fit (132 m) and built-mass depth-fit (48 m ÷ 0.82 of the model depth) to get a uniform scale ≈ 1.0, centres it on the surveyed centroid, applies the building's 8° rotation, and shifts north by the stair overhang so the flight stops at the promenade at 33 m south.
+6. **Swap** — the procedural Arts College is built first and removed only when the model resolves; lighting is re-applied to its `MeshStandardMaterial`s (warm emissive uplighting after dark) and `markShadowsDirty()` re-bakes the static 2048² shadow map. Failures are caught and leave the procedural building in place.
