@@ -19,3 +19,8 @@ declare module '*.json' {
   const value: unknown;
   export default value;
 }
+
+declare module '*.glb' {
+  const url: string;
+  export default url;
+}

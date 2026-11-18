@@ -296,6 +296,9 @@ export function createCampusStyle(lighting: LightingState): StyleSpecification {
         id: 'buildings-3d',
         type: 'fill-extrusion',
         source: 'buildings',
+        // Arts College is delivered by the authored three.js model; its coarse
+        // survey block would otherwise poke through the modelled stonework.
+        filter: ['!=', ['get', 'id'], 'artscollege'],
         paint: {
           'fill-extrusion-color': buildingColorExpression(lighting) as never,
           'fill-extrusion-height': ['get', 'height_m'],
